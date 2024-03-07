@@ -36,6 +36,7 @@ import {
       if (validateEmail()) {
         setError("");
         console.log(email);
+        console.log(password);
       } else {
         setError("Please enter a valid email");
       }
