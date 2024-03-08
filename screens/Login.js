@@ -9,8 +9,8 @@ import {
   import React, { useState } from "react";
   
   export default function Login() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("111@qq.com");
+    const [password, setPassword] = useState("12345");
     const [error, setError] = useState("");
   
     const validateEmail = () => {
