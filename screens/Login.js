@@ -8,7 +8,7 @@ import {
   } from "react-native";
   import React, { useState } from "react";
   
-  export default function Login() {
+  export default function Login( {navigation} ) {
     const [email, setEmail] = useState("111@qq.com");
     const [password, setPassword] = useState("12345");
     const [error, setError] = useState("");
@@ -35,8 +35,9 @@ import {
       // the function on when Login button pressed
       if (validateEmail()) {
         setError("");
-        console.log(email);
-        console.log(password);
+        //console.log(email);
+        //console.log(password);
+        navigation.navigate("User");
       } else {
         setError("Please enter a valid email");
       }
@@ -44,8 +45,9 @@ import {
   
     const handleRegister = () => {
       // the function on when Register button pressed
-      console.log(email);
-      console.log(password);
+      //console.log(email);
+      //console.log(password);
+      navigation.navigate("Registration");
     };
   
     return (
