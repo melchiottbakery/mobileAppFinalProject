@@ -1,9 +1,10 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text } from 'react-native'
 import React from 'react'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function Registration() {
   return (
-    <View>
+    <SafeAreaView>
       <Text>This is the Registration screen</Text>
 
       <Text>a InputComponent input the nickname</Text>
@@ -22,7 +23,7 @@ export default function Registration() {
 
 
 
-    </View>
+    </SafeAreaView>
   )
 }
 
