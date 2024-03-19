@@ -1,12 +1,19 @@
 import { StyleSheet, Text, View, Image, Button } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import InputComponent from "../component/InputComponent";
 
 export default function Profile({ route, navigation }) {
   // You can give me some const and useState for the name, the email and the password
   // const {nickname, email, password } = route.params;
-  
+
+  const [nickname, setNickname] = useState("nihao");
+  const [email, setEmail] = useState("www@qq.com");
+  const [password, setPassword] = useState("12345");
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
+
+
+
   return (
     <SafeAreaView>
      {/*  <Text>This is the Profile screen</Text> */}
@@ -18,14 +25,14 @@ export default function Profile({ route, navigation }) {
 
       <InputComponent
         //here is a InputComponent can show the name from Registration nickname, but user cannot pressed or chage(until now)
-        Label="Nickname"
+        label="Nickname"
         value={nickname}
         editable={false}
       />
 
       <InputComponent
         //here is a InputComponent can show the email, but user cannot pressed or
-        Label="Email"
+        label="Email"
         value={email}
         editable={false}
       />
@@ -33,19 +40,21 @@ export default function Profile({ route, navigation }) {
       <InputComponent
         //here is a InputComponent can show the password, but user can pressed. it
         //show from stars to characters until the user presses.
-        Label="Password"
+        label="Password"
         value={password}
-        secureTextEntry={true}
+        secureTextEntry={secureTextEntry}
         editable={false}
+        onPressIn={ ()=> {setSecureTextEntry(!secureTextEntry)   }     }
 
       />
       
+
+{/* // if you can add a alert for this one? */}
       <Button
       //a button cancel and go back to the Login screen
         title="Cancel"
         onPress={() => navigation.navigate("Login")}
       />
-
 
     </SafeAreaView>
   );
