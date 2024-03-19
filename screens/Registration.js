@@ -5,17 +5,41 @@ import InputComponent from "../component/InputComponent";
 import Checkbox from "expo-checkbox";
 
 export default function Registration({ navigation }) {
-  const [nickname, setNickname] = useState("");
-  const [email, setEmail] = useState("");
-  const [confirmedEmail, setConfirmedEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmedPassword, setConfirmedPassword] = useState("");
+  // const [nickname, setNickname] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [confirmedEmail, setConfirmedEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  // const [confirmedPassword, setConfirmedPassword] = useState("");
+  // const [emailError, setEmailError] = useState("");
+  // const [confirmedEmailError, setConfirmedEmailError] = useState("");
+  // const [confirmedPasswordError, setConfirmedPasswordError] = useState("");
+  // const [isAdmin, setIsAdmin] = useState(false);
+
+//for data test
+  const [nickname, setNickname] = useState("nihao");
+  const [email, setEmail] = useState("www@qq.com");
+  const [confirmedEmail, setConfirmedEmail] = useState("www@qq.com");
+  const [password, setPassword] = useState("12345");
+  const [confirmedPassword, setConfirmedPassword] = useState("12345");
   const [emailError, setEmailError] = useState("");
   const [confirmedEmailError, setConfirmedEmailError] = useState("");
   const [confirmedPasswordError, setConfirmedPasswordError] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
 
-  navigation.navigate("profile", {nickname: nickname, email: email, password: password});
+  // I have dashed this line, it will be a wrong prompt for this one 
+
+  // navigation.navigate("profile", {nickname: nickname, email: email, password: password});
+
+  //to be changed
+  const [formData, setFormData] = useState({
+
+  });
+
+  //to be changed
+  const handleChange = (key, value) => {
+    setFormData({ ...formData, [key]: value });
+  };
+
 
   const handleCancel = () => {
     setNickname("");
@@ -52,6 +76,13 @@ export default function Registration({ navigation }) {
     return password === confirmedPassword;
   };
 
+
+  //please check the status of "Please enter a valid email"
+  //there are some bugs if the email is in the right style but not match.
+  // the 'please enter a valid email is still here'
+  // the better way to do that is once you are using handleSet, clear all the status first.
+
+
   const handleSet = () => {
     if (
       validateEmail() &&
@@ -61,9 +92,19 @@ export default function Registration({ navigation }) {
       setEmailError("");
       setConfirmedEmailError("");
       setConfirmedPasswordError("");
+
+      //to be changed
+      handleChange("nickname", nickname)
+      handleChange("email", email)
+      handleChange('password', password)
+      handleChange('isAdmin', isAdmin)
+
+      console.log(formData)
+
       console.log([nickname, email, password, isAdmin]);
       // Return a new array of the user's information
-      return [nickname, email, password, isAdmin];
+      // return 
+      // [nickname, email, password, isAdmin];
     } else if (!validateEmail()) {
       setEmailError("Please enter a valid email");
     } else if (!validateConfirmedEmail()) {
@@ -72,6 +113,9 @@ export default function Registration({ navigation }) {
       setConfirmedPasswordError("Passwords do not match");
     }
   };
+
+
+
 
   return (
     <SafeAreaView style={styles.container}>

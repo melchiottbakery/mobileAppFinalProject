@@ -5,7 +5,7 @@ import InputComponent from "../component/InputComponent";
 
 export default function Profile({ route, navigation }) {
   // You can give me some const and useState for the name, the email and the password
-  const {nickname, email, password } = route.params;
+  // const {nickname, email, password } = route.params;
   
   return (
     <SafeAreaView>
