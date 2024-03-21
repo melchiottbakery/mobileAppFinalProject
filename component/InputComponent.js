@@ -10,7 +10,7 @@ const InputComponent = ({
   onPressIn,
   showSoftInputOnFocus,
   secureTextEntry,
-  editable = true,
+  editable,
 
 }) => {
   return (
