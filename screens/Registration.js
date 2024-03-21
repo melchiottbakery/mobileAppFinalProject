@@ -15,7 +15,7 @@ export default function Registration({ navigation }) {
   // const [confirmedPasswordError, setConfirmedPasswordError] = useState("");
   // const [isAdmin, setIsAdmin] = useState(false);
 
-//for data test
+  //for data test
   const [nickname, setNickname] = useState("nihao");
   const [email, setEmail] = useState("www@qq.com");
   const [confirmedEmail, setConfirmedEmail] = useState("www@qq.com");
@@ -26,20 +26,17 @@ export default function Registration({ navigation }) {
   const [confirmedPasswordError, setConfirmedPasswordError] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
 
-  // I have dashed this line, it will be a wrong prompt for this one 
+  // I have dashed this line, it will be a wrong prompt for this one
 
   // navigation.navigate("profile", {nickname: nickname, email: email, password: password});
 
   //to be changed
-  const [formData, setFormData] = useState({
-
-  });
+  const [formData, setFormData] = useState({});
 
   //to be changed
   const handleChange = (key, value) => {
     setFormData({ ...formData, [key]: value });
   };
-
 
   const handleCancel = () => {
     setNickname("");
@@ -50,8 +47,6 @@ export default function Registration({ navigation }) {
     setIsAdmin(false);
     navigation.navigate("Login");
   };
-
-
 
   const validateForm = () => {
     // Check if all input box are empty
@@ -76,34 +71,31 @@ export default function Registration({ navigation }) {
     return password === confirmedPassword;
   };
 
-
   //please check the status of "Please enter a valid email"
   //there are some bugs if the email is in the right style but not match.
   // the 'please enter a valid email is still here'
   // the better way to do that is once you are using handleSet, clear all the status first.
 
-
   const handleSet = () => {
+    setEmailError("");
+    setConfirmedEmailError("");
+    setConfirmedPasswordError("");
     if (
       validateEmail() &&
       validateConfirmedEmail() &&
       validateConfirmedPassword()
     ) {
-      setEmailError("");
-      setConfirmedEmailError("");
-      setConfirmedPasswordError("");
-
       //to be changed
-      handleChange("nickname", nickname)
-      handleChange("email", email)
-      handleChange('password', password)
-      handleChange('isAdmin', isAdmin)
+      handleChange("nickname", nickname);
+      handleChange("email", email);
+      handleChange("password", password);
+      handleChange("isAdmin", isAdmin);
 
-      console.log(formData)
+      console.log(formData);
 
       console.log([nickname, email, password, isAdmin]);
       // Return a new array of the user's information
-      // return 
+      // return
       // [nickname, email, password, isAdmin];
     } else if (!validateEmail()) {
       setEmailError("Please enter a valid email");
@@ -113,9 +105,6 @@ export default function Registration({ navigation }) {
       setConfirmedPasswordError("Passwords do not match");
     }
   };
-
-
-
 
   return (
     <SafeAreaView style={styles.container}>
@@ -185,8 +174,6 @@ export default function Registration({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    //justifyContent: 'center',
-    //alignItems: 'center'
   },
 
   buttonContainer: {
@@ -198,6 +185,7 @@ const styles = StyleSheet.create({
   section: {
     flexDirection: "row",
     alignItems: "center",
+    marginTop: 20,
   },
 
   checkbox: {

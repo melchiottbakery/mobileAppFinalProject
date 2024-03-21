@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, Button } from "react-native";
+import { StyleSheet, Text, View, Image, Button, Alert } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import InputComponent from "../component/InputComponent";
@@ -12,11 +12,20 @@ export default function Profile({ route, navigation }) {
   const [password, setPassword] = useState("12345");
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
-
+  //add Alert for the Cancel button
+  const handleCancel = () => {
+    Alert.alert("Cancel", "Are you going back to Login?", [
+      {
+        text: "No",
+        onPress: () => console.log("No Pressed"),
+      },
+      { text: "Yes", onPress: () => navigation.navigate("Login") },
+    ]);
+  };
 
   return (
     <SafeAreaView>
-     {/*  <Text>This is the Profile screen</Text> */}
+      {/*  <Text>This is the Profile screen</Text> */}
 
       {/*  <Text>Add a pic as a placeholder</Text> */}
       <View style={styles.imageContainer}>
@@ -44,18 +53,19 @@ export default function Profile({ route, navigation }) {
         value={password}
         secureTextEntry={secureTextEntry}
         editable={false}
-        onPressIn={ ()=> {setSecureTextEntry(!secureTextEntry)   }     }
-
+        onPressIn={() => {
+          setSecureTextEntry(!secureTextEntry);
+        }}
       />
-      
 
-{/* // if you can add a alert for this one? */}
+      {/* // if you can add a alert for this one? */}
+      <View style={styles.buttonContainer}>
       <Button
-      //a button cancel and go back to the Login screen
+        //a button cancel and go back to the Login screen
         title="Cancel"
-        onPress={() => navigation.navigate("Login")}
+        onPress={handleCancel}
       />
-
+      </View>
     </SafeAreaView>
   );
 }
@@ -68,5 +78,9 @@ const styles = StyleSheet.create({
   image: {
     width: 100,
     height: 100,
+  },
+  buttonContainer: {
+    margin: 20,
+    alignItems: "center",
   },
 });
