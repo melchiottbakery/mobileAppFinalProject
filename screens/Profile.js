@@ -1,34 +1,86 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, Image, Button, Alert } from "react-native";
+import React, { useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+import InputComponent from "../component/InputComponent";
 
-export default function Profile() {
-
+export default function Profile({ route, navigation }) {
   // You can give me some const and useState for the name, the email and the password
-  // 
+  // const {nickname, email, password } = route.params;
+
+  const [nickname, setNickname] = useState("nihao");
+  const [email, setEmail] = useState("www@qq.com");
+  const [password, setPassword] = useState("12345");
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
+
+  //add Alert for the Cancel button
+  const handleCancel = () => {
+    Alert.alert("Cancel", "Are you going back to Login?", [
+      {
+        text: "No",
+        onPress: () => console.log("No Pressed"),
+      },
+      { text: "Yes", onPress: () => navigation.navigate("Login") },
+    ]);
+  };
+
   return (
-    <View>
-      <Text>This is the Profile screen</Text>
+    <SafeAreaView>
+      {/*  <Text>This is the Profile screen</Text> */}
 
-      <Text>Add a pic as a placeholder</Text>
+      {/*  <Text>Add a pic as a placeholder</Text> */}
+      <View style={styles.imageContainer}>
+        <Image source={require("../assets/myImage.png")} style={styles.image} />
+      </View>
 
-      <Text>here is a InputComponent can show the name, but user cannot pressed or change 
-      </Text>
+      <InputComponent
+        //here is a InputComponent can show the name from Registration nickname, but user cannot pressed or chage(until now)
+        label="Nickname"
+        value={nickname}
+        editable={false}
+      />
 
-      <Text>here is a InputComponent can show the email, but user cannot pressed or change(until now) 
-      </Text>
+      <InputComponent
+        //here is a InputComponent can show the email, but user cannot pressed or
+        label="Email"
+        value={email}
+        editable={false}
+      />
 
-      <Text>here is a InputComponent can show the password, but user can pressed.
-        it show from stars to characters until the user presses.
-      </Text>
+      <InputComponent
+        //here is a InputComponent can show the password, but user can pressed. it
+        //show from stars to characters until the user presses.
+        label="Password"
+        value={password}
+        secureTextEntry={secureTextEntry}
+        editable={false}
+        onPressIn={() => {
+          setSecureTextEntry(!secureTextEntry);
+        }}
+      />
 
-      <Text>a button cancel and go back to the Login screen</Text>
-
-
-
-
-
-    </View>
-  )
+      {/* // if you can add a alert for this one? */}
+      <View style={styles.buttonContainer}>
+      <Button
+        //a button cancel and go back to the Login screen
+        title="Cancel"
+        onPress={handleCancel}
+      />
+      </View>
+    </SafeAreaView>
+  );
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  imageContainer: {
+    alignItems: "center",
+    marginTop: 20,
+  },
+  image: {
+    width: 100,
+    height: 100,
+  },
+  buttonContainer: {
+    margin: 20,
+    alignItems: "center",
+  },
+});
