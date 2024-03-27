@@ -12,3 +12,12 @@ export async function writeToDB(data) {
     }
   }
   
+  //delete the data with the id from the database 
+export async function deleteFromDB(id) {
+    try {
+      await deleteDoc(doc(database, "activities", id));
+      console.log("Delete confirmed, the id is ", id);
+    } catch (err) {
+      console.log(err);
+    }
+  }
