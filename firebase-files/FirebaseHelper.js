@@ -16,10 +16,10 @@ import { doc, deleteDoc,  } from "firebase/firestore";
 
   export async function writeToDB(data) {
     try {
-      if(data.meaning){
-      console.log('123',data.meaning)
+      if(data.translationMeaning){
+      console.log('123',data.translationMeaning)
     // const docRef = await addDoc(collection(database, "usertest"), data);
-    await setDoc(doc(database, "usertest", data.nativeword), data);
+    await setDoc(doc(database, "usertest", data.nativeWord), data);
       // console.log("Document ID is: ", docRef.id);
       console.log("the new data is",data)}
     } catch (err) {

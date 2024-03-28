@@ -4,8 +4,6 @@ import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import CountryFlag from "react-native-country-flag";
 
-
-
 import { collection, onSnapshot } from "firebase/firestore"
 import { database } from "../firebase-files/FirebaseSetup"
 
@@ -15,7 +13,7 @@ export default function Library() {
   const [library, setlibrary] = useState([]);
 
   useEffect(() => {
-    onSnapshot(collection(database, "public"), (querySnapshot) => {
+    onSnapshot(collection(database, "library"), (querySnapshot) => {
       let newArray = [];
       if (querySnapshot) {
         querySnapshot.forEach((doc) => {
@@ -36,18 +34,15 @@ export default function Library() {
   }
 
   const renderItem = ({ item }) => (
-    <Pressable onPress={()=>onPressFunction({item})}>
-    
+    <Pressable onPress={()=>onPressFunction({item})}>  
     <View style={{ padding: 30, borderColor: "red", borderWidth: 3 }}>
       <Text>ID: {item.id}</Text>
-      <Text>Name: {item.name}</Text>
-      <Text>Native Language: {item.navtivelanguage}</Text>
+      <Text>Title: {item.title}</Text>
+      <Text>Native Language: {item.nativeLanguage}</Text>
       <Text>Number: {item.number}</Text>
-      <Text>Word Language: {item.wordlanguage}</Text>
-      <CountryFlag isoCode={item.navtivelanguage} size={25} />
-      <CountryFlag isoCode={item.wordlanguage} size={25} />
-
-
+      <Text>Word Language: {item.translationLanguage}</Text>
+      <CountryFlag isoCode={item.nativeLanguage} size={25} />
+      <CountryFlag isoCode={item.translationLanguage} size={25} />
     </View>
     </Pressable>
   );

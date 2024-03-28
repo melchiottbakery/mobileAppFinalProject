@@ -63,7 +63,7 @@ export default function Profile({ route, navigation }) {
       <View style={styles.buttonContainer}>
       <Button
         //a button cancel and go back to the Login screen
-        title="Cancel"
+        title="LOG OUT"
         onPress={handleCancel}
       />
       </View>

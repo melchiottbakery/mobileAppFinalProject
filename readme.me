@@ -6,29 +6,31 @@ LIAO,TIANZHI
 There is a collection called 
 library 
 
-The second collections are called wordBook
+with the document with the following document
+
+id: ramdom id
+
+title: JLPT-N5
+nativeLanguage: JP
+number: 3
+translationLanguage: GB
+
+The second collections are called wordlist inside each of document of the library
+
+id: equal to the nativeWord "戦車"
+nativeWord: "戦車"
+translationMeaning: 'tank'
 
 The third collection is called userList
 
 userList will be stored all of the word added from wordBook
 
 document in the userList have the following data model
-12345
 
-id: is equal to the 
-meaning
-"tank"
-(string)
-
-
-nativeword
-"戦車"
-(string)
-
-
-remember
-false
-(boolean)
+id: equal to the nativeWord "戦車"
+nativeWord: "戦車"
+translationMeaning: 'tank'
+remember: (boolean) true or false
 
 
 ----
@@ -54,8 +56,10 @@ CRUD
 C
 Add the entire vocabulary book to the library collection via json.
  (Currently under study and expected to be implemented)
-Add the entire word book/or individual words from the library (collection B) 
-to the user's word list (collection B). (BUG is being fixed)
+Add the entire word book from the library (collection B) 
+to the user's word list (collection C). (not implemented yet)
+Add the individual word from the library (collection B) 
+to the user's word list (collection C). (BUG is being fixed, function is normal)
 
 R
 (Complete) Read collection A.
@@ -63,11 +67,11 @@ R
 (Complete) Read collection C.
 
 U
-Mark the word's review status in Collection C. (not implemented yet)
+(Complete)Mark the word's status of remembered or not in Collection C. 
 
 D
 Delete the entire word book from collectionA. (not implemented yet)
-Delete words from collection C. (not implemented yet)
+(Complete)Delete words from collection C.
 
 
 

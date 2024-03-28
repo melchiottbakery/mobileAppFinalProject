@@ -19,7 +19,7 @@ export default function WordList({route}) {
   const [library, setlibrary] = useState([]);
 
   useEffect(() => {
-    onSnapshot(collection(database, "public", worldBookid, "wordlist"), (querySnapshot) => {
+    onSnapshot(collection(database, "library", worldBookid, "wordlist"), (querySnapshot) => {
       let newArray = [];
       if (querySnapshot) {
         querySnapshot.forEach((doc) => {
@@ -31,26 +31,17 @@ export default function WordList({route}) {
   }, []);
 
 
-
-  const [word, setNewWord] = useState([])
   const [nativeword1, setNativeword] = useState('')
   const [meaning, setMeaning] = useState('')
 
 
   function onPressFunction({item}){
-    // console.log("add")
-    // console.log("the press item is ",item)
 
-    setNativeword(item.nativeword)
-    setMeaning(item.meaning)
-
-    // console.log("native word is",nativeword)
-
-
-    
+    setNativeword(item.nativeWord)
+    setMeaning(item.translationMeaning)
     const newWord = {
-      nativeword: nativeword1,
-      meaning: meaning,
+      nativeWord: nativeword1,
+      translationMeaning: meaning,
       remember: false,
    
     };
@@ -62,24 +53,8 @@ export default function WordList({route}) {
     // setNewWord([...word, newWord]);
     // console.log(word)
     writeToDB(newWord);
-    
-
-    // audioUrl='https://dict.youdao.com/dictvoice?le=jap&type3&audio=%27%E5%A4%A9%E5%AE%89%E9%96%80'
-    // const fetchSound = fetch(audioUrl);
-    // fetchSound.then(response => {
-    //   if (response.ok) {
-    //     console.log("ok")
-    //     return response.blob();
-    //   }
-    //   throw new Error('Network response was not ok.');
-    // })
-
-    // fetch('https://raw.githubusercontent.com/melchiottbakery/testtesttest/main/word.json')
 
   }
-  // const handleButtonPress = () => {
-  //   navigation.navigate('WebPage', { id: id });
-  // };
 
   const renderItem = ({ item }) => (
   
@@ -87,8 +62,8 @@ export default function WordList({route}) {
 
     <View style={{ padding: 30, borderColor: "green", borderWidth: 1 }}>
       <Text>ID: {item.id}</Text>
-      <Text>nativeword: {item.nativeword}</Text>
-      <Text>meaning: {item.meaning}</Text>
+      <Text>nativeWord: {item.nativeWord}</Text>
+      <Text>translationMeaning: {item.translationMeaning}</Text>
       <Button title="add" onPress={()=>onPressFunction({item})} />
 
       {/* <Pressable onPress={()=>{onPressFunction()}}>
