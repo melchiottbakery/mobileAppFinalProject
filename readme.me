@@ -1,3 +1,53 @@
+Group Member
+SUN,YUMING
+LIAO,TIANZHI
+
+
+
+
+----
+LIAO worked on building most of the screens, and the code was reviewed at first 
+and jointly improved by Sun.
+Right now, he is doing the log in screen.
+
+SUN worked on the construction of databases.
+Right now, he is doing the CRUD and fixing the bug.
+----
+
+At present, the construction of the basic framework has been completed. 
+For the public part of the word library, it is possible to load word books and detailed parts. 
+For personal word lists, the part of loading the word list can already be done.
+
+There are 3 collections.
+The collection (A) named library stores the documents of all word books.
+Each word book will have a corresponding collection (B) to store the document of the word.
+At the same time, a collection (C) of personal word lists will be created for each user.
+
+CRUD
+
+C
+Add the entire vocabulary book to the library collection via json.
+ (Currently under study and expected to be implemented)
+Add the entire word book/or individual words from the library (collection B) 
+to the user's word list (collection B). (BUG is being fixed)
+
+R
+(Complete) Read collection A.
+(Complete) Read collection B.
+(Complete) Read collection C.
+
+U
+Mark the word's review status in Collection C. (not implemented yet)
+
+D
+Delete the entire word book from collectionA. (not implemented yet)
+Delete words from collection C. (not implemented yet)
+
+
+
+
+
+----
 YOU need TO INSTALL THE REACT NAVITE
 
 npx create-expo-app a2

@@ -6,6 +6,8 @@ import React, { useEffect, useState } from 'react'
 
 import { collection, onSnapshot } from "firebase/firestore";
 import { database } from "../firebase-files/FirebaseSetup"
+import { writeToDB } from "../firebase-files/FirebaseHelper";
+
 
 export default function WordList({route}) {
 
@@ -29,18 +31,48 @@ export default function WordList({route}) {
   }, []);
 
 
+
+  const [word, setNewWord] = useState([])
+  const [nativeword1, setNativeword] = useState('')
+  const [meaning, setMeaning] = useState('')
+
+
   function onPressFunction({item}){
     // console.log("add")
-    console.log(item.id)
-    audioUrl='https://dict.youdao.com/dictvoice?le=jap&type3&audio=%27%E5%A4%A9%E5%AE%89%E9%96%80'
-    const fetchSound = fetch(audioUrl);
-    fetchSound.then(response => {
-      if (response.ok) {
-        console.log("ok")
-        return response.blob();
-      }
-      throw new Error('Network response was not ok.');
-    })
+    // console.log("the press item is ",item)
+
+    setNativeword(item.nativeword)
+    setMeaning(item.meaning)
+
+    // console.log("native word is",nativeword)
+
+
+    
+    const newWord = {
+      nativeword: nativeword1,
+      meaning: meaning,
+      remember: false,
+   
+    };
+    console.log("nativeword is ", nativeword1)
+
+    // console.log("new word is",newWord)
+
+
+    // setNewWord([...word, newWord]);
+    // console.log(word)
+    writeToDB(newWord);
+    
+
+    // audioUrl='https://dict.youdao.com/dictvoice?le=jap&type3&audio=%27%E5%A4%A9%E5%AE%89%E9%96%80'
+    // const fetchSound = fetch(audioUrl);
+    // fetchSound.then(response => {
+    //   if (response.ok) {
+    //     console.log("ok")
+    //     return response.blob();
+    //   }
+    //   throw new Error('Network response was not ok.');
+    // })
 
     // fetch('https://raw.githubusercontent.com/melchiottbakery/testtesttest/main/word.json')
 

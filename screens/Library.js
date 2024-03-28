@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, FlatList, Pressable } from 'react-native'
 import { SafeAreaView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
+import CountryFlag from "react-native-country-flag";
 
 
 
@@ -43,6 +44,10 @@ export default function Library() {
       <Text>Native Language: {item.navtivelanguage}</Text>
       <Text>Number: {item.number}</Text>
       <Text>Word Language: {item.wordlanguage}</Text>
+      <CountryFlag isoCode={item.navtivelanguage} size={25} />
+      <CountryFlag isoCode={item.wordlanguage} size={25} />
+
+
     </View>
     </Pressable>
   );
