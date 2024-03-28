@@ -2,10 +2,10 @@ import { StyleSheet, Text, View, Image, Button, Alert } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import InputComponent from "../component/InputComponent";
+import { auth } from "../firebase-files/firebaseSetup";
 
-export default function Profile({ route, navigation }) {
+export default function Profile({ navigation }) {
   // You can give me some const and useState for the name, the email and the password
-  // const {nickname, email, password } = route.params;
 
   const [nickname, setNickname] = useState("nihao");
   const [email, setEmail] = useState("www@qq.com");
@@ -35,14 +35,16 @@ export default function Profile({ route, navigation }) {
       <InputComponent
         //here is a InputComponent can show the name from Registration nickname, but user cannot pressed or chage(until now)
         label="Nickname"
-        value={nickname}
+        //value={nickname}
+        value={auth.currentUser.uid}
         editable={false}
       />
 
       <InputComponent
         //here is a InputComponent can show the email, but user cannot pressed or
         label="Email"
-        value={email}
+        //value={email}
+        value={auth.currentUser.email}
         editable={false}
       />
 
