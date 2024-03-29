@@ -3,6 +3,17 @@ SUN,YUMING
 LIAO,TIANZHI
 
 the screenshots are in the screenshots.pdf
+---
+
+.env
+
+  apiKey= "AIzaSyCM9oLreQ76KUcldfw9GvEjNglgEjeb5fM" 
+  authDomain= "groupproject-e9078.firebaseapp.com" 
+  projectId= "groupproject-e9078" 
+  storageBucket= "groupproject-e9078.appspot.com" 
+  messagingSenderId= "539915644722" 
+  appId= "1:539915644722:web:d6f28e6f874303c99c312b"
+
 
 ---
 
@@ -73,7 +84,7 @@ Add the entire vocabulary book to the library collection via json.
 Add the entire word book from the library (collection B) 
 to the user's word list (collection C). (not implemented yet)
 Add the individual word from the library (collection B) 
-to the user's word list (collection C). (BUG is being fixed, function is normal)
+to the user's word list (collection C). (BUG is being fixed, for the add button the first click is useless, function is normal)
 
 R
 (Complete) Read collection A.
@@ -106,4 +117,16 @@ npx expo install expo-checkbox
 
 import { NavigationContainer, useNavigation } from '@react-navigation/native'; import { createNativeStackNavigator } from '@react-navigation/native-stack'; import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+
+
+
+---
+for firebase
 npm expo install firebase
+
+
+---
+for .env
+npm install -D react-native-dotenv
+
+you also need to change of the babel.config.js
