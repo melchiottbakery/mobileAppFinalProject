@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import InputComponent from "../component/InputComponent";
 
+
 export default function Profile({ route, navigation }) {
   // You can give me some const and useState for the name, the email and the password
   // const {nickname, email, password } = route.params;
@@ -62,7 +63,7 @@ export default function Profile({ route, navigation }) {
       <View style={styles.buttonContainer}>
       <Button
         //a button cancel and go back to the Login screen
-        title="Cancel"
+        title="LOG OUT"
         onPress={handleCancel}
       />
       </View>
