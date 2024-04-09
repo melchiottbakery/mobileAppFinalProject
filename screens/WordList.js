@@ -11,11 +11,11 @@ import { writeToDB } from "../firebase-files/FirebaseHelper";
 
 export default function WordList({route}) {
 
-  console.log("the item is ",route)
+  // console.log("the item is ",route)
   const worldBookName = route.params.item.name
   const worldBookid = route.params.item.id
 
-  console.log(route.params.item.name)
+  // console.log(route.params.item.name)
   const [library, setlibrary] = useState([]);
 
   useEffect(() => {
@@ -31,21 +31,17 @@ export default function WordList({route}) {
   }, []);
 
 
-  const [nativeword1, setNativeword] = useState('')
-  const [meaning, setMeaning] = useState('')
 
 
   function onPressFunction({item}){
 
-    setNativeword(item.nativeWord)
-    setMeaning(item.translationMeaning)
+   
     const newWord = {
-      nativeWord: nativeword1,
-      translationMeaning: meaning,
+      nativeWord: item.nativeWord,
+      translationMeaning: item.translationMeaning,
       remember: false,
    
     };
-    console.log("nativeword is ", nativeword1)
 
     // console.log("new word is",newWord)
 
