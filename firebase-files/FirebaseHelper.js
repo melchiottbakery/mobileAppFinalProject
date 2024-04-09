@@ -54,3 +54,14 @@ export async function editInDB(id, data) {
       console.log(err);
     }
   }
+
+
+
+  export async function setNewUserDocToDB(data, col, uid) {
+    // the doc ID is user's uid
+    try {
+      setDoc(doc(database, col, uid), data, { merge: true });
+    } catch (err) {
+      console.log(err);
+    }
+  }
