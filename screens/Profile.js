@@ -1,20 +1,37 @@
 import { StyleSheet, Text, View, Image, Button, Alert } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import InputComponent from "../component/InputComponent";
+import { auth } from '../firebase-files/FirebaseSetup';
+
+import { getProfile } from "../firebase-files/FirebaseHelper";
+
 
 
 export default function Profile({ route, navigation }) {
   // You can give me some const and useState for the name, the email and the password
   // const {nickname, email, password } = route.params;
+  console.log(auth.currentUser.email)
 
-  const [nickname, setNickname] = useState("nihao");
-  const [email, setEmail] = useState("www@qq.com");
+  const [nickname, setNickname] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState("12345");
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
+
+
+  useEffect(() => {
+    async function getDataFromDB() {
+      const data = await getProfile("users", auth.currentUser.uid);
+      // console.log(data)
+      setNickname(data.nickname)
+      setEmail(data.email)
+    }
+    getDataFromDB();
+  }, []);
+
   //add Alert for the Cancel button
-  const handleCancel = () => {
+  function handleCancel() {
     Alert.alert("Cancel", "Are you going back to Login?", [
       {
         text: "No",
@@ -23,6 +40,8 @@ export default function Profile({ route, navigation }) {
       { text: "Yes", onPress: () => navigation.navigate("Login") },
     ]);
   };
+
+  
 
   return (
     <SafeAreaView>
