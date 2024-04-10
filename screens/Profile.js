@@ -2,8 +2,10 @@ import { StyleSheet, Text, View, Image, Button, Alert, Pressable } from "react-n
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import InputComponent from "../component/InputComponent";
-import { auth } from '../firebase-files/FirebaseSetup';
+import { auth,storage } from '../firebase-files/FirebaseSetup';
 import { onAuthStateChanged, signOut } from "firebase/auth";
+import { ref, uploadBytes } from "firebase/storage";
+
 
 
 import * as ImagePicker from 'expo-image-picker';
@@ -100,10 +102,32 @@ export default function Profile({ route, navigation }) {
       // console.log(useCamera)
       // console.log(useCamera.assets[0].uri)
       setImageLocalUri(useCamera.assets[0].uri)
+      // uploadImageFromLocal(imageLocalUri)
     } catch (error) {
       console.log(error)
       
     }
+  }
+
+  function saveImageChange(){
+    uploadImageFromLocal(imageLocalUri)
+  }
+
+  async function uploadImageFromLocal(imageLocalUri){
+    try {
+      const response = await fetch(imageLocalUri);
+      // console.log("uploadImageFromLocal is",response)
+      const imageBlob = await response.blob();
+      // console.log(blob)
+      const imageName = imageLocalUri.substring(imageLocalUri.lastIndexOf('/') + 1);
+      const imageRef = await ref(storage, `profileImages/${imageName}`)
+      const uploadResult = await uploadBytes(imageRef, imageBlob);
+      console.log("upload successed")
+      setImageLocalUri('');
+    } catch (error) {
+      console.log(error)
+    }
+
   }
 
   return (
@@ -122,6 +146,11 @@ export default function Profile({ route, navigation }) {
 
       
       </Pressable>
+      {imageLocalUri &&
+
+(      <Button title="save image changes" onPress={saveImageChange}></Button>
+)      
+}
 
       <InputComponent
         //here is a InputComponent can show the name from Registration nickname, but user cannot pressed or chage(until now)
