@@ -1,8 +1,11 @@
-import { StyleSheet, Text, View, Image, Button, Alert } from "react-native";
+import { StyleSheet, Text, View, Image, Button, Alert, Pressable } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import InputComponent from "../component/InputComponent";
 import { auth } from '../firebase-files/FirebaseSetup';
+
+import * as ImagePicker from 'expo-image-picker';
+
 
 import { getProfile } from "../firebase-files/FirebaseHelper";
 
@@ -17,6 +20,33 @@ export default function Profile({ route, navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState("12345");
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+
+
+
+  const [status, requestPermission] = ImagePicker.useCameraPermissions();
+
+  // console.log(status)
+
+
+
+  async function verifyCameraPermission(){
+
+    if(status.granted){
+      return true;
+    }
+
+    try {
+      const permissonResponse = await requestPermission();
+      return permissonResponse.granted;
+
+    } catch (error) {
+
+      console.log(error);
+      
+    }
+
+  }
+
 
 
 
@@ -41,16 +71,45 @@ export default function Profile({ route, navigation }) {
     ]);
   };
 
+  const [imageLocalUri, setImageLocalUri] = useState("");
   
+  async function cameraFunction(){
+    try {
+
+      const checkPermission = await verifyCameraPermission();
+
+      if (!checkPermission){
+        Alert.alert("Please give permission for the use of camera");
+        return;
+    }
+
+      const useCamera =  await ImagePicker.launchCameraAsync(
+        {allowsEditing: true});
+      // console.log(useCamera)
+      // console.log(useCamera.assets[0].uri)
+      setImageLocalUri(useCamera.assets[0].uri)
+    } catch (error) {
+      console.log(error)
+      
+    }
+  }
 
   return (
     <SafeAreaView>
       {/*  <Text>This is the Profile screen</Text> */}
 
       {/*  <Text>Add a pic as a placeholder</Text> */}
+      <Pressable onPress={cameraFunction}>
       <View style={styles.imageContainer}>
         <Image source={require("../assets/myImage.png")} style={styles.image} />
+        {imageLocalUri && (
+        // 如果网络图片存在，则加载网络图片
+        <Image source={{ uri: imageLocalUri }} style={{ width: 100, height: 100 }} />
+      )}
       </View>
+
+      
+      </Pressable>
 
       <InputComponent
         //here is a InputComponent can show the name from Registration nickname, but user cannot pressed or chage(until now)
