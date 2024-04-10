@@ -11,7 +11,7 @@ import { ref, uploadBytes } from "firebase/storage";
 import * as ImagePicker from 'expo-image-picker';
 
 
-import { getProfile } from "../firebase-files/FirebaseHelper";
+import { editImageLinkInDB, getProfile } from "../firebase-files/FirebaseHelper";
 
 
 
@@ -109,6 +109,8 @@ export default function Profile({ route, navigation }) {
     }
   }
 
+
+
   function saveImageChange(){
     uploadImageFromLocal(imageLocalUri)
   }
@@ -123,12 +125,26 @@ export default function Profile({ route, navigation }) {
       const imageRef = await ref(storage, `profileImages/${imageName}`)
       const uploadResult = await uploadBytes(imageRef, imageBlob);
       console.log("upload successed")
-      setImageLocalUri('');
+      
+
+      setImageLocalUri('')
+
+      // return 
+      console.log(uploadResult.metadata.fullPath)
+      writeImageLinkToUser(uploadResult.metadata.fullPath)
     } catch (error) {
       console.log(error)
     }
 
   }
+
+
+function writeImageLinkToUser(storagePath){
+  editImageLinkInDB(auth.currentUser.uid,{imageUri:storagePath},)
+
+ 
+}
+
 
   return (
     <SafeAreaView>

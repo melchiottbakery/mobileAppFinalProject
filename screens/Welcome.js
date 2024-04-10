@@ -9,7 +9,7 @@ import { auth } from '../firebase-files/FirebaseSetup';
 
 
 export default function Welcome({route}) {
-  console.log(route)
+  // console.log(route)
 
   // const audioUrl= "https://dict.youdao.com/dictvoice?le=jap&type3&audio=%27%E5%A4%A9%E5%AE%89%E9%96%80"
 

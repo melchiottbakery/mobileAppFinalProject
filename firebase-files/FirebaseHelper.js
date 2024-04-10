@@ -78,6 +78,16 @@ export async function editInDB(id, data) {
     }
   }
 
+  export async function editImageLinkInDB(userId, data) {
+    try {
+      await setDoc(doc(database, "users",userId,), data, { merge: true });
+      console.log("link the picture", );
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+
 
 
   export async function setNewUserDocToDB(data, col, uid) {
