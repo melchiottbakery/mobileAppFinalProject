@@ -27,6 +27,19 @@ import { doc, deleteDoc,  } from "firebase/firestore";
     }
   }
 
+  export async function writeNewWordToUserDB(data,userId) {
+    try {
+      if(data.translationMeaning){
+      console.log('123',data.translationMeaning)
+    // const docRef = await addDoc(collection(database, "usertest"), data);
+    await setDoc(doc(database, "users",userId,'wordlist', data.nativeWord), data);
+      // console.log("Document ID is: ", docRef.id);
+      console.log("the new data is",data)}
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
 
 
   // try {

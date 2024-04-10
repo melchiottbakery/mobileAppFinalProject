@@ -3,10 +3,11 @@ import { SafeAreaView } from 'react-native'
 import { Pressable } from "react-native";
 import React, { useEffect, useState } from 'react'
 
+import { auth } from '../firebase-files/FirebaseSetup';
 
 import { collection, onSnapshot } from "firebase/firestore";
 import { database } from "../firebase-files/FirebaseSetup"
-import { writeToDB } from "../firebase-files/FirebaseHelper";
+import { writeToDB,writeNewWordToUserDB } from "../firebase-files/FirebaseHelper";
 
 
 export default function WordList({route}) {
@@ -14,6 +15,7 @@ export default function WordList({route}) {
   // console.log("the item is ",route)
   const worldBookName = route.params.item.name
   const worldBookid = route.params.item.id
+  const userId=auth.currentUser.uid
 
   // console.log(route.params.item.name)
   const [library, setlibrary] = useState([]);
@@ -48,7 +50,8 @@ export default function WordList({route}) {
 
     // setNewWord([...word, newWord]);
     // console.log(word)
-    writeToDB(newWord);
+    // writeToDB(newWord);
+    writeNewWordToUserDB(newWord,userId)
 
   }
 
