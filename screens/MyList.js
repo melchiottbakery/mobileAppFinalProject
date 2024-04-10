@@ -39,7 +39,7 @@ export default function MyList() {
   }, []);
 
   function onPressFunction({item}){
-    console.log(item)
+    // console.log(item)
 
     const rememberWord = {
       translationMeaning: item.translationMeaning,
@@ -79,7 +79,7 @@ export default function MyList() {
 
 
   function onForgetFunction({item}){
-    console.log(item)
+    // console.log(item)
 
     const forgetWord = {
       // translationMeaning: item.translationMeaning,
