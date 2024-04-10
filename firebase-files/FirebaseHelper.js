@@ -56,6 +56,16 @@ export async function editInDB(id, data) {
   }
 
 
+  export async function editRememberInDB(wordId,userId, data) {
+    try {
+      await setDoc(doc(database, "users",userId,"wordlist", wordId), data, { merge: true });
+      console.log("Edit confirmed, the id is ", wordId);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+
 
   export async function setNewUserDocToDB(data, col, uid) {
     // the doc ID is user's uid

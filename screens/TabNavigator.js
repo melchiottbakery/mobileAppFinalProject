@@ -7,7 +7,8 @@ import MyList from "./MyList";
 import Welcome from "./Welcome";
 
 const Tab = createBottomTabNavigator();
-
+import { getProfile } from "../firebase-files/FirebaseHelper";
+import { auth } from '../firebase-files/FirebaseSetup';
 
 
 // const [jsonUrl, setJsonUrl]= useState('');
@@ -57,7 +58,6 @@ export default function TabNavigator() {
    
   };
   "https://jsonplaceholder.typicode.com/users"
-
 
 
 

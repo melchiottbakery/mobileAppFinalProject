@@ -7,14 +7,18 @@ import { useNavigation } from '@react-navigation/native';
 
 import { collection, onSnapshot } from "firebase/firestore"
 import { database } from "../firebase-files/FirebaseSetup"
-import { deleteFromDB, editInDB } from '../firebase-files/FirebaseHelper';
+import { deleteFromDB, editInDB, editRememberInDB } from '../firebase-files/FirebaseHelper';
+
+import { auth } from '../firebase-files/FirebaseSetup';
 
 export default function MyList() {
 
+  const userId=auth.currentUser.uid
   const [library, setlibrary] = useState([]);
 
   useEffect(() => {
-    onSnapshot(collection(database, "usertest"), (querySnapshot) => {
+    //need to fix if there is as the new user registeration, there is no collection called wordlist
+    onSnapshot(collection(database, "users",auth.currentUser.uid,'wordlist'), (querySnapshot) => {
       let newArray = [];
       if (querySnapshot) {
         querySnapshot.forEach((doc) => {
@@ -33,8 +37,8 @@ export default function MyList() {
       nativeWord: item.nativeWord,
       remember: true,
   };
-
-  editInDB(item.id, rememberWord);
+  editRememberInDB(item.id,userId,rememberWord)
+  // editInDB(item.id, rememberWord);
   }
 
   function onDeleteFunction({item}) {
@@ -69,13 +73,14 @@ export default function MyList() {
     console.log(item)
 
     const forgetWord = {
-      translationMeaning: item.translationMeaning,
-      nativeWord: item.nativeWord,
+      // translationMeaning: item.translationMeaning,
+      // nativeWord: item.nativeWord,
       
       remember: false,
   };
+  editRememberInDB(item.id,userId,forgetWord)
 
-  editInDB(item.id, forgetWord);
+  // editInDB(item.id, forgetWord);
   }
 
   const renderItem = ({ item }) => (
@@ -86,6 +91,7 @@ export default function MyList() {
       <Text>nativeword: {item.nativeWord}</Text>
       <Text>meaning: {item.translationMeaning}</Text>
       <Text>remember: {String(item.remember)}</Text>
+
       {item.remember === false && ( // Check if item.remember is false
     <Button title=" MARK AS REMEBERED" onPress={() => onPressFunction({item})} />
     

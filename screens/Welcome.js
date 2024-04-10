@@ -1,12 +1,15 @@
 import { Button, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from "react";
 // import Sound from 'react-native-sound';
 // import { Platform } from 'react-native';
 
 import { Audio, Video } from 'expo-av';
+import { getProfile } from "../firebase-files/FirebaseHelper";
+import { auth } from '../firebase-files/FirebaseSetup';
 
 
-export default function Welcome() {
+export default function Welcome({route}) {
+  console.log(route)
 
   // const audioUrl= "https://dict.youdao.com/dictvoice?le=jap&type3&audio=%27%E5%A4%A9%E5%AE%89%E9%96%80"
 
@@ -46,6 +49,9 @@ export default function Welcome() {
   function playsound(){
       console.log('playsound')
   }
+
+
+
   return (
     <View>
       <Text>This is the Welcome screen</Text>
