@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import InputComponent from "../component/InputComponent";
 import { auth } from '../firebase-files/FirebaseSetup';
+import { onAuthStateChanged, signOut } from "firebase/auth";
+
 
 import * as ImagePicker from 'expo-image-picker';
 
@@ -61,13 +63,23 @@ export default function Profile({ route, navigation }) {
   }, []);
 
   //add Alert for the Cancel button
-  function handleCancel() {
+  function logoutHandler() {
     Alert.alert("Cancel", "Are you going back to Login?", [
       {
         text: "No",
         onPress: () => console.log("No Pressed"),
       },
-      { text: "Yes", onPress: () => navigation.navigate("Login") },
+      { text: "Yes", onPress: () => 
+      
+      {
+        try {
+          signOut(auth)
+          navigation.navigate("Login")
+        } catch (error) {
+          console.log(error)
+        }
+      }
+       },
     ]);
   };
 
@@ -142,7 +154,7 @@ export default function Profile({ route, navigation }) {
       <Button
         //a button cancel and go back to the Login screen
         title="LOG OUT"
-        onPress={handleCancel}
+        onPress={logoutHandler}
       />
       </View>
     </SafeAreaView>

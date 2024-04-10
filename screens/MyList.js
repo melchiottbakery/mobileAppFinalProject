@@ -18,15 +18,24 @@ export default function MyList() {
 
   useEffect(() => {
     //need to fix if there is as the new user registeration, there is no collection called wordlist
-    onSnapshot(collection(database, "users",auth.currentUser.uid,'wordlist'), (querySnapshot) => {
-      let newArray = [];
-      if (querySnapshot) {
-        querySnapshot.forEach((doc) => {
-          newArray.push({ ...doc.data(), id: doc.id });
-        });
-      };
-      setlibrary(newArray);
-    });
+
+    try {
+      onSnapshot(collection(database, "users",auth.currentUser.uid,'wordlist'), (querySnapshot) => {
+        let newArray = [];
+        if (querySnapshot) {
+          querySnapshot.forEach((doc) => {
+            newArray.push({ ...doc.data(), id: doc.id });
+          });
+        };
+        setlibrary(newArray);
+      });
+  
+    } catch (error) {
+      console.log(error)
+    }
+ 
+
+
   }, []);
 
   function onPressFunction({item}){
