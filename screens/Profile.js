@@ -5,6 +5,7 @@ import InputComponent from "../component/InputComponent";
 import { auth,storage } from '../firebase-files/FirebaseSetup';
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL } from "firebase/storage";
 
 
 
@@ -34,25 +35,17 @@ export default function Profile({ route, navigation }) {
 
 
   async function verifyCameraPermission(){
-
     if(status.granted){
       return true;
     }
-
     try {
       const permissonResponse = await requestPermission();
       return permissonResponse.granted;
 
     } catch (error) {
-
-      console.log(error);
-      
+      console.log(error);   
     }
-
   }
-
-
-
 
   useEffect(() => {
     async function getDataFromDB() {
@@ -60,9 +53,30 @@ export default function Profile({ route, navigation }) {
       // console.log(data)
       setNickname(data.nickname)
       setEmail(data.email)
+      downloadImageFromDatabase(data)
     }
     getDataFromDB();
   }, []);
+
+  const [imageDatabasetaUri, setImageDatabasetaUri] = useState("");
+
+  async function downloadImageFromDatabase(data){
+    try {
+      downloadImageUri = data.imageUri
+      const imageRef = ref(storage, downloadImageUri);
+      const imageDownloadUri= await getDownloadURL(imageRef);
+      console.log("downloaded" +imageDownloadUri)
+      setImageDatabasetaUri(imageDownloadUri)
+      
+
+
+      // setDownloadImage(data.imageUri)
+    } catch (error) {
+      
+    }
+  }
+
+
 
   //add Alert for the Cancel button
   function logoutHandler() {
@@ -158,6 +172,13 @@ function writeImageLinkToUser(storagePath){
         // 如果网络图片存在，则加载网络图片
         <Image source={{ uri: imageLocalUri }} style={{ width: 100, height: 100 }} />
       )}
+      {
+        imageDatabasetaUri &&      <Image style = {styles.image} source= {{uri:imageDatabasetaUri}}/>
+      }
+      
+      </View>
+      <View>
+      
       </View>
 
       
@@ -169,10 +190,9 @@ function writeImageLinkToUser(storagePath){
 }
 
       <InputComponent
-        //here is a InputComponent can show the name from Registration nickname, but user cannot pressed or chage(until now)
         label="Nickname"
         value={nickname}
-        editable={false}
+        onChangeText={setNickname}
       />
 
       <InputComponent
