@@ -7,9 +7,10 @@ import { useNavigation } from '@react-navigation/native';
 
 import { collection, onSnapshot } from "firebase/firestore"
 import { database } from "../firebase-files/FirebaseSetup"
-import { deleteFromDB, editInDB, editRememberInDB } from '../firebase-files/FirebaseHelper';
+import { deleteFromDB, deleteWordFromUserDB, editInDB, editRememberInDB } from '../firebase-files/FirebaseHelper';
 
 import { auth } from '../firebase-files/FirebaseSetup';
+import AudioManager from './AudioManager';
 
 export default function MyList() {
 
@@ -68,8 +69,9 @@ export default function MyList() {
 
     function deleteAction() {
         try {
-            deleteFromDB(item.id);
+            // deleteFromDB(item.id);
             // navigation.goBack();
+            deleteWordFromUserDB(item.id,userId)
         }
         catch (error) {
             Alert.alert('Error', error);
@@ -100,6 +102,7 @@ export default function MyList() {
       <Text>nativeword: {item.nativeWord}</Text>
       <Text>meaning: {item.translationMeaning}</Text>
       <Text>remember: {String(item.remember)}</Text>
+      <AudioManager wordToSound={item.id}></AudioManager>
 
       {item.remember === false && ( // Check if item.remember is false
     <Button title=" MARK AS REMEBERED" onPress={() => onPressFunction({item})} />
@@ -121,15 +124,23 @@ export default function MyList() {
     </Pressable>
   );
 
+  console.log(library)
 
   return (
     <View>
     <Text>This is the my screen</Text>
-    <FlatList
+    {/* {library && <Text>please add new words</Text>} */}
+    {library.length === 0 ? (
+  <Text>There is no new word for you, try to add some from library</Text>
+) : (
+  // Render something else when the library is not empty
+  <FlatList
     data={library}
     renderItem={renderItem}
     keyExtractor={(item, index) => index.toString()}
   />
+)}
+    
   </View>
   )
 }

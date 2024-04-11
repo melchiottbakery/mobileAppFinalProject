@@ -99,7 +99,14 @@ export async function editInDB(id, data) {
     }
   }
 
-
+  export async function deleteWordFromUserDB(wordId,userId) {
+    try {
+      await deleteDoc(doc(database, "users",userId,'wordlist', wordId));
+      console.log("Delete confirmed, the id is ", wordId);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
 
   export async function getProfile(col, docId) {
