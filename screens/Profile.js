@@ -116,12 +116,15 @@ export default function Profile({ route, navigation }) {
       // console.log(useCamera)
       // console.log(useCamera.assets[0].uri)
       setImageLocalUri(useCamera.assets[0].uri)
+      setOpenSaveButton(true)
       // uploadImageFromLocal(imageLocalUri)
     } catch (error) {
       console.log(error)
       
     }
   }
+
+  const[openSaveButton, setOpenSaveButton]= useState(false)
 
 
 
@@ -141,7 +144,8 @@ export default function Profile({ route, navigation }) {
       console.log("upload successed")
       
 
-      setImageLocalUri('')
+      // setImageLocalUri('')
+      setOpenSaveButton(false)
 
       // return 
       console.log(uploadResult.metadata.fullPath)
@@ -167,23 +171,43 @@ function writeImageLinkToUser(storagePath){
       {/*  <Text>Add a pic as a placeholder</Text> */}
       <Pressable onPress={cameraFunction}>
       <View style={styles.imageContainer}>
-        <Image source={require("../assets/myImage.png")} style={styles.image} />
+        {/* <Image source={require("../assets/imageUpload.jpeg")} style={styles.image} />
         {imageLocalUri && (
-        // 如果网络图片存在，则加载网络图片
         <Image source={{ uri: imageLocalUri }} style={{ width: 100, height: 100 }} />
       )}
       {
-        imageDatabasetaUri &&      <Image style = {styles.image} source= {{uri:imageDatabasetaUri}}/>
+        imageDatabasetaUri &&   <Image style = {styles.image} source= {{uri:imageDatabasetaUri}}/>
+      } */}
+      {imageLocalUri ?
+      <Image source={{ uri: imageLocalUri }} style={{ width: 100, height: 100 }} />:
+      <>
+      {imageDatabasetaUri ? 
+  <Image style={styles.image} source={{ uri: imageDatabasetaUri }} />
+  : <Image source={require("../assets/imageUpload.jpeg")} style={styles.image} />}
+      </>
       }
+
+{/* {imageDatabasetaUri ? 
+  <Image style={styles.image} source={{ uri: imageDatabasetaUri }} />
+  : <Image source={require("../assets/imageUpload.jpeg")} style={styles.image} />} */}
+
+{/* {!imageLocalUri && (
+      <Image source={require("../assets/imageUpload.jpeg")} style={styles.image} />
+    )}
+    {imageLocalUri && (
+      <Image source={{ uri: imageLocalUri }} style={{ width: 100, height: 100 }} />
+    )}
+    {imageDatabasetaUri && (
+      <Image style={styles.image} source={{ uri: imageDatabasetaUri }} />
+    )} */}
+
       
       </View>
-      <View>
-      
-      </View>
+     
 
       
       </Pressable>
-      {imageLocalUri &&
+      {openSaveButton &&
 
 (      <Button title="save image changes" onPress={saveImageChange}></Button>
 )      

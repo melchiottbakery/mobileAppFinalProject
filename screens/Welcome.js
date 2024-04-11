@@ -13,6 +13,8 @@ export default function Welcome() {
   return (
     <View>
       <Text>This is the Welcome screen</Text>
+      <Text>map will on this screen</Text>
+
     </View>
   )
 }
