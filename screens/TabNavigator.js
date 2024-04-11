@@ -42,6 +42,10 @@ export default function TabNavigator() {
 
 
   function showAlertWithTextInput(){
+    // Alert.alert('Email or Password is not correct ')
+    // andriod cannot 
+    Alert.prompt();
+
     Alert.prompt(
       'Add a dictionary to the library',
       'Please enter url of json file:',
@@ -57,7 +61,7 @@ export default function TabNavigator() {
       );
    
   };
-  "https://jsonplaceholder.typicode.com/users"
+  // "https://jsonplaceholder.typicode.com/users"
 
 
 

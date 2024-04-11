@@ -13,7 +13,6 @@ export default function Welcome() {
   return (
     <View>
       <Text>This is the Welcome screen</Text>
-      <Button title="sound test" onPress={playsoundtest}></Button>
     </View>
   )
 }

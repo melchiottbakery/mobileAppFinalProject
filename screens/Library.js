@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList, Pressable } from 'react-native'
+import { StyleSheet, Text, View, FlatList, Pressable, Button } from 'react-native'
 import { SafeAreaView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
@@ -6,6 +6,8 @@ import CountryFlag from "react-native-country-flag";
 
 import { collection, onSnapshot } from "firebase/firestore"
 import { database } from "../firebase-files/FirebaseSetup"
+import InputComponent from '../component/InputComponent';
+import { writeNewWordBookToDB, writeWholeWordBookToDB } from '../firebase-files/FirebaseHelper';
 
 export default function Library() {
   const navigation = useNavigation();
@@ -51,14 +53,77 @@ export default function Library() {
   //     .then(response => response.json())
   //     .then(json => console.log(json))
 
+  // const [jsonLink, setJsonLink]=useState("https://jsonplaceholder.typicode.com/users")
+  const [jsonLink, setJsonLink]=useState(   "https://raw.githubusercontent.com/melchiottbakery/testtesttest/main/db.json")
+  function loadJsonLinkHandler(){
+    console.log('jsonLink is'+ jsonLink)
+    fetchJsonLink(jsonLink)
+  }
+  "https://raw.githubusercontent.com/melchiottbakery/testtesttest/main/db.json"
+  'https://my-json-server.typicode.com/melchiottbakery/testtesttest/db.json' 
+
+
+  async function fetchJsonLink(inputText) {
+    try { 
+      const response = await fetch(
+        inputText
+    );
+    if (!response.ok) {
+      throw new Error("data wasn't there!"); 
+    }
+    const data = await response.json()
+    console.log(data)
+    let newBookNativeLanguage= data[0].nativeLanguage
+    let newBookNumber= data[0].number
+    let newBookTitle= data[0].title
+    let newBookTranslationLanguage = data[0].translationLanguage
+    let newBookWordlist= data[0].wordlist
+
+    console.log(newBookWordlist)
+
+    ///can use later 
+    // writeNewWordBookToDB(
+    //   {nativeLanguage:newBookNativeLanguage,
+    //     number:newBookNumber,
+    //     title:newBookTitle,
+    //     translationLanguage:newBookTranslationLanguage
+    //   })
+
+
+    writeWholeWordBookToDB({nativeLanguage:newBookNativeLanguage,
+      number:newBookNumber,
+      title:newBookTitle,
+      translationLanguage:newBookTranslationLanguage
+    },newBookWordlist)
+
+
+    } 
+    catch (error) {
+      console.log("fetch users ", error);
+    }   
+  }
+
+
+
   return (
     <View>
+      <View>
+        <Text>This is the Library screen</Text>
+        <InputComponent
+          label="link"
+          value={jsonLink}
+          onChangeText={setJsonLink}
+        ></InputComponent>
+        <Button title='load the book' onPress={loadJsonLinkHandler}></Button>
+      </View>
+   
       <Text>This is the Library screen</Text>
       <FlatList
       data={library}
       renderItem={renderItem}
       keyExtractor={(item, index) => index.toString()}
     />
+    
     </View>
   )
 }

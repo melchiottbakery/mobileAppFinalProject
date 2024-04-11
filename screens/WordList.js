@@ -2,26 +2,29 @@ import { StyleSheet, Text, View, FlatList,Button } from 'react-native'
 import { SafeAreaView } from 'react-native'
 import { Pressable } from "react-native";
 import React, { useEffect, useState } from 'react'
+import { useNavigation } from '@react-navigation/native';
 
 import { auth } from '../firebase-files/FirebaseSetup';
 
 import { collection, onSnapshot } from "firebase/firestore";
 import { database } from "../firebase-files/FirebaseSetup"
-import { writeToDB,writeNewWordToUserDB } from "../firebase-files/FirebaseHelper";
+import { writeToDB,writeNewWordToUserDB,deleteBookFromLibraryDB } from "../firebase-files/FirebaseHelper";
 
 
 export default function WordList({route}) {
+  const navigation = useNavigation();
 
   // console.log("the item is ",route)
   const worldBookName = route.params.item.name
-  const worldBookid = route.params.item.id
+  const wordBookid = route.params.item.id
+  
   const userId=auth.currentUser.uid
 
   // console.log(route.params.item.name)
   const [library, setlibrary] = useState([]);
 
   useEffect(() => {
-    onSnapshot(collection(database, "library", worldBookid, "wordlist"), (querySnapshot) => {
+    onSnapshot(collection(database, "library", wordBookid, "wordlist"), (querySnapshot) => {
       let newArray = [];
       if (querySnapshot) {
         querySnapshot.forEach((doc) => {
@@ -76,9 +79,17 @@ export default function WordList({route}) {
   //     .then(response => response.json())
   //     .then(json => console.log(json))
 
+  function deleteHandler(){
+    console.log("deletbuttonpress")
+    console.log(wordBookid)
+    deleteBookFromLibraryDB(wordBookid)
+    navigation.goBack()
+
+  }
   return (
     <View>
       <Text>This is the wordlist screen</Text>
+      <Button title="delete the whole book" onPress={deleteHandler}></Button>
       <FlatList
       data={library}
       renderItem={renderItem}

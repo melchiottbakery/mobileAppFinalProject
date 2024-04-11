@@ -93,7 +93,7 @@ export async function editInDB(id, data) {
   export async function setNewUserDocToDB(data, col, uid) {
     // the doc ID is user's uid
     try {
-      setDoc(doc(database, col, uid), data, { merge: true });
+      await setDoc(doc(database, col, uid), data, { merge: true });
     } catch (err) {
       console.log(err);
     }
@@ -103,6 +103,15 @@ export async function editInDB(id, data) {
     try {
       await deleteDoc(doc(database, "users",userId,'wordlist', wordId));
       console.log("Delete confirmed, the id is ", wordId);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  export async function deleteBookFromLibraryDB(wordBookid) {
+    try {
+      await deleteDoc(doc(database, "library",wordBookid));
+      console.log("Delete confirmed, the id is ", wordBookid);
     } catch (err) {
       console.log(err);
     }
@@ -119,3 +128,51 @@ export async function editInDB(id, data) {
       console.log(err);
     }
   }
+
+
+
+
+export async function writeNewWordBookToDB(data) {
+  try {    
+    const docRef= await addDoc(collection(database, 'library' ), data);
+    // return docRef.id
+    console.log("writenewlibaray successful")
+
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function writeWholeWordBookToDB(coverData,wordData) {
+  try {    
+    const docRef= await addDoc(collection(database, 'library' ), coverData);
+    
+    Object.keys(wordData).forEach(async key => {
+      const { nativeWord, translationMeaning } = wordData[key];
+      // console.log(newBookWordlist[key])
+      await setDoc(doc(database, "library",docRef.id,'wordlist',key), 
+      {nativeWord:nativeWord, translationMeaning:translationMeaning}, { merge: true });
+      // console.log(`Key: ${key}, Native Word: ${nativeWord}, Translation Meaning: ${translationMeaning}`);
+    });
+
+    // await setDoc(doc(database, "users",userId,), data, { merge: true });
+
+    // docRef.id
+    console.log("writenewlibaray successful， the doc id is",docRef.id)
+
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function writeNewWordToWordBookDB(id, data) {
+  try {
+    
+      await addDoc(collection(database, 'library',id,'wordlist' ), data);
+      await setDoc(doc(database, "users",userId,), data, { merge: true });
+    
+      console.log("writenewlibaray successful")
+  } catch (err) {
+    console.log(err);
+  }
+}
