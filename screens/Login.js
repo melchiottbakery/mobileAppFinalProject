@@ -1,8 +1,11 @@
 import { Button, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import InputComponent from "../component/InputComponent";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth, database } from "../firebase-files/FirebaseSetup";
 
 export default function Login({ navigation }) {
+  console.log(database);
   const [email, setEmail] = useState("111@qq.com");
   const [password, setPassword] = useState("12345");
   const [error, setError] = useState("");
@@ -25,15 +28,21 @@ export default function Login({ navigation }) {
     setError("");
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     // the function on when Login button pressed
-    if (validateEmail()) {
-      setError("");
-      //console.log(email);
-      //console.log(password);
-      navigation.navigate("User");
-    } else {
-      setError("Please enter a valid email");
+    try {
+      if (validateEmail()) {
+        setError("");
+        //console.log(email);
+        //console.log(password);
+        const user = await signInWithEmailAndPassword(auth, email, password);
+        console.log(user);
+        navigation.navigate("User");
+      } else {
+        setError("Please enter a valid email");
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -41,7 +50,7 @@ export default function Login({ navigation }) {
     // the function on when Register button pressed
     //console.log(email);
     //console.log(password);
-    navigation.navigate("Registration");
+    navigation.replace("Registration");
   };
 
   return (

@@ -2,9 +2,9 @@ import { StyleSheet, Text, View, Image, Button, Alert } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import InputComponent from "../component/InputComponent";
+import { auth } from "../firebase-files/FirebaseSetup";
 
-
-export default function Profile({ route, navigation }) {
+export default function Profile({ navigation }) {
   // You can give me some const and useState for the name, the email and the password
   // const {nickname, email, password } = route.params;
 
@@ -36,18 +36,18 @@ export default function Profile({ route, navigation }) {
       <InputComponent
         //here is a InputComponent can show the name from Registration nickname, but user cannot pressed or chage(until now)
         label="Nickname"
-        value={nickname}
+        value={auth.currentUser.uid}
         editable={false}
       />
 
       <InputComponent
         //here is a InputComponent can show the email, but user cannot pressed or
         label="Email"
-        value={email}
+        value={auth.currentUser.email}
         editable={false}
       />
 
-      <InputComponent
+      {/* <InputComponent
         //here is a InputComponent can show the password, but user can pressed. it
         //show from stars to characters until the user presses.
         label="Password"
@@ -57,7 +57,7 @@ export default function Profile({ route, navigation }) {
         onPressIn={() => {
           setSecureTextEntry(!secureTextEntry);
         }}
-      />
+      /> */}
 
       {/* // if you can add a alert for this one? */}
       <View style={styles.buttonContainer}>

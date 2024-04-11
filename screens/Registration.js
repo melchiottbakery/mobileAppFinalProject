@@ -1,8 +1,10 @@
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View, Button, Alert } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import InputComponent from "../component/InputComponent";
 import Checkbox from "expo-checkbox";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase-files/FirebaseSetup";
 
 export default function Registration({ navigation }) {
   // const [nickname, setNickname] = useState("");
@@ -45,7 +47,7 @@ export default function Registration({ navigation }) {
     setPassword("");
     setConfirmedPassword("");
     setIsAdmin(false);
-    navigation.navigate("Login");
+    navigation.replace("Login");
   };
 
   const validateForm = () => {
@@ -76,7 +78,7 @@ export default function Registration({ navigation }) {
   // the 'please enter a valid email is still here'
   // the better way to do that is once you are using handleSet, clear all the status first.
 
-  const handleSet = () => {
+  const handleSet = async () => {
     setEmailError("");
     setConfirmedEmailError("");
     setConfirmedPasswordError("");
@@ -103,6 +105,21 @@ export default function Registration({ navigation }) {
       setConfirmedEmailError("Emails do not match");
     } else if (!validateConfirmedPassword()) {
       setConfirmedPasswordError("Passwords do not match");
+    }
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      console.log(userCredential);
+    } catch (error) {
+      //console.log(error.code);
+      if (error.code === "auth/email-already-in-use") {
+        Alert.alert("this email is already signed up");
+      } else if (error.code === "auth/weak-password") {
+        Alert.alert("your password is too weak");
+      }
     }
   };
 
