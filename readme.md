@@ -2,8 +2,13 @@ Group Member
 SUN,YUMING
 LIAO,TIANZHI
 
-the screenshots will be added soon
+the screenshots have been added.
 
+![screenshoot of library](/screenshotFolder/library.PNG)
+
+![screenshoot of mylist](/screenshotFolder/mylist.PNG)
+
+![screenshoot of profile](/screenshotFolder/profile.PNG)
 ---
 
 you can use the api for application, but it won't be a dictionary called
