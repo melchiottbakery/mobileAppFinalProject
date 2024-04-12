@@ -1,10 +1,12 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Button } from "react-native";
 import React from "react";
-import MapView, { Marker }from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
+//import getLocationHandler from "../component/LocationManager";
 
 export default function Map() {
   return (
     <View style={styles.container}>
+      {/* <Button title="Search nearby language schools" onPress={getLocationHandler} /> */}
       <MapView
         style={styles.map}
         initialRegion={{
@@ -13,6 +15,7 @@ export default function Map() {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
+        provider="google"
       >
         <Marker coordinate={{ latitude: 37.78825, longitude: -122.4324 }} />
       </MapView>

@@ -4,6 +4,7 @@ import * as Location from "expo-location";
 import { mapsApiKey } from "@env";
 
 export default function LocationManager() {
+  
   const [status, requestPermission] = Location.useForegroundPermissions();
   const [location, setLocation] = useState(null);
   async function verifyPermission() {

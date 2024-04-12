@@ -1,3 +1,11 @@
+for iteration 2: build draft version of get user location and interactive map.
+
+screenshots:
+![screenshot1](assets/location.png)
+![screenshot2](assets/inter-map.png)
+
+
+
 Group Member
 SUN,YUMING
 LIAO,TIANZHI
