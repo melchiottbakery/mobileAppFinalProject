@@ -1,4 +1,4 @@
-import { StyleSheet, View, Button, Image} from "react-native";
+import { StyleSheet, View, Button, Image } from "react-native";
 import React, { useState } from "react";
 import * as Location from "expo-location";
 import { mapsApiKey } from "@env";
@@ -20,31 +20,31 @@ export default function LocationManager() {
 
   async function getLocationHandler() {
     try {
-        const havePermission = await verifyPermission();
-        if (!havePermission) {
-          Alert.alert("You need to give permission");
-          return;
-        }
-        const receivedLocation = await Location.getCurrentPositionAsync();
-        setLocation({
-          latitude: receivedLocation.coords.latitude,
-          longitude: receivedLocation.coords.longitude,
-        });
-      } catch (err) {
-        console.log(err);
+      const havePermission = await verifyPermission();
+      if (!havePermission) {
+        Alert.alert("You need to give permission");
+        return;
       }
+      const receivedLocation = await Location.getCurrentPositionAsync();
+      setLocation({
+        latitude: receivedLocation.coords.latitude,
+        longitude: receivedLocation.coords.longitude,
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (
     <View>
       <Button title="Get Location" onPress={getLocationHandler} />
       {location && (
-        <Image 
+        <Image
           style={styles.mapPreview}
-          source= {{
+          source={{
             uri: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude},${location.longitude}&zoom=14&size=400x200&maptype=roadmap&markers=color:red%7Clabel:L%7C${location.latitude},${location.longitude}&key=${mapsApiKey}`,
           }}
-          />
+        />
       )}
     </View>
   );

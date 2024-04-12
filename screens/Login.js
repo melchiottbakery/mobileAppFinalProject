@@ -6,8 +6,8 @@ import { auth, database } from "../firebase-files/FirebaseSetup";
 
 export default function Login({ navigation }) {
   console.log(database);
-  const [email, setEmail] = useState("111@qq.com");
-  const [password, setPassword] = useState("12345");
+  const [email, setEmail] = useState("www@qq.com");
+  const [password, setPassword] = useState("123456");
   const [error, setError] = useState("");
 
   const validateEmail = () => {
