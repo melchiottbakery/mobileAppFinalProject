@@ -2,9 +2,17 @@ Group Member
 SUN,YUMING
 LIAO,TIANZHI
 
-the screenshots are in the screenshots.pdf
+the screenshots have been added.
+
+![screenshoot of library](/screenshotFolder/library.PNG)
+
+![screenshoot of mylist](/screenshotFolder/mylist.PNG)
+
+![screenshoot of profile](/screenshotFolder/profile.PNG)
 ---
 
+you can use the api for application, but it won't be a dictionary called
+"JLPT-N5"
 .env
 
   apiKey= "AIzaSyCM9oLreQ76KUcldfw9GvEjNglgEjeb5fM" 
@@ -19,19 +27,16 @@ the screenshots are in the screenshots.pdf
 
 Current State of Application 
 
-We have already developed the app's overall structure and implemented three stack screens, 
-including Login, Registration and User. Under the User screen, we created the basic structure of 
-four-tab screens: Welcome, Profile, library, MyList.  We also finished the input components as it
-will be reused frequently in our app.  For the database, we already finished the firebase setup 
-and user authentication. 
-Now we are working on the three main data collections. 
+**For the contribution for each member, please see the commmits on the tag of iteration 2.**
 
-LIAO worked on building most of the screens, and the code was reviewed at first 
-and jointly improved by Sun.
-Right now, he is doing the log in screen.
+Right now, I have done and am working on the following functions.
 
-SUN worked on the construction of databases.
-Right now, he is doing the CRUD and fixing the bug.
+it can create the new user, 
+user can add the word from library to its list of words.
+user can use camera to upload a photo in the profile.
+user can add the wordbook from link to the library.
+user can play the sound of word from the mylist.
+
 
 -------
 
@@ -54,11 +59,19 @@ id: equal to the nativeWord "戦車"
 nativeWord: "戦車"
 translationMeaning: 'tank'
 
-The third collection is called userList
 
-userList will be stored all of the word added from wordBook
 
-document in the userList have the following data model
+for users storage.
+
+there is from the users collection to the document with the id of the uid from auth of each user.
+there 
+
+email:
+imageUri
+isAdmin:
+nickname:
+
+and for each collection there is a sub-collection called wordlist based on the following document:
 
 id: equal to the nativeWord "戦車"
 nativeWord: "戦車"
@@ -79,24 +92,23 @@ At the same time, a collection (C) of personal word lists will be created for ea
 CRUD
 
 C
-Add the entire vocabulary book to the library collection via json.
- (Currently under study and expected to be implemented)
-Add the entire word book from the library (collection B) 
-to the user's word list (collection C). (not implemented yet)
-Add the individual word from the library (collection B) 
-to the user's word list (collection C). (BUG is being fixed, for the add button the first click is useless, function is normal)
-
+(Completed) Add the entire vocabulary book to the library collection via json.
+ ()
+(Completed) Add the entire word book from the library (collection B) 
+to the user's word list (collection C). 
+(Completed) Add the individual word from the library (collection B) 
+to the user's word list (collection C). 
 R
-(Complete) Read collection A.
-(Complete) Read collection B.
-(Complete) Read collection C.
+(Completed) Read collection A.
+(Completed) Read collection B.
+(Completed) Read collection C.
 
 U
-(Complete)Mark the word's status of remembered or not in Collection C. 
+(Completed)Mark the word's status of remembered or not in Collection C. 
 
 D
-Delete the entire word book from collectionA. (not implemented yet)
-(Complete)Delete words from collection C.
+(Completed)Delete the entire word book from collectionA. 
+(Completed)Delete words from collection C.
 
 
 
@@ -118,6 +130,7 @@ npx expo install expo-checkbox
 import { NavigationContainer, useNavigation } from '@react-navigation/native'; import { createNativeStackNavigator } from '@react-navigation/native-stack'; import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 
+npm i @react-native-async-storage/async-storage
 
 
 ---
@@ -130,3 +143,14 @@ for .env
 npm install -D react-native-dotenv
 
 you also need to change of the babel.config.js
+
+
+
+
+0409
+
+npx expo install expo-av
+
+npx expo install expo-image-picker
+
+npx expo install expo-location

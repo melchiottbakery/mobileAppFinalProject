@@ -1,47 +1,77 @@
-import { Button, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { Alert, Button, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import InputComponent from "../component/InputComponent";
 
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase-files/FirebaseSetup";
+
 export default function Login({ navigation }) {
-  const [email, setEmail] = useState("111@qq.com");
-  const [password, setPassword] = useState("12345");
+  const [email, setEmail] = useState("ww2w@qq.com");
+  const [password, setPassword] = useState("dongbeidaban");
   const [error, setError] = useState("");
 
-  const validateEmail = () => {
+  function validateEmail(){
     // Regular expression for email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  const validateForm = () => {
+  function validateForm(){
     // Check if email or password is empty
     return !email || !password;
   };
 
-  const handleReset = () => {
+  function handleReset(){
     // the function on when Reset button pressed
     setEmail("");
     setPassword("");
     setError("");
   };
 
-  const handleLogin = () => {
+  function handleLogin(){
     // the function on when Login button pressed
     if (validateEmail()) {
       setError("");
       //console.log(email);
       //console.log(password);
-      navigation.navigate("User");
+      userAuthHandler();
     } else {
       setError("Please enter a valid email");
     }
   };
 
-  const handleRegister = () => {
+
+  async function userAuthHandler(){
+    try {
+      const userCred=  await signInWithEmailAndPassword(auth, email,password);
+      console.log(userCred)
+      navigation.navigate("User");
+
+
+    } catch (error) {
+      console.log(error);
+        if(error.code =='auth/invalid-credential'){
+            Alert.alert('Email or Password is not correct ')
+        }
+      
+    }
+  }
+  
+  function handleRegister(){
     // the function on when Register button pressed
     //console.log(email);
     //console.log(password);
     navigation.navigate("Registration");
+  };
+
+
+
+  function visitorHandler(){
+    // the function on when Register button pressed
+    //console.log(email);
+    //console.log(password);
+    console.log("visitor mode pressed")
+    // navigation.navigate("User");
   };
 
   return (
@@ -86,6 +116,7 @@ export default function Login({ navigation }) {
         <Button title="Reset" onPress={handleReset} />
         <Button title="Login" onPress={handleLogin} disabled={validateForm()} />
         <Button title="Register" onPress={handleRegister} />
+        <Button title="visitor mode(TBC)" onPress={visitorHandler}/>
       </View>
     </SafeAreaView>
   );

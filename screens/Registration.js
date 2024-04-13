@@ -1,8 +1,12 @@
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View, Button, Alert } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import InputComponent from "../component/InputComponent";
 import Checkbox from "expo-checkbox";
+
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase-files/FirebaseSetup";
+import { setDocToDB } from "../firebase-files/FirebaseHelper";
 
 export default function Registration({ navigation }) {
   // const [nickname, setNickname] = useState("");
@@ -17,10 +21,10 @@ export default function Registration({ navigation }) {
 
   //for data test
   const [nickname, setNickname] = useState("nihao");
-  const [email, setEmail] = useState("www@qq.com");
-  const [confirmedEmail, setConfirmedEmail] = useState("www@qq.com");
-  const [password, setPassword] = useState("12345");
-  const [confirmedPassword, setConfirmedPassword] = useState("12345");
+  const [email, setEmail] = useState("ww2w@qq.com");
+  const [confirmedEmail, setConfirmedEmail] = useState("ww2w@qq.com");
+  const [password, setPassword] = useState("dongbeidaban");
+  const [confirmedPassword, setConfirmedPassword] = useState("dongbeidaban");
   const [emailError, setEmailError] = useState("");
   const [confirmedEmailError, setConfirmedEmailError] = useState("");
   const [confirmedPasswordError, setConfirmedPasswordError] = useState("");
@@ -31,14 +35,14 @@ export default function Registration({ navigation }) {
   // navigation.navigate("profile", {nickname: nickname, email: email, password: password});
 
   //to be changed
-  const [formData, setFormData] = useState({});
+  // const [formData, setFormData] = useState({});
 
   //to be changed
-  const handleChange = (key, value) => {
-    setFormData({ ...formData, [key]: value });
-  };
+  // const handleChange = (key, value) => {
+  //   setFormData({ ...formData, [key]: value });
+  // };
 
-  const handleCancel = () => {
+  function handleCancel() {
     setNickname("");
     setEmail("");
     setConfirmedEmail("");
@@ -48,52 +52,49 @@ export default function Registration({ navigation }) {
     navigation.navigate("Login");
   };
 
-  const validateForm = () => {
+  function validateForm(){
     // Check if all input box are empty
     return (
       !nickname || !email || !confirmedEmail || !password || !confirmedPassword
     );
   };
 
-  const validateEmail = () => {
+  function validateEmail(){
     // Regular expression for email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  const validateConfirmedEmail = () => {
+  function validateConfirmedEmail(){
     //check if email and confirmed email are the same
     return email === confirmedEmail;
   };
 
-  const validateConfirmedPassword = () => {
+  function validateConfirmedPassword(){
     //check if password and confirmed password are the same
     return password === confirmedPassword;
   };
 
-  //please check the status of "Please enter a valid email"
-  //there are some bugs if the email is in the right style but not match.
-  // the 'please enter a valid email is still here'
-  // the better way to do that is once you are using handleSet, clear all the status first.
-
-  const handleSet = () => {
+  function handleSet() {
     setEmailError("");
     setConfirmedEmailError("");
     setConfirmedPasswordError("");
     if (
+      
       validateEmail() &&
       validateConfirmedEmail() &&
       validateConfirmedPassword()
     ) {
       //to be changed
-      handleChange("nickname", nickname);
-      handleChange("email", email);
-      handleChange("password", password);
-      handleChange("isAdmin", isAdmin);
+      // handleChange("nickname", nickname);
+      // handleChange("email", email);
+      // handleChange("password", password);
+      // handleChange("isAdmin", isAdmin);
 
-      console.log(formData);
+      // console.log(formData);
+      createUserAuthHandler()
 
-      console.log([nickname, email, password, isAdmin]);
+      // console.log([nickname, email, password, isAdmin]);
       // Return a new array of the user's information
       // return
       // [nickname, email, password, isAdmin];
@@ -105,6 +106,24 @@ export default function Registration({ navigation }) {
       setConfirmedPasswordError("Passwords do not match");
     }
   };
+
+async function createUserAuthHandler(){
+  try {
+    const userCred = await createUserWithEmailAndPassword(auth,email,password);
+    // console.log(userCred)
+    // console.log(userCred._tokenResponse.localId)
+    setNewUserDocToDB({nickname:nickname, email:email,isAdmin:isAdmin},"users",userCred._tokenResponse.localId)
+
+  } catch (error) {
+    console.log(error.code)
+    if(error.code === "auth/weak-password"){
+      Alert.alert("Please use strong password.")     
+  }
+    if(error.code === "auth/email-already-in-use"){
+    Alert.alert("Please use another email address to register.")
+}
+  }
+}
 
   return (
     <SafeAreaView style={styles.container}>

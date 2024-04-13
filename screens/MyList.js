@@ -7,34 +7,48 @@ import { useNavigation } from '@react-navigation/native';
 
 import { collection, onSnapshot } from "firebase/firestore"
 import { database } from "../firebase-files/FirebaseSetup"
-import { deleteFromDB, editInDB } from '../firebase-files/FirebaseHelper';
+import { deleteFromDB, deleteWordFromUserDB, editInDB, editRememberInDB } from '../firebase-files/FirebaseHelper';
+
+import { auth } from '../firebase-files/FirebaseSetup';
+import AudioManager from './AudioManager';
 
 export default function MyList() {
 
+  const userId=auth.currentUser.uid
   const [library, setlibrary] = useState([]);
 
   useEffect(() => {
-    onSnapshot(collection(database, "usertest"), (querySnapshot) => {
-      let newArray = [];
-      if (querySnapshot) {
-        querySnapshot.forEach((doc) => {
-          newArray.push({ ...doc.data(), id: doc.id });
-        });
-      };
-      setlibrary(newArray);
-    });
+    //need to fix if there is as the new user registeration, there is no collection called wordlist
+
+    try {
+      onSnapshot(collection(database, "users",auth.currentUser.uid,'wordlist'), (querySnapshot) => {
+        let newArray = [];
+        if (querySnapshot) {
+          querySnapshot.forEach((doc) => {
+            newArray.push({ ...doc.data(), id: doc.id });
+          });
+        };
+        setlibrary(newArray);
+      });
+  
+    } catch (error) {
+      console.log(error)
+    }
+ 
+
+
   }, []);
 
   function onPressFunction({item}){
-    console.log(item)
+    // console.log(item)
 
     const rememberWord = {
       translationMeaning: item.translationMeaning,
       nativeWord: item.nativeWord,
       remember: true,
   };
-
-  editInDB(item.id, rememberWord);
+  editRememberInDB(item.id,userId,rememberWord)
+  // editInDB(item.id, rememberWord);
   }
 
   function onDeleteFunction({item}) {
@@ -55,8 +69,9 @@ export default function MyList() {
 
     function deleteAction() {
         try {
-            deleteFromDB(item.id);
+            // deleteFromDB(item.id);
             // navigation.goBack();
+            deleteWordFromUserDB(item.id,userId)
         }
         catch (error) {
             Alert.alert('Error', error);
@@ -66,16 +81,17 @@ export default function MyList() {
 
 
   function onForgetFunction({item}){
-    console.log(item)
+    // console.log(item)
 
     const forgetWord = {
-      translationMeaning: item.translationMeaning,
-      nativeWord: item.nativeWord,
+      // translationMeaning: item.translationMeaning,
+      // nativeWord: item.nativeWord,
       
       remember: false,
   };
+  editRememberInDB(item.id,userId,forgetWord)
 
-  editInDB(item.id, forgetWord);
+  // editInDB(item.id, forgetWord);
   }
 
   const renderItem = ({ item }) => (
@@ -86,6 +102,8 @@ export default function MyList() {
       <Text>nativeword: {item.nativeWord}</Text>
       <Text>meaning: {item.translationMeaning}</Text>
       <Text>remember: {String(item.remember)}</Text>
+      <AudioManager wordToSound={item.id}></AudioManager>
+
       {item.remember === false && ( // Check if item.remember is false
     <Button title=" MARK AS REMEBERED" onPress={() => onPressFunction({item})} />
     
@@ -106,15 +124,23 @@ export default function MyList() {
     </Pressable>
   );
 
+  console.log(library)
 
   return (
     <View>
     <Text>This is the my screen</Text>
-    <FlatList
+    {/* {library && <Text>please add new words</Text>} */}
+    {library.length === 0 ? (
+  <Text>There is no new word for you, try to add some from library</Text>
+) : (
+  // Render something else when the library is not empty
+  <FlatList
     data={library}
     renderItem={renderItem}
     keyExtractor={(item, index) => index.toString()}
   />
+)}
+    
   </View>
   )
 }
