@@ -37,7 +37,7 @@ export default function Library() {
 
   const renderItem = ({ item }) => (
     <Pressable onPress={()=>onPressFunction({item})}>  
-    <View style={{ padding: 30, borderColor: "red", borderWidth: 3 }}>
+    <View style={{margin:10, padding: 30, borderColor: "red", borderWidth: 3,width:'30%' }}>
       <Text>ID: {item.id}</Text>
       <Text>Title: {item.title}</Text>
       <Text>Native Language: {item.nativeLanguage}</Text>
@@ -106,7 +106,7 @@ export default function Library() {
 
 
   return (
-    <View>
+    <View style={{flex:1}}> 
       <View>
         <Text>This is the Library screen</Text>
         <InputComponent
@@ -118,7 +118,9 @@ export default function Library() {
       </View>
    
       <Text>This is the Library screen</Text>
-      <FlatList
+      <FlatList numColumns='4' 
+      horizontal={false}
+
       data={library}
       renderItem={renderItem}
       keyExtractor={(item, index) => index.toString()}

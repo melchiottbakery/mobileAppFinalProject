@@ -152,3 +152,5 @@ you also need to change of the babel.config.js
 npx expo install expo-av
 
 npx expo install expo-image-picker
+
+npx expo install expo-location
