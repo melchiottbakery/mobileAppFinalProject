@@ -6,8 +6,8 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase-files/FirebaseSetup";
 
 export default function Login({ navigation }) {
-  const [email, setEmail] = useState("ww2w@qq.com");
-  const [password, setPassword] = useState("dongbeidaban");
+  const [email, setEmail] = useState("www@qq.com");
+  const [password, setPassword] = useState("123456");
   const [error, setError] = useState("");
 
   function validateEmail(){
