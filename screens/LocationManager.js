@@ -11,6 +11,7 @@ export default function LocationManager() {
   const [location, setLocation] = useState(null);
   const [nearbySchools, setNearbySchools] = useState([]);
   const [nearbyESLSchools, setNearbyESLSchools] = useState([]);
+  const [mapRegion, setMapRegion] = useState(null);
 
   function findESLHandler(){
     console.log("findESLHandler works")
@@ -46,19 +47,56 @@ export default function LocationManager() {
   // useEffect(() => {
   //   console.log(nearbySchools)
   // }, [])
-  return (
-    <View>
-      <Text>LocationManager</Text>
-      <Button title = "find the most ESL school" onPress={findESLHandler}></Button>
-    {/* <Text></Text> */}
+  // return (
+  //   <View>
+  //     <Text>LocationManager</Text>
+  //     <Button title = "find the most ESL school" onPress={findESLHandler}></Button>
+  //   {/* <Text></Text> */}
 
 
-    {nearbyESLSchools.map((school, index) => (
-          <Text key={index}>{school.name}, {school.vicinity} (GPS: {school.latitude}, {school.longitude})</Text>
-        ))}
+  //   {nearbyESLSchools.map((school, index) => (
+  //         <Text key={index}>{school.name}, {school.vicinity} (GPS: {school.latitude}, {school.longitude})</Text>
+  //       ))}
 
-    </View>
-  )
+  //   </View>
+  // )
+
+
+
+
+return (
+  <View style={styles.container}>
+    <MapView
+      style={styles.map}
+      region={mapRegion}
+      onRegionChangeComplete={(region) => setMapRegion(region)}
+      provider="google"
+      showsUserLocation
+      showsMyLocationButton
+    >
+      {nearbyESLSchools.map((school, index) => (
+        <Marker
+          key={index}
+          coordinate={{
+            latitude: school.geometry.location.lat,
+            longitude: school.geometry.location.lng,
+          }}
+          title={school.name}
+        />
+      ))}
+    </MapView>
+    <Button title="Find nearby ESL Schools" onPress={findESLHandler} />
+  </View>
+)
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+container: {
+  width: 300,
+  height: 400,
+},
+map: {
+  width: "100%",
+  height: "100%",
+},
+});
