@@ -8,7 +8,7 @@ import { auth } from '../firebase-files/FirebaseSetup';
 
 import { collection, onSnapshot } from "firebase/firestore";
 import { database } from "../firebase-files/FirebaseSetup"
-import { writeToDB,writeNewWordToUserDB,deleteBookFromLibraryDB } from "../firebase-files/FirebaseHelper";
+import { writeToDB,writeNewWordToUserDB,deleteBookFromLibraryDB, deleteCollection } from "../firebase-files/FirebaseHelper";
 
 
 export default function WordList({route}) {
@@ -82,6 +82,7 @@ export default function WordList({route}) {
   function deleteHandler(){
     console.log("deletbuttonpress")
     console.log(wordBookid)
+    deleteCollection(wordBookid)
     deleteBookFromLibraryDB(wordBookid)
     navigation.goBack()
 

@@ -1,6 +1,6 @@
 import { collection, addDoc, setDoc,getDoc } from "firebase/firestore";
 import { database } from "./FirebaseSetup";
-import { doc, deleteDoc,  } from "firebase/firestore";
+import { doc, deleteDoc, onSnapshot } from "firebase/firestore";
 
 //write to the database with data
 // export async function writeToDB(data) {
@@ -94,6 +94,7 @@ export async function editInDB(id, data) {
     // the doc ID is user's uid
     try {
       await setDoc(doc(database, col, uid), data, { merge: true });
+    console.log("set successful")
     } catch (err) {
       console.log(err);
     }
@@ -107,6 +108,36 @@ export async function editInDB(id, data) {
       console.log(err);
     }
   }
+
+
+  export async function deleteCollection(wordBookid) {
+  //   const collectionRef = await collection(database, "library",wordBookid,'wordlist');
+  // console.log(collectionRef)
+  // const querySnapshot = await getDocs(collectionRef);
+  // console.log(querySnapshot)
+
+  onSnapshot(collection(database, "library", wordBookid, "wordlist"), (querySnapshot) => {
+    if (querySnapshot) {
+      querySnapshot.forEach((doc) => {
+        console.log(doc.data())
+        console.log(doc.data().nativeWord)
+        deleteWordsFromBookDB(wordBookid,doc.data().nativeWord)
+
+      });
+    };
+  });
+
+   async function deleteWordsFromBookDB(wordBookid,nativeWord) {
+    try {
+      // await deleteDoc(doc(database, "library",wordBookid,'wordlist'));
+
+      await deleteDoc(doc(database, "library",wordBookid,"wordlist",nativeWord));
+      console.log("Delete confirmed, the id is ", wordBookid);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  };
 
   export async function deleteBookFromLibraryDB(wordBookid) {
     try {

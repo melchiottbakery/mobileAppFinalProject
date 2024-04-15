@@ -12,7 +12,7 @@ import { getDownloadURL } from "firebase/storage";
 import * as ImagePicker from 'expo-image-picker';
 
 
-import { editImageLinkInDB, getProfile } from "../firebase-files/FirebaseHelper";
+import { editImageLinkInDB, getProfile, setNewUserDocToDB } from "../firebase-files/FirebaseHelper";
 
 
 
@@ -20,6 +20,9 @@ export default function Profile({ route, navigation }) {
   // You can give me some const and useState for the name, the email and the password
   // const {nickname, email, password } = route.params;
   console.log(auth.currentUser.email)
+
+  const [originNickname, setOriginNickname] = useState('');
+
 
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
@@ -51,6 +54,7 @@ export default function Profile({ route, navigation }) {
     async function getDataFromDB() {
       const data = await getProfile("users", auth.currentUser.uid);
       // console.log(data)
+      setOriginNickname(data.nickname)
       setNickname(data.nickname)
       setEmail(data.email)
       downloadImageFromDatabase(data)
@@ -164,6 +168,16 @@ function writeImageLinkToUser(storagePath){
 }
 
 
+function changeNameHandler(){
+  console.log("pressed")
+  setNewUserDocToDB({nickname:nickname},"users",auth.currentUser.uid)
+  setOriginNickname(nickname);
+
+
+}
+
+
+const showButton = originNickname !== nickname;
   return (
     <SafeAreaView>
       {/*  <Text>This is the Profile screen</Text> */}
@@ -204,38 +218,26 @@ function writeImageLinkToUser(storagePath){
       
       </View>
      
-
-      
+      <Text>You can change your nickname and your avatar</Text>
       </Pressable>
       {openSaveButton &&
 
 (      <Button title="save image changes" onPress={saveImageChange}></Button>
 )      
 }
-
       <InputComponent
         label="Nickname"
         value={nickname}
         onChangeText={setNickname}
       />
+      {showButton &&( 
+      <Button title= "Change The Nickname" onPress={changeNameHandler}></Button>)}
 
       <InputComponent
         //here is a InputComponent can show the email, but user cannot pressed or
         label="Email"
         value={email}
         editable={false}
-      />
-
-      <InputComponent
-        //here is a InputComponent can show the password, but user can pressed. it
-        //show from stars to characters until the user presses.
-        label="Password"
-        value={password}
-        secureTextEntry={secureTextEntry}
-        editable={false}
-        onPressIn={() => {
-          setSecureTextEntry(!secureTextEntry);
-        }}
       />
 
       {/* // if you can add a alert for this one? */}
@@ -245,6 +247,7 @@ function writeImageLinkToUser(storagePath){
         title="LOG OUT"
         onPress={logoutHandler}
       />
+      
       </View>
     </SafeAreaView>
   );

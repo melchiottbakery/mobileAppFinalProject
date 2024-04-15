@@ -30,10 +30,7 @@ export default function Library({route}) {
     });
   }, []);
 
-  // useEffect(() => {
-  //   onSnapshot(console.log(route));
-  // });
-  
+
 
   // console.log(library)
 
