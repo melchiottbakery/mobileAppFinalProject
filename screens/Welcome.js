@@ -15,8 +15,11 @@ export default function Welcome() {
 
   return (
     <View style={styles.container}>
-      <Text>This is the Welcome screen</Text>
-      <Text>map will on this screen</Text>
+      <Text>Welcome to our Japanese-English vocabulary application.</Text>
+      <Text>You can search for the nearest Japanese language schools below</Text>
+      <Text>You can also browse existing vocabulary books on the library tab</Text>
+      <Text>You can create a new account to manage your learning progress on the profile tab.</Text>
+
       <Map></Map>
 
       {/* <LocationManager></LocationManager> */}

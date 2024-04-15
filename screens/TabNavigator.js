@@ -20,7 +20,7 @@ export default function TabNavigator() {
 
 
   return (
-    <Tab.Navigator>
+    <Tab.Navigator initialRouteName="Welcome">
       <Tab.Screen name="Profile" component={Profile} />
       <Tab.Screen name="Welcome" component={Welcome} />
       <Tab.Screen

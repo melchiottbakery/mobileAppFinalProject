@@ -20,6 +20,7 @@ export default function App() {
         <Stack.Screen name="Registration" component={Registration} />
         <Stack.Screen name="User" component={TabNavigator} />
         <Stack.Screen name="WordList" component={WordList}
+
           // options={({ navigation }) => ({
           //   ...StyleHelper.navigatorScreen,
           // })}
