@@ -36,8 +36,11 @@ export default function Library() {
   }
 
   const renderItem = ({ item }) => (
-    <Pressable onPress={()=>onPressFunction({item})}>  
-    <View style={{margin:10, padding: 30, borderColor: "red", borderWidth: 3,width:'30%' }}>
+    <Pressable onPress={()=>onPressFunction({item})}
+    style={{margin:5, padding: 5, borderColor: "red", borderWidth: 3,width:'30%' }}>  
+    <View 
+    // style={{margin:5, padding: 5, borderColor: "red", borderWidth: 3,width:'50%' }}
+    >
       <Text>ID: {item.id}</Text>
       <Text>Title: {item.title}</Text>
       <Text>Native Language: {item.nativeLanguage}</Text>
@@ -118,7 +121,7 @@ export default function Library() {
       </View>
    
       <Text>This is the Library screen</Text>
-      <FlatList numColumns='4' 
+      <FlatList numColumns='3' 
       horizontal={false}
 
       data={library}

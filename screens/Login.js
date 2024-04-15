@@ -66,13 +66,7 @@ export default function Login({ navigation }) {
 
 
 
-  function visitorHandler(){
-    // the function on when Register button pressed
-    //console.log(email);
-    //console.log(password);
-    console.log("visitor mode pressed")
-    // navigation.navigate("User");
-  };
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -116,7 +110,6 @@ export default function Login({ navigation }) {
         <Button title="Reset" onPress={handleReset} />
         <Button title="Login" onPress={handleLogin} disabled={validateForm()} />
         <Button title="Register" onPress={handleRegister} />
-        <Button title="visitor mode(TBC)" onPress={visitorHandler}/>
       </View>
     </SafeAreaView>
   );
