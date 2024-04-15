@@ -154,3 +154,6 @@ npx expo install expo-av
 npx expo install expo-image-picker
 
 npx expo install expo-location
+
+for interactive map:
+npx expo install react-native-maps
