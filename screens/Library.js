@@ -4,10 +4,13 @@ import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import CountryFlag from "react-native-country-flag";
 
-import { collection, onSnapshot } from "firebase/firestore"
-import { database } from "../firebase-files/FirebaseSetup"
+// import {query,where } from "firebase/firestore";
+
+import { collection, onSnapshot, } from "firebase/firestore"
+import { database, auth } from "../firebase-files/FirebaseSetup"
 import InputComponent from '../component/InputComponent';
-import { writeNewWordBookToDB, writeWholeWordBookToDB } from '../firebase-files/FirebaseHelper';
+import { writeNewWordBookToDB, writeWholeWordBookToDB,getProfile } from '../firebase-files/FirebaseHelper';
+// import {auth} from 
 
 export default function Library() {
   const navigation = useNavigation();
@@ -28,9 +31,21 @@ export default function Library() {
 
   // console.log(library)
 
+  const [isadmin,setIsadmin]=useState(false)
+
+  useEffect(() => {
+    async function getDataFromDB() {
+      const data = await getProfile("users", auth.currentUser.uid);
+      // console.log(data)
+      setIsadmin(data.isAdmin)
+    }
+    getDataFromDB();
+  }, []);
+
   function onPressFunction({item}){
     console.log("whichone youare pressing",item)
-    navigation.navigate("WordList", { item })
+    // console.log({ item,isadmin})
+    navigation.navigate("WordList", { item,isadmin})
     
 
   }
@@ -107,23 +122,37 @@ export default function Library() {
   }
 
 
+  const [adminTerminalOpen, setAdminTerminalOpen] =useState(false)
+
+  const AdminTerminal= (
+    <View>
+    <Text>This is the Library screen</Text>
+    <InputComponent
+      label="link"
+      value={jsonLink}
+      onChangeText={setJsonLink}
+    ></InputComponent>
+    <Button title='load the book' onPress={loadJsonLinkHandler}></Button>
+  </View>
+
+  )
 
   return (
+    
     <View style={{flex:1}}> 
-      <View>
-        <Text>This is the Library screen</Text>
-        <InputComponent
-          label="link"
-          value={jsonLink}
-          onChangeText={setJsonLink}
-        ></InputComponent>
-        <Button title='load the book' onPress={loadJsonLinkHandler}></Button>
-      </View>
-   
+
+{isadmin && (
+        <>
+          <Button title="open admin terminal" onPress={()=>setAdminTerminalOpen(!adminTerminalOpen)}></Button>
+          {adminTerminalOpen && AdminTerminal }
+        </>
+      )}
+      
+   {/* {isadmin && AdminButton} */}
+
       <Text>This is the Library screen</Text>
       <FlatList numColumns='3' 
       horizontal={false}
-
       data={library}
       renderItem={renderItem}
       keyExtractor={(item, index) => index.toString()}

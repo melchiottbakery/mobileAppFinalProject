@@ -17,7 +17,7 @@ export default function WordList({route}) {
   // console.log("the item is ",route)
   const worldBookName = route.params.item.name
   const wordBookid = route.params.item.id
-  
+  const isadmin=route.params.isadmin
   const userId=auth.currentUser.uid
 
   // console.log(route.params.item.name)
@@ -89,7 +89,8 @@ export default function WordList({route}) {
   return (
     <View>
       <Text>This is the wordlist screen</Text>
-      <Button title="delete the whole book" onPress={deleteHandler}></Button>
+      {isadmin &&<Button title="delete the whole book" onPress={deleteHandler}></Button>}
+      
       <FlatList
       data={library}
       renderItem={renderItem}
