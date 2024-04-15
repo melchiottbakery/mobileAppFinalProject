@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { Button, StyleSheet } from "react-native";
 import Login from "./screens/Login";
 import WordList from "./screens/WordList";
 
@@ -15,15 +15,20 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator 
-        screenOptions={{headerShown: true}}>
+        screenOptions={{headerShown: false}}>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Registration" component={Registration} />
         <Stack.Screen name="User" component={TabNavigator} />
         <Stack.Screen name="WordList" component={WordList}
 
-          // options={({ navigation }) => ({
-          //   ...StyleHelper.navigatorScreen,
-          // })}
+          options={({ navigation }) => ({
+            headerShown:true,
+
+            headerLeft: () => (
+              <Button title="Go to Library" onPress={() => navigation.goBack()}>
+              </Button>
+            ),
+          })}
         />
         
       </Stack.Navigator>
@@ -31,4 +36,6 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+
+});

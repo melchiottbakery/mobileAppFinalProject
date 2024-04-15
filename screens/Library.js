@@ -12,7 +12,8 @@ import InputComponent from '../component/InputComponent';
 import { writeNewWordBookToDB, writeWholeWordBookToDB,getProfile } from '../firebase-files/FirebaseHelper';
 // import {auth} from 
 
-export default function Library() {
+export default function Library({route}) {
+  
   const navigation = useNavigation();
 
   const [library, setlibrary] = useState([]);
@@ -28,6 +29,11 @@ export default function Library() {
       setlibrary(newArray);
     });
   }, []);
+
+  // useEffect(() => {
+  //   onSnapshot(console.log(route));
+  // });
+  
 
   // console.log(library)
 

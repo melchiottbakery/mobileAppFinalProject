@@ -10,7 +10,9 @@ const Tab = createBottomTabNavigator();
 import { getProfile } from "../firebase-files/FirebaseHelper";
 import { auth } from '../firebase-files/FirebaseSetup';
 
+// import { useNavigation } from '@react-navigation/native';
 
+// const navigation = useNavigation();
 
 export default function TabNavigator() {
 
@@ -18,6 +20,16 @@ export default function TabNavigator() {
 
   // "https://jsonplaceholder.typicode.com/users"
 
+  // const [isadmin,setIsadmin]=useState(false)
+
+  // function openHandler(){
+  //   console.log(isadmin)
+  //   setIsadmin(!isadmin)
+  //   // navigation.setParams({ open: !open });
+  // }
+  // const hello = 'nihao'
+
+  
 
   return (
     <Tab.Navigator initialRouteName="Welcome">
@@ -26,9 +38,15 @@ export default function TabNavigator() {
       <Tab.Screen
         name="Library"
         component={Library}
-        options={{
+        // params={{ customParam: isadmin }} 
+        
+        // options={{
+        //   headerRight: () => (
+
+        //       <Button title="nihao" onPress={openHandler}></Button>
+        //   ),
           
-        }}
+        // }}
       />
       <Tab.Screen name="MyList" component={MyList} />
     </Tab.Navigator>
