@@ -54,7 +54,7 @@ export default function Map() {
   async function fetchNearbySchools(userLocation) {
     try {
       fetch(
-        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${userLocation.latitude},${userLocation.longitude}&radius=5000&keyword=ESL%20school&key=${mapsApiKey}`
+        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${userLocation.latitude},${userLocation.longitude}&language=ja&radius=50000&keyword=japanese%20school&key=${mapsApiKey}`
       )
         .then((response) => response.json())
         .then((data) => {
@@ -75,6 +75,8 @@ export default function Map() {
       console.log(error);
     }
   }
+
+
 
 
   return (
@@ -98,17 +100,18 @@ export default function Map() {
             title={school.name}
             description={school.vicinity}
           />
-        ))}
+        ))
+        }
       </MapView>
-      <Button title="Find nearby ESL Schools" onPress={findESLHandler} />
+      <Button title="Find Nearby Japanese Language Schools" onPress={findESLHandler} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    width: 300,
-    height: 400,
+    width: "100%",
+    height: "60%",
   },
   map: {
     width: "100%",
