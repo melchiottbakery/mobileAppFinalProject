@@ -1,5 +1,5 @@
 import { Button, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Audio } from 'expo-av';
 
 
@@ -13,6 +13,7 @@ export default function AudioManager({wordToSound}) {
     const soundObject = new Audio.Sound();
 
     try {
+      console.log("try to play the sound")
 
       const { sound } = await Audio.Sound.createAsync({ uri: `https://dict.youdao.com/dictvoice?le=jap&type3&audio=${wordToSound}` },{ shouldPlay: true });
         // await soundObject.loadAsync({ uri: `https://dict.youdao.com/dictvoice?le=jap&type3&audio=${wordToSound}` });
@@ -23,10 +24,40 @@ export default function AudioManager({wordToSound}) {
       console.log('playsound for', wordToSound)
   }
 
+
+
+
+
+  const [sound, setSound] = useState();
+
+  async function playSound() {
+    console.log('Loading Sound');
+    const encodedString = encodeURIComponent(wordToSound);
+    const { sound } = await Audio.Sound.createAsync({ uri: `https://dict.youdao.com/dictvoice?le=jap&type3&audio=${encodedString}`}
+
+  );
+    setSound(sound);
+
+    console.log('Playing Sound');
+    await sound.playAsync();
+  }
+
+
+  useEffect(() => {
+    return sound
+      ? () => {
+          console.log('Unloading Sound');
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
+
+
+
   return (
     <View>
       {/* <Text>AudioManager</Text> */}
-      <Button title= 'play the sound' onPress={playsoundtest}></Button>
+      <Button title= 'play the sound' onPress={playSound}></Button>
     </View>
   )
 }
