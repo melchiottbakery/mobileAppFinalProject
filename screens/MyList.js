@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 
 
 
-import { collection, onSnapshot } from "firebase/firestore"
+import { collection, onSnapshot,query } from "firebase/firestore"
 import { database } from "../firebase-files/FirebaseSetup"
 import { deleteFromDB, deleteWordFromUserDB, editInDB, editRememberInDB } from '../firebase-files/FirebaseHelper';
 
@@ -101,7 +101,7 @@ export default function MyList() {
 
 
 function showTranslationMeaning({item}){
-  // console.log(item)
+  console.log("which one will you change",item)
 
   const translationMeaningShow = {
     translationMeaningShow : !item.translationMeaningShow
@@ -119,6 +119,55 @@ function showNativeMeaning({item}){
 editRememberInDB(item.id,userId,nativeWordShow)
 // editInDB(item.id, rememberWord);
 }
+
+function ankiModeHandler(){
+  console.log("anki")
+}
+
+// function ankiModeHandler(){
+//   const q = query(collection(database, "users",auth.currentUser.uid,'wordlist'));
+//   // console.log(q.firestore.databaseId)
+//   const unsubscribe = onSnapshot(q, (querySnapshot) => {
+//     querySnapshot.forEach((doc) => {
+//         // cities.push(doc.data().name);
+//         console.log("niha54765876576o",doc.data())
+//         const translationMeaningShow = {
+//                     translationMeaningShow : false
+//                 };
+//                 editRememberInDB(doc.data().nativeWord,userId,translationMeaningShow)
+
+
+//     });
+//   })
+// }
+
+// const q = query(collection(database, "users",auth.currentUser.uid,'wordlist'));
+// console.log(q)
+
+// function ankiModeHandler(){
+//   console.log("anki presseed")
+
+
+
+//   const unsubscribe= onSnapshot(collection(database, "users",auth.currentUser.uid,'wordlist'), (querySnapshot) => {
+//      console.log("nihao",querySnapshot)
+//     // let newArray = [];
+//     if (querySnapshot) {
+//       querySnapshot.forEach((doc) => {
+
+//         console.log(doc.data().nativeWord)
+//         const translationMeaningShow = {
+//           translationMeaningShow : false
+//       };
+//       editRememberInDB(doc.data().nativeWord,userId,translationMeaningShow)
+
+//         // newArray.push({ ...doc.data(), id: doc.id });
+//       });
+//     };
+//     // setlibrary(newArray);
+//   });
+//   // unsubscribe();
+// }
 
 
 
@@ -191,6 +240,7 @@ editRememberInDB(item.id,userId,nativeWordShow)
 
 
 
+
   return (
     <View style={{flex:1}}>
     <Text>This is the my screen</Text>
@@ -200,9 +250,10 @@ editRememberInDB(item.id,userId,nativeWordShow)
 ) : (
   // Render something else when the library is not empty
   <>
-  <Button title='choose remember' onPress={showRememberHandler} />
+  <Button title="anki-mode" onPress={ankiModeHandler}/>
+  {/* <Button title='choose remember' onPress={showRememberHandler} />
   <Button title='choose forget' onPress={showForgetHandler}/>
-  <Button title='choose clear' onPress={showClearHandler}/>
+  <Button title='choose clear' onPress={showClearHandler}/> */}
 
 
 {

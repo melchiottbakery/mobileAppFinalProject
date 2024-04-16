@@ -87,6 +87,14 @@ export async function editInDB(id, data) {
     }
   }
 
+  export async function editImageLinkInCover(bookId, data) {
+    try {
+      await setDoc(doc(database, "library",bookId), data, { merge: true });
+      console.log("link the picture", );
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
 
 
@@ -189,7 +197,7 @@ export async function writeWholeWordBookToDB(coverData,wordData) {
     // await setDoc(doc(database, "users",userId,), data, { merge: true });
 
     // docRef.id
-    console.log("writenewlibaray successful， the doc id is",docRef.id)
+    console.log("writenewlibaray successful, the doc id is",docRef.id)
 
   } catch (err) {
     console.log(err);

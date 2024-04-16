@@ -157,3 +157,5 @@ npx expo install expo-location
 
 for interactive map:
 npx expo install react-native-maps
+
+npm install react-native-dropdown-picker
