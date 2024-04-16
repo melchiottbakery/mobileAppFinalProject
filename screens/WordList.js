@@ -22,6 +22,7 @@ export default function WordList({ route }) {
 
   // console.log(route.params.item.name)
   const [library, setlibrary] = useState([]);
+  const [deleteLink, setDeleteLink]= useState("")
 
   useEffect(() => {
     onSnapshot(collection(database, "library", wordBookid, "wordlist"), (querySnapshot) => {
@@ -32,6 +33,7 @@ export default function WordList({ route }) {
         });
       };
       setlibrary(newArray);
+      setDeleteLink(wordBookid);
     });
   }, []);
 

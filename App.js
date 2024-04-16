@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, StyleSheet } from "react-native";
 import Login from "./screens/Login";
 import WordList from "./screens/WordList";
@@ -11,7 +11,15 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 const Stack = createStackNavigator();
 
-export default function App() {
+export default function App({wordBookid}) {
+
+  const [deleteLink, setDeleteLink]= useState("")
+
+  function deleteHandler(wordBookid){
+    setDeleteLink(wordBookid)
+
+
+  }
   return (
     <NavigationContainer>
       <Stack.Navigator 
@@ -27,6 +35,10 @@ export default function App() {
 
             headerLeft: () => (
               <Button title="Go to Library" onPress={() => navigation.goBack()}>
+              </Button>
+            ),
+            headerRight: () => (
+              <Button title="delete" onPress={()=>deleteHandler(wordBookid)}>
               </Button>
             ),
           })}

@@ -25,7 +25,8 @@ export default function MyList() {
         let newArray = [];
         if (querySnapshot) {
           querySnapshot.forEach((doc) => {
-            newArray.push({ ...doc.data(), id: doc.id });
+            newArray.push({ ...doc.data()
+              ,showTranslation:true,showNative:true, id: doc.id });
           });
         };
         setlibrary(newArray);
@@ -46,6 +47,40 @@ export default function MyList() {
     handleToggleMeaningShow()
 
   }
+
+
+  // const handleButtonPress = () => {
+  //   // 使用map函数遍历数据，并更新translationMeaningShow属性为false
+  //   const newData = data.map(item => {
+  //     return {
+  //       ...item,
+  //       translationMeaningShow: false
+  //     };
+  //   });
+  
+  //   // 更新数据
+  //   setData(newData); // 这里假设您使用useState来管理数据
+  // };
+
+  function ankiModeHandler() {
+    console.log("anki")
+    const newData = library.map(item => {
+      return {
+        ...item,
+        translationMeaningShow: false
+      };
+    });
+  
+    // 更新数据
+    setlibrary(newData); 
+
+  }
+
+  // function ankiModeHandler() {
+  //   console.log("anki")
+  //   handleToggleMeaningShow()
+
+  // }
 
   function handleToggleMeaningShow() {
     writeAnkiToDB(auth.currentUser.uid);

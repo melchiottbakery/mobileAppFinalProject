@@ -16,7 +16,7 @@ import { auth } from '../firebase-files/FirebaseSetup';
 
 // const navigation = useNavigation();
 
-export default function TabNavigator() {
+export default function TabNavigator(props) {
 
 
 
