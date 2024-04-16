@@ -10,25 +10,25 @@ export default function Login({ navigation }) {
   const [password, setPassword] = useState("dongbeidaban");
   const [error, setError] = useState("");
 
-  function validateEmail(){
+  function validateEmail() {
     // Regular expression for email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  function validateForm(){
+  function validateForm() {
     // Check if email or password is empty
     return !email || !password;
   };
 
-  function handleReset(){
+  function handleReset() {
     // the function on when Reset button pressed
     setEmail("");
     setPassword("");
     setError("");
   };
 
-  function handleLogin(){
+  function handleLogin() {
     // the function on when Login button pressed
     if (validateEmail()) {
       setError("");
@@ -41,23 +41,23 @@ export default function Login({ navigation }) {
   };
 
 
-  async function userAuthHandler(){
+  async function userAuthHandler() {
     try {
-      const userCred=  await signInWithEmailAndPassword(auth, email,password);
+      const userCred = await signInWithEmailAndPassword(auth, email, password);
       console.log(userCred)
       navigation.navigate("User");
 
 
     } catch (error) {
       console.log(error);
-        if(error.code =='auth/invalid-credential'){
-            Alert.alert('Email or Password is not correct ')
-        }
-      
+      if (error.code == 'auth/invalid-credential') {
+        Alert.alert('Email or Password is not correct ')
+      }
+
     }
   }
-  
-  function handleRegister(){
+
+  function handleRegister() {
     // the function on when Register button pressed
     //console.log(email);
     //console.log(password);

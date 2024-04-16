@@ -52,25 +52,25 @@ export default function Registration({ navigation }) {
     navigation.navigate("Login");
   };
 
-  function validateForm(){
+  function validateForm() {
     // Check if all input box are empty
     return (
       !nickname || !email || !confirmedEmail || !password || !confirmedPassword
     );
   };
 
-  function validateEmail(){
+  function validateEmail() {
     // Regular expression for email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  function validateConfirmedEmail(){
+  function validateConfirmedEmail() {
     //check if email and confirmed email are the same
     return email === confirmedEmail;
   };
 
-  function validateConfirmedPassword(){
+  function validateConfirmedPassword() {
     //check if password and confirmed password are the same
     return password === confirmedPassword;
   };
@@ -80,7 +80,7 @@ export default function Registration({ navigation }) {
     setConfirmedEmailError("");
     setConfirmedPasswordError("");
     if (
-      
+
       validateEmail() &&
       validateConfirmedEmail() &&
       validateConfirmedPassword()
@@ -107,23 +107,23 @@ export default function Registration({ navigation }) {
     }
   };
 
-async function createUserAuthHandler(){
-  try {
-    const userCred = await createUserWithEmailAndPassword(auth,email,password);
-    // console.log(userCred)
-    // console.log(userCred._tokenResponse.localId)
-    setNewUserDocToDB({nickname:nickname, email:email,isAdmin:isAdmin},"users",userCred._tokenResponse.localId)
+  async function createUserAuthHandler() {
+    try {
+      const userCred = await createUserWithEmailAndPassword(auth, email, password);
+      // console.log(userCred)
+      // console.log(userCred._tokenResponse.localId)
+      setNewUserDocToDB({ nickname: nickname, email: email, isAdmin: isAdmin }, "users", userCred._tokenResponse.localId)
 
-  } catch (error) {
-    console.log(error.code)
-    if(error.code === "auth/weak-password"){
-      Alert.alert("Please use strong password.")     
+    } catch (error) {
+      console.log(error.code)
+      if (error.code === "auth/weak-password") {
+        Alert.alert("Please use strong password.")
+      }
+      if (error.code === "auth/email-already-in-use") {
+        Alert.alert("Please use another email address to register.")
+      }
+    }
   }
-    if(error.code === "auth/email-already-in-use"){
-    Alert.alert("Please use another email address to register.")
-}
-  }
-}
 
   return (
     <SafeAreaView style={styles.container}>

@@ -5,23 +5,23 @@ import { useNavigation } from '@react-navigation/native';
 
 
 
-import { collection, onSnapshot,query } from "firebase/firestore"
+import { collection, onSnapshot, query } from "firebase/firestore"
 import { database } from "../firebase-files/FirebaseSetup"
-import { deleteFromDB, deleteWordFromUserDB, editInDB, editRememberInDB } from '../firebase-files/FirebaseHelper';
+import { deleteFromDB, deleteWordFromUserDB, editInDB, editRememberInDB, writeAnkiToDB } from '../firebase-files/FirebaseHelper';
 
 import { auth } from '../firebase-files/FirebaseSetup';
 import AudioManager from './AudioManager';
 
 export default function MyList() {
 
-  const userId=auth.currentUser.uid
+  const userId = auth.currentUser.uid
   const [library, setlibrary] = useState([]);
 
   useEffect(() => {
     //need to fix if there is as the new user registeration, there is no collection called wordlist
 
     try {
-      onSnapshot(collection(database, "users",auth.currentUser.uid,'wordlist'), (querySnapshot) => {
+      onSnapshot(collection(database, "users", auth.currentUser.uid, 'wordlist'), (querySnapshot) => {
         let newArray = [];
         if (querySnapshot) {
           querySnapshot.forEach((doc) => {
@@ -30,210 +30,223 @@ export default function MyList() {
         };
         setlibrary(newArray);
       });
-  
+
     } catch (error) {
       console.log(error)
     }
- 
+
 
 
   }, []);
 
-  function onPressFunction({item}){
+  console.log(library)
+
+  function ankiModeHandler() {
+    console.log("anki")
+    handleToggleMeaningShow()
+
+  }
+
+  function handleToggleMeaningShow() {
+    writeAnkiToDB(auth.currentUser.uid);
+
+  };
+
+
+
+  function onPressFunction({ item }) {
     // console.log(item)
 
     const rememberWord = {
       translationMeaning: item.translationMeaning,
       nativeWord: item.nativeWord,
       remember: true,
-  };
-  editRememberInDB(item.id,userId,rememberWord)
-  // editInDB(item.id, rememberWord);
+    };
+    editRememberInDB(item.id, userId, rememberWord)
+    // editInDB(item.id, rememberWord);
   }
 
-  function onDeleteFunction({item}) {
+  function onDeleteFunction({ item }) {
     Alert.alert(
-        'Confirmation',
-        'Are you sure you want to delete this remembered word?',
-        [
-            {
-                text: 'Cancel',
-                onPress: () => { },
-            },
-            {
-                text: 'Delete',
-                onPress: deleteAction,
-            },
-        ]
+      'Confirmation',
+      'Are you sure you want to delete this remembered word?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => { },
+        },
+        {
+          text: 'Delete',
+          onPress: deleteAction,
+        },
+      ]
     );
 
     function deleteAction() {
-        try {
-            // deleteFromDB(item.id);
-            // navigation.goBack();
-            deleteWordFromUserDB(item.id,userId)
-        }
-        catch (error) {
-            Alert.alert('Error', error);
-        }
+      try {
+        // deleteFromDB(item.id);
+        // navigation.goBack();
+        deleteWordFromUserDB(item.id, userId)
+      }
+      catch (error) {
+        Alert.alert('Error', error);
+      }
     };
-}
+  }
 
 
-  function onForgetFunction({item}){
+  function onForgetFunction({ item }) {
     // console.log(item)
 
     const forgetWord = {
       // translationMeaning: item.translationMeaning,
       // nativeWord: item.nativeWord,
-      
+
       remember: false,
-  };
-  editRememberInDB(item.id,userId,forgetWord)
+    };
+    editRememberInDB(item.id, userId, forgetWord)
 
-  // editInDB(item.id, forgetWord);
+    // editInDB(item.id, forgetWord);
   }
-//   const [showText, setShowText] = useState(false);
+  //   const [showText, setShowText] = useState(false);
 
-//  function  presshandler({remember}){
-// setShowText(true);
-//  }
-
-
-function showTranslationMeaning({item}){
-  console.log("which one will you change",item)
-
-  const translationMeaningShow = {
-    translationMeaningShow : !item.translationMeaningShow
-};
-editRememberInDB(item.id,userId,translationMeaningShow)
-// editInDB(item.id, rememberWord);
-}
-
-function showNativeMeaning({item}){
-  // console.log(item)
-
-  const nativeWordShow = {
-    nativeWordShow : !item.nativeWordShow
-};
-editRememberInDB(item.id,userId,nativeWordShow)
-// editInDB(item.id, rememberWord);
-}
-
-function ankiModeHandler(){
-  console.log("anki")
-}
-
-// function ankiModeHandler(){
-//   const q = query(collection(database, "users",auth.currentUser.uid,'wordlist'));
-//   // console.log(q.firestore.databaseId)
-//   const unsubscribe = onSnapshot(q, (querySnapshot) => {
-//     querySnapshot.forEach((doc) => {
-//         // cities.push(doc.data().name);
-//         console.log("niha54765876576o",doc.data())
-//         const translationMeaningShow = {
-//                     translationMeaningShow : false
-//                 };
-//                 editRememberInDB(doc.data().nativeWord,userId,translationMeaningShow)
+  //  function  presshandler({remember}){
+  // setShowText(true);
+  //  }
 
 
-//     });
-//   })
-// }
+  function showTranslationMeaning({ item }) {
+    console.log("which one will you change", item)
 
-// const q = query(collection(database, "users",auth.currentUser.uid,'wordlist'));
-// console.log(q)
+    const translationMeaningShow = {
+      translationMeaningShow: !item.translationMeaningShow
+    };
+    editRememberInDB(item.id, userId, translationMeaningShow)
+    // editInDB(item.id, rememberWord);
+  }
 
-// function ankiModeHandler(){
-//   console.log("anki presseed")
+  function showNativeMeaning({ item }) {
+    // console.log(item)
+
+    const nativeWordShow = {
+      nativeWordShow: !item.nativeWordShow
+    };
+    editRememberInDB(item.id, userId, nativeWordShow)
+    // editInDB(item.id, rememberWord);
+  }
 
 
 
-//   const unsubscribe= onSnapshot(collection(database, "users",auth.currentUser.uid,'wordlist'), (querySnapshot) => {
-//      console.log("nihao",querySnapshot)
-//     // let newArray = [];
-//     if (querySnapshot) {
-//       querySnapshot.forEach((doc) => {
+  // function ankiModeHandler(){
+  //   const q = query(collection(database, "users",auth.currentUser.uid,'wordlist'));
+  //   // console.log(q.firestore.databaseId)
+  //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
+  //     querySnapshot.forEach((doc) => {
+  //         // cities.push(doc.data().name);
+  //         console.log("niha54765876576o",doc.data())
+  //         const translationMeaningShow = {
+  //                     translationMeaningShow : false
+  //                 };
+  //                 editRememberInDB(doc.data().nativeWord,userId,translationMeaningShow)
 
-//         console.log(doc.data().nativeWord)
-//         const translationMeaningShow = {
-//           translationMeaningShow : false
-//       };
-//       editRememberInDB(doc.data().nativeWord,userId,translationMeaningShow)
 
-//         // newArray.push({ ...doc.data(), id: doc.id });
-//       });
-//     };
-//     // setlibrary(newArray);
-//   });
-//   // unsubscribe();
-// }
+  //     });
+  //   })
+  // }
+
+  // const q = query(collection(database, "users",auth.currentUser.uid,'wordlist'));
+  // console.log(q)
+
+  // function ankiModeHandler(){
+  //   console.log("anki presseed")
+
+
+
+  //   const unsubscribe= onSnapshot(collection(database, "users",auth.currentUser.uid,'wordlist'), (querySnapshot) => {
+  //      console.log("nihao",querySnapshot)
+  //     // let newArray = [];
+  //     if (querySnapshot) {
+  //       querySnapshot.forEach((doc) => {
+
+  //         console.log(doc.data().nativeWord)
+  //         const translationMeaningShow = {
+  //           translationMeaningShow : false
+  //       };
+  //       editRememberInDB(doc.data().nativeWord,userId,translationMeaningShow)
+
+  //         // newArray.push({ ...doc.data(), id: doc.id });
+  //       });
+  //     };
+  //     // setlibrary(newArray);
+  //   });
+  //   // unsubscribe();
+  // }
 
 
 
 
   const renderItem = ({ item }) => (
     <Pressable >
-    
-    <View style={{ padding: 30, borderColor: "blue", borderWidth: 3 }}>
-      <Text>ID: {item.id}</Text>
-      <Text>nativeword: {item.nativeWord}</Text>
-      <Button title="change nativeWordShow" onPress={()=>showNativeMeaning({item})}></Button>
 
-      {!item.nativeWordShow && <Text>show the nativeWord</Text>}
-      {item.nativeWordShow && <Text>meaning: {item.nativeWord}</Text>}
+      <View style={{ padding: 30, borderColor: "blue", borderWidth: 3 }}>
+        <Text>ID: {item.id}</Text>
+        <Text>nativeword: {item.nativeWord}</Text>
+        <Button title="change nativeWordShow" onPress={() => showNativeMeaning({ item })}></Button>
 
-      <Button title="change translationMeaning" onPress={()=>showTranslationMeaning({item})}></Button>
-      
-      {!item.translationMeaningShow && <Text>show the translationMeaning</Text>}
-      {item.translationMeaningShow && <Text>meaning: {item.translationMeaning}</Text>}
+        {!item.nativeWordShow && <Text>show the nativeWord</Text>}
+        {item.nativeWordShow && <Text>meaning: {item.nativeWord}</Text>}
 
-            {/* <Text>meaning: {item.translationMeaning}</Text> */}
+        <Button title="change translationMeaning" onPress={() => showTranslationMeaning({ item })}></Button>
 
-            <Text>nativeWordShow: {String(item.nativeWordShow)}</Text>
+        {!item.translationMeaningShow && <Text>show the translationMeaning</Text>}
+        {item.translationMeaningShow && <Text>meaning: {item.translationMeaning}</Text>}
 
-            <Text>translationMeaningShow: {String(item.translationMeaningShow)}</Text>
+        {/* <Text>meaning: {item.translationMeaning}</Text> */}
 
+        <Text>nativeWordShow: {String(item.nativeWordShow)}</Text>
 
-      
-      <Text>remember: {String(item.remember)}</Text>
-      <AudioManager wordToSound={item.id}></AudioManager>
-
-      {item.remember === false && ( // Check if item.remember is false
-    <Button title=" MARK AS REMEBERED" onPress={() => onPressFunction({item})} />
-    
-  )}
-  {item.remember === true && ( // Check if item.remember is false
-    <Button title="i need review again" onPress={() => onForgetFunction({item})} />
-
-  )}
-
-{item.remember === true && ( // Check if item.remember is false
-    <Button color='red' title="Delete" onPress={() => onDeleteFunction({item})} />
-  )}
-      {/* <Button title="marker" onPress={()=>onPressFunction({item})} /> */}
+        <Text>translationMeaningShow: {String(item.translationMeaningShow)}</Text>
 
 
 
-    </View>
+        <Text>remember: {String(item.remember)}</Text>
+        <AudioManager wordToSound={item.id}></AudioManager>
+
+        {item.remember === false && ( // Check if item.remember is false
+          <Button title=" MARK AS REMEBERED" onPress={() => onPressFunction({ item })} />
+
+        )}
+        {item.remember === true && ( // Check if item.remember is false
+          <Button title="i need review again" onPress={() => onForgetFunction({ item })} />
+
+        )}
+
+        {item.remember === true && ( // Check if item.remember is false
+          <Button color='red' title="Delete" onPress={() => onDeleteFunction({ item })} />
+        )}
+        {/* <Button title="marker" onPress={()=>onPressFunction({item})} /> */}
+
+
+
+      </View>
     </Pressable>
   );
 
   // console.log(library)
 
-  const [showRemember, setShowRemember]= useState(false)
-  const [showForget, setShowForget]= useState(false)
+  const [showRemember, setShowRemember] = useState(false)
+  const [showForget, setShowForget] = useState(false)
 
-  function showRememberHandler(){
+  function showRememberHandler() {
     setShowRemember(true);
     setShowForget(false);
   }
-  function showForgetHandler(){
+  function showForgetHandler() {
     setShowRemember(false);
     setShowForget(true);
   }
 
-  function showClearHandler(){
+  function showClearHandler() {
     setShowRemember(false);
     setShowForget(false);
   }
@@ -242,50 +255,50 @@ function ankiModeHandler(){
 
 
   return (
-    <View style={{flex:1}}>
-    <Text>This is the my screen</Text>
-    {/* {library && <Text>please add new words</Text>} */}
-    {library.length === 0 ? (
-  <Text>There is no new word for you, try to add some from library</Text>
-) : (
-  // Render something else when the library is not empty
-  <>
-  <Button title="anki-mode" onPress={ankiModeHandler}/>
-  {/* <Button title='choose remember' onPress={showRememberHandler} />
+    <View style={{ flex: 1 }}>
+      <Text>This is the my screen</Text>
+      {/* {library && <Text>please add new words</Text>} */}
+      {library.length === 0 ? (
+        <Text>There is no new word for you, try to add some from library</Text>
+      ) : (
+        // Render something else when the library is not empty
+        <>
+          <Button title="anki-mode" onPress={ankiModeHandler} />
+          {/* <Button title='choose remember' onPress={showRememberHandler} />
   <Button title='choose forget' onPress={showForgetHandler}/>
   <Button title='choose clear' onPress={showClearHandler}/> */}
 
 
-{
-  showRemember &&<FlatList
-  data={library.filter(item => item.remember)}
-  // data={library}
-  renderItem={renderItem}
-  keyExtractor={(item, index) => index.toString()}
-/>
-}
-{
-  showForget &&<FlatList
-  data={library.filter(item => !item.remember)}
-  // data={library}
-  renderItem={renderItem}
-  keyExtractor={(item, index) => index.toString()}
-/>
-}
-{!showForget && !showRemember &&
-  <FlatList
-    // data={library.filter(item => item.remember)}
-    data={library}
-    renderItem={renderItem}
-    keyExtractor={(item, index) => index.toString()}
-  />
-}
+          {
+            showRemember && <FlatList
+              data={library.filter(item => item.remember)}
+              // data={library}
+              renderItem={renderItem}
+              keyExtractor={(item, index) => index.toString()}
+            />
+          }
+          {
+            showForget && <FlatList
+              data={library.filter(item => !item.remember)}
+              // data={library}
+              renderItem={renderItem}
+              keyExtractor={(item, index) => index.toString()}
+            />
+          }
+          {!showForget && !showRemember &&
+            <FlatList
+              // data={library.filter(item => item.remember)}
+              data={library}
+              renderItem={renderItem}
+              keyExtractor={(item, index) => index.toString()}
+            />
+          }
 
-  
-  </>
-)}
-    
-  </View>
+
+        </>
+      )}
+
+    </View>
   )
 }
 

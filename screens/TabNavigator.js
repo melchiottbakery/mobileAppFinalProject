@@ -29,7 +29,7 @@ export default function TabNavigator() {
   // }
   // const hello = 'nihao'
 
-  
+
 
   return (
     <Tab.Navigator initialRouteName="Welcome">
@@ -38,15 +38,15 @@ export default function TabNavigator() {
       <Tab.Screen
         name="Library"
         component={Library}
-        // params={{ customParam: isadmin }} 
-        
-        // options={{
-        //   headerRight: () => (
+      // params={{ customParam: isadmin }} 
 
-        //       <Button title="nihao" onPress={openHandler}></Button>
-        //   ),
-          
-        // }}
+      // options={{
+      //   headerRight: () => (
+
+      //       <Button title="nihao" onPress={openHandler}></Button>
+      //   ),
+
+      // }}
       />
       <Tab.Screen name="MyList" component={MyList} />
     </Tab.Navigator>

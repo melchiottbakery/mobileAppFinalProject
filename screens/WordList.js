@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList,Button, Alert } from 'react-native'
+import { StyleSheet, Text, View, FlatList, Button, Alert } from 'react-native'
 import { SafeAreaView } from 'react-native'
 import { Pressable } from "react-native";
 import React, { useEffect, useState } from 'react'
@@ -8,17 +8,17 @@ import { auth } from '../firebase-files/FirebaseSetup';
 
 import { collection, onSnapshot } from "firebase/firestore";
 import { database } from "../firebase-files/FirebaseSetup"
-import { writeToDB,writeNewWordToUserDB,deleteBookFromLibraryDB, deleteCollection } from "../firebase-files/FirebaseHelper";
+import { writeToDB, writeNewWordToUserDB, deleteBookFromLibraryDB, deleteCollection } from "../firebase-files/FirebaseHelper";
 
 
-export default function WordList({route}) {
+export default function WordList({ route }) {
   const navigation = useNavigation();
 
   // console.log("the item is ",route)
   const worldBookName = route.params.item.name
   const wordBookid = route.params.item.id
-  const isadmin=route.params.isadmin
-  const userId=auth.currentUser.uid
+  const isadmin = route.params.isadmin
+  const userId = auth.currentUser.uid
 
   // console.log(route.params.item.name)
   const [library, setlibrary] = useState([]);
@@ -38,17 +38,17 @@ export default function WordList({route}) {
 
 
 
-  function onPressFunction({item}){
+  function onPressFunction({ item }) {
 
-   
+
     const newWord = {
       nativeWord: item.nativeWord,
       translationMeaning: item.translationMeaning,
       remember: false,
-      nativeWordShow:true,
-      translationMeaningShow:true,
+      nativeWordShow: true,
+      translationMeaningShow: true,
 
-   
+
     };
 
     // console.log("new word is",newWord)
@@ -57,57 +57,56 @@ export default function WordList({route}) {
     // setNewWord([...word, newWord]);
     // console.log(word)
     // writeToDB(newWord);
-    writeNewWordToUserDB(newWord,userId)
+    writeNewWordToUserDB(newWord, userId)
 
   }
 
   const renderItem = ({ item }) => (
-  
-    
+
+
 
     <View style={{ padding: 30, borderColor: "green", borderWidth: 1 }}>
       <Text>ID: {item.id}</Text>
       <Text>nativeWord: {item.nativeWord}</Text>
       <Text>translationMeaning: {item.translationMeaning}</Text>
-      <Button title="add" onPress={()=>onPressFunction({item})} />
+      <Button title="add" onPress={() => onPressFunction({ item })} />
     </View>
   );
 
-  function deleteHandler(){
+  function deleteHandler() {
 
     Alert.alert("Delete", "Are you going to delete ?", [
       {
         text: "No",
         onPress: () => console.log("No Pressed"),
       },
-      { text: "Yes", onPress: () => 
-      
       {
-        // console.log("deletbuttonpress")
-        // console.log(wordBookid)
-        deleteCollection(wordBookid)
-        deleteBookFromLibraryDB(wordBookid)
-        navigation.goBack()
-      }
-       },
+        text: "Yes", onPress: () => {
+          // console.log("deletbuttonpress")
+          // console.log(wordBookid)
+          deleteCollection(wordBookid)
+          deleteBookFromLibraryDB(wordBookid)
+          navigation.goBack()
+        }
+      },
     ]);
 
 
 
 
-   
+
 
   }
   return (
     <View>
       <Text>This is the wordlist screen</Text>
-      {isadmin &&<Button title="delete the whole book" onPress={deleteHandler}></Button>}
-      
+      {isadmin && <Button title="delete the whole book" onPress={deleteHandler}></Button>}
+
       <FlatList
-      data={library}
-      renderItem={renderItem}
-      keyExtractor={(item, index) => index.toString()}
-    />
+        data={library}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => index.toString()}
+      />
     </View>
   )
 }

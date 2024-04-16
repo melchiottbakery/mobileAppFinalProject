@@ -204,6 +204,57 @@ export async function writeWholeWordBookToDB(coverData,wordData) {
   }
 }
 
+async function writeAnkiToDBhelper(docid,uid){
+  await setDoc(doc(database, "users",uid,'wordlist',docid), 
+      {translationMeaningShow:false}, { merge: true });
+
+
+}
+
+export async function writeAnkiToDB(uid) {
+  try {    
+    // const collectionRef = collection(database,'users',uid,'wordlist');
+    // const snapshot = await collectionRef.get();
+    // snapshot.forEach(async (doc) => {
+    //   // Update each document
+    //   await doc.ref.update({
+    //     translationMeaningShow: false
+    //   });
+    // });
+
+
+  
+  const unsubscribe= onSnapshot(collection(database, "users", uid, "wordlist"), (querySnapshot) => {
+    if (querySnapshot) {
+      querySnapshot.forEach((doc) => {
+        console.log(doc.data())
+        writeAnkiToDBhelper(doc.data().nativeWord,uid);
+       
+
+      });
+    };
+  });
+    // const docRef= await addDoc(collection(database, 'library' ), coverData);
+    
+    // Object.keys(wordData).forEach(async key => {
+    //   const { nativeWord, translationMeaning } = wordData[key];
+    //   // console.log(newBookWordlist[key])
+    //   await setDoc(doc(database, "library",docRef.id,'wordlist',key), 
+    //   {nativeWord:nativeWord, translationMeaning:translationMeaning}, { merge: true });
+    //   // console.log(`Key: ${key}, Native Word: ${nativeWord}, Translation Meaning: ${translationMeaning}`);
+    // });
+
+    // await setDoc(doc(database, "users",userId,), data, { merge: true });
+
+    // docRef.id
+    // console.log("writenewlibaray successful, the doc id is",docRef.id)
+    unsubscribe()
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+
 export async function writeNewWordToWordBookDB(id, data) {
   try {
     

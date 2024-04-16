@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, Image, Button, Alert, Pressable } from "react-n
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import InputComponent from "../component/InputComponent";
-import { auth,storage } from '../firebase-files/FirebaseSetup';
+import { auth, storage } from '../firebase-files/FirebaseSetup';
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { ref, uploadBytes } from "firebase/storage";
 import { getDownloadURL } from "firebase/storage";
@@ -38,8 +38,8 @@ export default function Profile({ route, navigation }) {
 
 
 
-  async function verifyCameraPermission(){
-    if(status.granted){
+  async function verifyCameraPermission() {
+    if (status.granted) {
       return true;
     }
     try {
@@ -47,7 +47,7 @@ export default function Profile({ route, navigation }) {
       return permissonResponse.granted;
 
     } catch (error) {
-      console.log(error);   
+      console.log(error);
     }
   }
 
@@ -65,19 +65,19 @@ export default function Profile({ route, navigation }) {
 
   const [imageDatabasetaUri, setImageDatabasetaUri] = useState("");
 
-  async function downloadImageFromDatabase(data){
+  async function downloadImageFromDatabase(data) {
     try {
       downloadImageUri = data.imageUri
       const imageRef = ref(storage, downloadImageUri);
-      const imageDownloadUri= await getDownloadURL(imageRef);
-      console.log("downloaded" +imageDownloadUri)
+      const imageDownloadUri = await getDownloadURL(imageRef);
+      console.log("downloaded" + imageDownloadUri)
       setImageDatabasetaUri(imageDownloadUri)
-      
+
 
 
       // setDownloadImage(data.imageUri)
     } catch (error) {
-      
+
     }
   }
 
@@ -90,34 +90,33 @@ export default function Profile({ route, navigation }) {
         text: "No",
         onPress: () => console.log("No Pressed"),
       },
-      { text: "Yes", onPress: () => 
-      
       {
-        try {
-          signOut(auth)
-          navigation.navigate("Login")
-        } catch (error) {
-          console.log(error)
+        text: "Yes", onPress: () => {
+          try {
+            signOut(auth)
+            navigation.navigate("Login")
+          } catch (error) {
+            console.log(error)
+          }
         }
-      }
-       },
+      },
     ]);
   };
 
   const [imageLocalUri, setImageLocalUri] = useState("");
-  
-  async function cameraFunction(){
+
+  async function cameraFunction() {
     try {
 
       const checkPermission = await verifyCameraPermission();
 
-      if (!checkPermission){
+      if (!checkPermission) {
         Alert.alert("Please give permission for the use of camera");
         return;
-    }
+      }
 
-      const useCamera =  await ImagePicker.launchCameraAsync(
-        {allowsEditing: true});
+      const useCamera = await ImagePicker.launchCameraAsync(
+        { allowsEditing: true });
       // console.log(useCamera)
       // console.log(useCamera.assets[0].uri)
       setImageLocalUri(useCamera.assets[0].uri)
@@ -125,19 +124,19 @@ export default function Profile({ route, navigation }) {
       // uploadImageFromLocal(imageLocalUri)
     } catch (error) {
       console.log(error)
-      
+
     }
   }
 
-  const[openSaveButton, setOpenSaveButton]= useState(false)
+  const [openSaveButton, setOpenSaveButton] = useState(false)
 
 
 
-  function saveImageChange(){
+  function saveImageChange() {
     uploadImageFromLocal(imageLocalUri)
   }
 
-  async function uploadImageFromLocal(imageLocalUri){
+  async function uploadImageFromLocal(imageLocalUri) {
     try {
       const response = await fetch(imageLocalUri);
       // console.log("uploadImageFromLocal is",response)
@@ -147,7 +146,7 @@ export default function Profile({ route, navigation }) {
       const imageRef = await ref(storage, `profileImages/${imageName}`)
       const uploadResult = await uploadBytes(imageRef, imageBlob);
       console.log("upload successed")
-      
+
 
       // setImageLocalUri('')
       setOpenSaveButton(false)
@@ -162,51 +161,51 @@ export default function Profile({ route, navigation }) {
   }
 
 
-function writeImageLinkToUser(storagePath){
-  editImageLinkInDB(auth.currentUser.uid,{imageUri:storagePath},)
-
- 
-}
+  function writeImageLinkToUser(storagePath) {
+    editImageLinkInDB(auth.currentUser.uid, { imageUri: storagePath },)
 
 
-function changeNameHandler(){
-  console.log("pressed")
-  setNewUserDocToDB({nickname:nickname},"users",auth.currentUser.uid)
-  setOriginNickname(nickname);
+  }
 
 
-}
+  function changeNameHandler() {
+    console.log("pressed")
+    setNewUserDocToDB({ nickname: nickname }, "users", auth.currentUser.uid)
+    setOriginNickname(nickname);
 
 
-const showButton = originNickname !== nickname;
+  }
+
+
+  const showButton = originNickname !== nickname;
   return (
     <SafeAreaView>
       {/*  <Text>This is the Profile screen</Text> */}
 
       {/*  <Text>Add a pic as a placeholder</Text> */}
       <Pressable onPress={cameraFunction}>
-      <View style={styles.imageContainer}>
-        {/* <Image source={require("../assets/imageUpload.jpeg")} style={styles.image} />
+        <View style={styles.imageContainer}>
+          {/* <Image source={require("../assets/imageUpload.jpeg")} style={styles.image} />
         {imageLocalUri && (
         <Image source={{ uri: imageLocalUri }} style={{ width: 100, height: 100 }} />
       )}
       {
         imageDatabasetaUri &&   <Image style = {styles.image} source= {{uri:imageDatabasetaUri}}/>
       } */}
-      {imageLocalUri ?
-      <Image source={{ uri: imageLocalUri }} style={{ width: 100, height: 100 }} />:
-      <>
-      {imageDatabasetaUri ? 
-  <Image style={styles.image} source={{ uri: imageDatabasetaUri }} />
-  : <Image source={require("../assets/imageUpload.jpeg")} style={styles.image} />}
-      </>
-      }
+          {imageLocalUri ?
+            <Image source={{ uri: imageLocalUri }} style={{ width: 100, height: 100 }} /> :
+            <>
+              {imageDatabasetaUri ?
+                <Image style={styles.image} source={{ uri: imageDatabasetaUri }} />
+                : <Image source={require("../assets/imageUpload.jpeg")} style={styles.image} />}
+            </>
+          }
 
-{/* {imageDatabasetaUri ? 
+          {/* {imageDatabasetaUri ? 
   <Image style={styles.image} source={{ uri: imageDatabasetaUri }} />
   : <Image source={require("../assets/imageUpload.jpeg")} style={styles.image} />} */}
 
-{/* {!imageLocalUri && (
+          {/* {!imageLocalUri && (
       <Image source={require("../assets/imageUpload.jpeg")} style={styles.image} />
     )}
     {imageLocalUri && (
@@ -216,23 +215,23 @@ const showButton = originNickname !== nickname;
       <Image style={styles.image} source={{ uri: imageDatabasetaUri }} />
     )} */}
 
-      
-      </View>
-     
-      <Text>You can change your nickname and your avatar</Text>
+
+        </View>
+
+        <Text>You can change your nickname and your avatar</Text>
       </Pressable>
       {openSaveButton &&
 
-(      <Button title="save image changes" onPress={saveImageChange}></Button>
-)      
-}
+        (<Button title="save image changes" onPress={saveImageChange}></Button>
+        )
+      }
       <InputComponent
         label="Nickname"
         value={nickname}
         onChangeText={setNickname}
       />
-      {showButton &&( 
-      <Button title= "Change The Nickname" onPress={changeNameHandler}></Button>)}
+      {showButton && (
+        <Button title="Change The Nickname" onPress={changeNameHandler}></Button>)}
 
       <InputComponent
         //here is a InputComponent can show the email, but user cannot pressed or
@@ -243,12 +242,12 @@ const showButton = originNickname !== nickname;
 
       {/* // if you can add a alert for this one? */}
       <View style={styles.buttonContainer}>
-      <Button
-        //a button cancel and go back to the Login screen
-        title="LOG OUT"
-        onPress={logoutHandler}
-      />
-      
+        <Button
+          //a button cancel and go back to the Login screen
+          title="LOG OUT"
+          onPress={logoutHandler}
+        />
+
       </View>
     </SafeAreaView>
   );

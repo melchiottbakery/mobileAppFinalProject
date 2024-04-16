@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList, Pressable, Button,Image } from 'react-native'
+import { StyleSheet, Text, View, FlatList, Pressable, Button,Image, Alert } from 'react-native'
 import { SafeAreaView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
@@ -118,8 +118,24 @@ listenonSnapshot();
 
   const [jsonLink, setJsonLink]=useState(   "https://raw.githubusercontent.com/melchiottbakery/testtesttest/main/db.json")
   function loadJsonLinkHandler(){
-    console.log('jsonLink is'+ jsonLink)
+
+    Alert.alert("Loading", "Would you like to load this book", [
+      {
+        text: "No",
+        onPress: () => console.log("No Pressed"),
+      },
+      { text: "Yes", onPress: () => 
+      
+      {
+        
+        console.log('jsonLink is'+ jsonLink)
     fetchJsonLink(jsonLink)
+      }
+       },
+    ]);
+
+
+   
   }
   // "https://raw.githubusercontent.com/melchiottbakery/testtesttest/main/db.json"
   // 'https://my-json-server.typicode.com/melchiottbakery/testtesttest/db.json' 
@@ -187,12 +203,12 @@ items={library.map(item => ({ label: item.id, value: item.id }))}
         value={selectedBook}
 ></DropDownPicker>
 
-<Button title= "nihao" onPress={cameraFunction}></Button>
+<Button title= "use the camera" onPress={cameraFunction}></Button>
 
 {imageLocalUri &&(  <Image source={{ uri: imageLocalUri }} style={{ width: 100, height: 100 }} />
 )
 }
-<Button title="save image changes" onPress={saveImageChange}></Button>
+<Button title="save the image " onPress={saveImageChange}></Button>
   </View>
 
   )
@@ -212,6 +228,7 @@ items={library.map(item => ({ label: item.id, value: item.id }))}
   }
   function saveImageChange(){
     uploadImageFromLocal(imageLocalUri)
+    setImageLocalUri('');
   }
 
   async function uploadImageFromLocal(imageLocalUri){
@@ -260,7 +277,6 @@ items={library.map(item => ({ label: item.id, value: item.id }))}
 
       const useCamera =  await ImagePicker.launchCameraAsync(
         {allowsEditing: true});
-      console.log("have use camera",useCamera)
       // console.log(useCamera.assets[0].uri)
       setImageLocalUri(useCamera.assets[0].uri)
       // uploadImageFromLocal(imageLocalUri)
@@ -276,7 +292,7 @@ items={library.map(item => ({ label: item.id, value: item.id }))}
 
 {isadmin && (
         <>
-          <Button title="open admin terminal" onPress={()=>setAdminTerminalOpen(!adminTerminalOpen)}></Button>
+          <Button title="open/close admin terminal" onPress={()=>setAdminTerminalOpen(!adminTerminalOpen)}></Button>
           {adminTerminalOpen && AdminTerminal }
         </>
       )}

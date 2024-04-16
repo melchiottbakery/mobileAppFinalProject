@@ -3,23 +3,23 @@ import React, { useEffect, useState } from 'react'
 import { Audio } from 'expo-av';
 
 
-export default function AudioManager({wordToSound}) {
+export default function AudioManager({ wordToSound }) {
 
 
 
-  async function playsoundtest(){
+  async function playsoundtest() {
     console.log("playsound")
     const soundObject = new Audio.Sound();
 
     try {
       console.log("try to play the sound")
 
-      const { sound } = await Audio.Sound.createAsync({ uri: `https://dict.youdao.com/dictvoice?le=jap&type3&audio=${wordToSound}` },{ shouldPlay: true });
-        await sound.playAsync();
-  } catch (error) {
+      const { sound } = await Audio.Sound.createAsync({ uri: `https://dict.youdao.com/dictvoice?le=jap&type3&audio=${wordToSound}` }, { shouldPlay: true });
+      await sound.playAsync();
+    } catch (error) {
       console.log('Error playing sound:', error);
-  }
-      console.log('playsound for', wordToSound)
+    }
+    console.log('playsound for', wordToSound)
   }
 
 
@@ -31,9 +31,9 @@ export default function AudioManager({wordToSound}) {
   async function playSound() {
     console.log('Loading Sound');
     const encodedString = encodeURIComponent(wordToSound);
-    const { sound } = await Audio.Sound.createAsync({ uri: `https://dict.youdao.com/dictvoice?le=jap&type3&audio=${encodedString}`}
+    const { sound } = await Audio.Sound.createAsync({ uri: `https://dict.youdao.com/dictvoice?le=jap&type3&audio=${encodedString}` }
 
-  );
+    );
     setSound(sound);
 
     console.log('Playing Sound');
@@ -44,9 +44,9 @@ export default function AudioManager({wordToSound}) {
   useEffect(() => {
     return sound
       ? () => {
-          console.log('Unloading Sound');
-          sound.unloadAsync();
-        }
+        console.log('Unloading Sound');
+        sound.unloadAsync();
+      }
       : undefined;
   }, [sound]);
 
@@ -55,7 +55,7 @@ export default function AudioManager({wordToSound}) {
   return (
     <View>
       {/* <Text>AudioManager</Text> */}
-      <Button title= 'play the sound' onPress={playSound}></Button>
+      <Button title='play the sound' onPress={playSound}></Button>
     </View>
   )
 }
