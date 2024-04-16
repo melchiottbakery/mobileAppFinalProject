@@ -219,6 +219,38 @@ export default function MyList() {
 
 
 
+  function showNativeHandler({item}) {
+    console.log("press word is",{item})
+    // 使用map函数遍历数据，仅更新id为“千代田”的对象的nativeWordShow属性为false，其他对象保持不变
+    const newData = library.map(items => {
+      if (items.id === item.nativeWord) {
+        return {
+          ...items,
+          showNative: !item.showNative
+        };
+      } else {
+        return items;
+      }
+    });
+  
+    // 更新数据
+    setlibrary(newData); // 这里假设您使用useState来管理数据
+  };
+
+  function showTranslationHandler({item}) {
+    console.log("press word is",{item})
+    const newData = library.map(items => {
+      if (items.id === item.nativeWord) {
+        return {
+          ...items,
+          showTranslation: !item.showTranslation
+        };
+      } else {
+        return items;
+      }
+    });
+      setlibrary(newData); 
+  };
 
   const renderItem = ({ item }) => (
     <Pressable >
@@ -226,21 +258,34 @@ export default function MyList() {
       <View style={{ padding: 30, borderColor: "blue", borderWidth: 3 }}>
         <Text>ID: {item.id}</Text>
         <Text>nativeword: {item.nativeWord}</Text>
-        <Button title="change nativeWordShow" onPress={() => showNativeMeaning({ item })}></Button>
+        {/* <Button title="change nativeWordShow" onPress={() => showNativeMeaning({ item })}></Button>
 
         {!item.nativeWordShow && <Text>show the nativeWord</Text>}
-        {item.nativeWordShow && <Text>meaning: {item.nativeWord}</Text>}
+        {item.nativeWordShow && <Text>meaning: {item.nativeWord}</Text>} */}
 
-        <Button title="change translationMeaning" onPress={() => showTranslationMeaning({ item })}></Button>
 
-        {!item.translationMeaningShow && <Text>show the translationMeaning</Text>}
-        {item.translationMeaningShow && <Text>meaning: {item.translationMeaning}</Text>}
+
+        <Button title="change showNative" onPress={() => showNativeHandler({ item })}></Button>
+
+{!item.showNative && <Text>show the nativeWord</Text>}
+{item.showNative && <Text>meaning: {item.nativeWord}</Text>}
+<Text>nativeWordShow: {String(item.showNative)}</Text>
+
+
+        <Button title="change showTranslation" onPress={() => showTranslationHandler({ item })}></Button>
+        {!item.showTranslation && <Text>show the translationMeaning</Text>}
+{item.showTranslation && <Text>meaning: {item.translationMeaning}</Text>}
+<Text>nativeWordShow: {String(item.showTranslation)}</Text>
+
+
+        {/* {!item.translationMeaningShow && <Text>show the translationMeaning</Text>}
+        {item.translationMeaningShow && <Text>meaning: {item.translationMeaning}</Text>} */}
 
         {/* <Text>meaning: {item.translationMeaning}</Text> */}
 
-        <Text>nativeWordShow: {String(item.nativeWordShow)}</Text>
+        {/* <Text>nativeWordShow: {String(item.nativeWordShow)}</Text>
 
-        <Text>translationMeaningShow: {String(item.translationMeaningShow)}</Text>
+        <Text>translationMeaningShow: {String(item.translationMeaningShow)}</Text> */}
 
 
 

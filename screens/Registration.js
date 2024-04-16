@@ -6,7 +6,7 @@ import Checkbox from "expo-checkbox";
 
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase-files/FirebaseSetup";
-import { setDocToDB } from "../firebase-files/FirebaseHelper";
+import { setDocToDB, setNewUserDocToDB } from "../firebase-files/FirebaseHelper";
 
 export default function Registration({ navigation }) {
   // const [nickname, setNickname] = useState("");
@@ -111,8 +111,13 @@ export default function Registration({ navigation }) {
     try {
       const userCred = await createUserWithEmailAndPassword(auth, email, password);
       // console.log(userCred)
-      // console.log(userCred._tokenResponse.localId)
-      setNewUserDocToDB({ nickname: nickname, email: email, isAdmin: isAdmin }, "users", userCred._tokenResponse.localId)
+      console.log(userCred._tokenResponse.localId)
+      // console.log(nickname)
+      setNewUserDocToDB({ 
+        nickname: nickname, 
+        email: email, 
+        isAdmin: isAdmin 
+      }, "users", userCred._tokenResponse.localId)
 
     } catch (error) {
       console.log(error.code)

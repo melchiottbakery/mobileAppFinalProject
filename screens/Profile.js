@@ -19,25 +19,17 @@ import { editImageLinkInDB, getProfile, setNewUserDocToDB } from "../firebase-fi
 
 
 export default function Profile({ route, navigation }) {
-  // You can give me some const and useState for the name, the email and the password
-  // const {nickname, email, password } = route.params;
-  // console.log(auth.currentUser.email)
+
 
   const [originNickname, setOriginNickname] = useState('');
 
 
   const [nickname, setNickname] = useState('');
+  const [uploadnickname, setUploadNickname] = useState('');
+
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState("12345");
-  const [secureTextEntry, setSecureTextEntry] = useState(true);
-
-
 
   const [status, requestPermission] = ImagePicker.useCameraPermissions();
-
-  // console.log(status)
-
-
 
   async function verifyCameraPermission() {
     if (status.granted) {
@@ -59,6 +51,7 @@ export default function Profile({ route, navigation }) {
       if (user){
   setUserLoggedIn(true);
 
+
   async function getDataFromDB() {
     
     const data = await getProfile("users", auth.currentUser.uid);
@@ -68,30 +61,35 @@ export default function Profile({ route, navigation }) {
     setEmail(data.email)
     downloadImageFromDatabase(data)
   }
-  getDataFromDB();
+  if(auth.currentUser){
+  getDataFromDB();}
 
 
       }
       else{
         setUserLoggedIn(false);
+
   
       }
     })
   })
   
 
-  // useEffect(() => {
-  //   async function getDataFromDB() {
+  useEffect(() => {
+    async function getDataFromDB() {
     
-  //     const data = await getProfile("users", auth.currentUser.uid);
-  //     // console.log(data)
-  //     setOriginNickname(data.nickname)
-  //     setNickname(data.nickname)
-  //     setEmail(data.email)
-  //     downloadImageFromDatabase(data)
-  //   }
-  //   getDataFromDB();
-  // }, []);
+      const data = await getProfile("users", auth.currentUser.uid);
+      // console.log(data)
+      setOriginNickname(data.nickname)
+      setNickname(data.nickname)
+      setEmail(data.email)
+      downloadImageFromDatabase(data)
+
+
+    }
+    if(auth.currentUser){
+    getDataFromDB();}
+  }, []);
 
   const [imageDatabasetaUri, setImageDatabasetaUri] = useState("");
 
@@ -107,6 +105,9 @@ export default function Profile({ route, navigation }) {
 
       // setDownloadImage(data.imageUri)
     } catch (error) {
+      console.log(error)
+      setImageDatabasetaUri('https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGljfGVufDB8fDB8fHww')
+
 
     }
   }
@@ -148,8 +149,9 @@ export default function Profile({ route, navigation }) {
       const useCamera = await ImagePicker.launchCameraAsync(
         { allowsEditing: true });
       // console.log(useCamera)
-      // console.log(useCamera.assets[0].uri)
+      console.log(useCamera.assets[0].uri)
       setImageLocalUri(useCamera.assets[0].uri)
+      
       setOpenSaveButton(true)
       // uploadImageFromLocal(imageLocalUri)
     } catch (error) {
@@ -164,6 +166,10 @@ export default function Profile({ route, navigation }) {
 
   function saveImageChange() {
     uploadImageFromLocal(imageLocalUri)
+
+    ///
+    
+    setImageLocalUri('')
   }
 
   async function uploadImageFromLocal(imageLocalUri) {
@@ -200,12 +206,15 @@ export default function Profile({ route, navigation }) {
 
   function changeNameHandler() {
     console.log("pressed")
-    setNewUserDocToDB({ nickname: nickname }, "users", auth.currentUser.uid)
-    setOriginNickname(nickname);
+    setNewUserDocToDB({ nickname: uploadnickname }, "users", auth.currentUser.uid)
+    // setOriginNickname(nickname);
+    setNickname(uploadnickname)
+    setOpenButton(false)
 
 
   }
 
+  const [openButton,setOpenButton ] =useState(false)
 
   const showButton = originNickname !== nickname;
 
@@ -256,12 +265,26 @@ export default function Profile({ route, navigation }) {
         (<Button title="save image changes" onPress={saveImageChange}></Button>
         )
       }
+      <Pressable onPressIn={()=>setOpenButton(!openButton)}>
       <InputComponent
         label="Nickname"
         value={nickname}
         onChangeText={setNickname}
+        editable={false}
       />
-      {showButton && (
+      </Pressable>
+
+      {openButton && (
+        
+        <InputComponent
+        value={uploadnickname}
+        onChangeText={setUploadNickname}
+        editable={true}
+      />)}
+
+
+      {openButton && (
+        
         <Button title="Change The Nickname" onPress={changeNameHandler}></Button>)}
 
       <InputComponent
