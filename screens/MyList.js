@@ -93,6 +93,35 @@ export default function MyList() {
 
   // editInDB(item.id, forgetWord);
   }
+//   const [showText, setShowText] = useState(false);
+
+//  function  presshandler({remember}){
+// setShowText(true);
+//  }
+
+
+function showTranslationMeaning({item}){
+  // console.log(item)
+
+  const translationMeaningShow = {
+    translationMeaningShow : !item.translationMeaningShow
+};
+editRememberInDB(item.id,userId,translationMeaningShow)
+// editInDB(item.id, rememberWord);
+}
+
+function showNativeMeaning({item}){
+  // console.log(item)
+
+  const nativeWordShow = {
+    nativeWordShow : !item.nativeWordShow
+};
+editRememberInDB(item.id,userId,nativeWordShow)
+// editInDB(item.id, rememberWord);
+}
+
+
+
 
   const renderItem = ({ item }) => (
     <Pressable >
@@ -100,7 +129,24 @@ export default function MyList() {
     <View style={{ padding: 30, borderColor: "blue", borderWidth: 3 }}>
       <Text>ID: {item.id}</Text>
       <Text>nativeword: {item.nativeWord}</Text>
-      <Text>meaning: {item.translationMeaning}</Text>
+      <Button title="change nativeWordShow" onPress={()=>showNativeMeaning({item})}></Button>
+
+      {!item.nativeWordShow && <Text>show the nativeWord</Text>}
+      {item.nativeWordShow && <Text>meaning: {item.nativeWord}</Text>}
+
+      <Button title="change translationMeaning" onPress={()=>showTranslationMeaning({item})}></Button>
+      
+      {!item.translationMeaningShow && <Text>show the translationMeaning</Text>}
+      {item.translationMeaningShow && <Text>meaning: {item.translationMeaning}</Text>}
+
+            {/* <Text>meaning: {item.translationMeaning}</Text> */}
+
+            <Text>nativeWordShow: {String(item.nativeWordShow)}</Text>
+
+            <Text>translationMeaningShow: {String(item.translationMeaningShow)}</Text>
+
+
+      
       <Text>remember: {String(item.remember)}</Text>
       <AudioManager wordToSound={item.id}></AudioManager>
 
@@ -124,21 +170,68 @@ export default function MyList() {
     </Pressable>
   );
 
-  console.log(library)
+  // console.log(library)
+
+  const [showRemember, setShowRemember]= useState(false)
+  const [showForget, setShowForget]= useState(false)
+
+  function showRememberHandler(){
+    setShowRemember(true);
+    setShowForget(false);
+  }
+  function showForgetHandler(){
+    setShowRemember(false);
+    setShowForget(true);
+  }
+
+  function showClearHandler(){
+    setShowRemember(false);
+    setShowForget(false);
+  }
+
+
 
   return (
-    <View>
+    <View style={{flex:1}}>
     <Text>This is the my screen</Text>
     {/* {library && <Text>please add new words</Text>} */}
     {library.length === 0 ? (
   <Text>There is no new word for you, try to add some from library</Text>
 ) : (
   // Render something else when the library is not empty
+  <>
+  <Button title='choose remember' onPress={showRememberHandler} />
+  <Button title='choose forget' onPress={showForgetHandler}/>
+  <Button title='choose clear' onPress={showClearHandler}/>
+
+
+{
+  showRemember &&<FlatList
+  data={library.filter(item => item.remember)}
+  // data={library}
+  renderItem={renderItem}
+  keyExtractor={(item, index) => index.toString()}
+/>
+}
+{
+  showForget &&<FlatList
+  data={library.filter(item => !item.remember)}
+  // data={library}
+  renderItem={renderItem}
+  keyExtractor={(item, index) => index.toString()}
+/>
+}
+{!showForget && !showRemember &&
   <FlatList
+    // data={library.filter(item => item.remember)}
     data={library}
     renderItem={renderItem}
     keyExtractor={(item, index) => index.toString()}
   />
+}
+
+  
+  </>
 )}
     
   </View>

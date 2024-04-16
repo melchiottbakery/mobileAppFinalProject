@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList,Button } from 'react-native'
+import { StyleSheet, Text, View, FlatList,Button, Alert } from 'react-native'
 import { SafeAreaView } from 'react-native'
 import { Pressable } from "react-native";
 import React, { useEffect, useState } from 'react'
@@ -45,6 +45,9 @@ export default function WordList({route}) {
       nativeWord: item.nativeWord,
       translationMeaning: item.translationMeaning,
       remember: false,
+      nativeWordShow:true,
+      translationMeaningShow:true,
+
    
     };
 
@@ -67,24 +70,32 @@ export default function WordList({route}) {
       <Text>nativeWord: {item.nativeWord}</Text>
       <Text>translationMeaning: {item.translationMeaning}</Text>
       <Button title="add" onPress={()=>onPressFunction({item})} />
-
-      {/* <Pressable onPress={()=>{onPressFunction()}}>
-        <Text>nihao</Text></Pressable> */}
-      
     </View>
   );
 
-  // //next time use this api to add database
-  // fetch('https://raw.githubusercontent.com/melchiottbakery/testtesttest/main/word.json')
-  //     .then(response => response.json())
-  //     .then(json => console.log(json))
-
   function deleteHandler(){
-    console.log("deletbuttonpress")
-    console.log(wordBookid)
-    deleteCollection(wordBookid)
-    deleteBookFromLibraryDB(wordBookid)
-    navigation.goBack()
+
+    Alert.alert("Delete", "Are you going to delete ?", [
+      {
+        text: "No",
+        onPress: () => console.log("No Pressed"),
+      },
+      { text: "Yes", onPress: () => 
+      
+      {
+        // console.log("deletbuttonpress")
+        // console.log(wordBookid)
+        deleteCollection(wordBookid)
+        deleteBookFromLibraryDB(wordBookid)
+        navigation.goBack()
+      }
+       },
+    ]);
+
+
+
+
+   
 
   }
   return (
