@@ -33,7 +33,7 @@ export default function Login({ navigation }) {
     if (validateEmail()) {
       setError("");
       //console.log(email);
-      //console.log(password);
+      console.log(password);
       userAuthHandler();
     } else {
       setError("Please enter a valid email");

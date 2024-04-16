@@ -10,6 +10,7 @@ import { getDownloadURL } from "firebase/storage";
 
 
 
+
 import * as ImagePicker from 'expo-image-picker';
 
 
@@ -20,7 +21,7 @@ import { editImageLinkInDB, getProfile, setNewUserDocToDB } from "../firebase-fi
 export default function Profile({ route, navigation }) {
   // You can give me some const and useState for the name, the email and the password
   // const {nickname, email, password } = route.params;
-  console.log(auth.currentUser.email)
+  // console.log(auth.currentUser.email)
 
   const [originNickname, setOriginNickname] = useState('');
 
@@ -50,18 +51,47 @@ export default function Profile({ route, navigation }) {
       console.log(error);
     }
   }
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
 
-  useEffect(() => {
-    async function getDataFromDB() {
-      const data = await getProfile("users", auth.currentUser.uid);
-      // console.log(data)
-      setOriginNickname(data.nickname)
-      setNickname(data.nickname)
-      setEmail(data.email)
-      downloadImageFromDatabase(data)
-    }
-    getDataFromDB();
-  }, []);
+
+  useEffect(()=>{
+    onAuthStateChanged(auth,(user) => {
+      if (user){
+  setUserLoggedIn(true);
+
+  async function getDataFromDB() {
+    
+    const data = await getProfile("users", auth.currentUser.uid);
+    // console.log(data)
+    setOriginNickname(data.nickname)
+    setNickname(data.nickname)
+    setEmail(data.email)
+    downloadImageFromDatabase(data)
+  }
+  getDataFromDB();
+
+
+      }
+      else{
+        setUserLoggedIn(false);
+  
+      }
+    })
+  })
+  
+
+  // useEffect(() => {
+  //   async function getDataFromDB() {
+    
+  //     const data = await getProfile("users", auth.currentUser.uid);
+  //     // console.log(data)
+  //     setOriginNickname(data.nickname)
+  //     setNickname(data.nickname)
+  //     setEmail(data.email)
+  //     downloadImageFromDatabase(data)
+  //   }
+  //   getDataFromDB();
+  // }, []);
 
   const [imageDatabasetaUri, setImageDatabasetaUri] = useState("");
 
@@ -94,7 +124,7 @@ export default function Profile({ route, navigation }) {
         text: "Yes", onPress: () => {
           try {
             signOut(auth)
-            navigation.navigate("Login")
+            // navigation.navigate("Registration")
           } catch (error) {
             console.log(error)
           }
@@ -178,8 +208,9 @@ export default function Profile({ route, navigation }) {
 
 
   const showButton = originNickname !== nickname;
-  return (
-    <SafeAreaView>
+
+  const AppStack=(
+    <>
       {/*  <Text>This is the Profile screen</Text> */}
 
       {/*  <Text>Add a pic as a placeholder</Text> */}
@@ -249,6 +280,22 @@ export default function Profile({ route, navigation }) {
         />
 
       </View>
+      </>
+  )
+
+  function loginHandler(){
+    console.log("ziyoule")
+    navigation.navigate('Login')
+  }
+  const AppAuth=(
+    <>
+    <Button title = "login" onPress={loginHandler}></Button>
+    </>
+  )
+
+  return (
+    <SafeAreaView>
+      {userLoggedIn ? AppStack : AppAuth}
     </SafeAreaView>
   );
 }

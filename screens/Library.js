@@ -5,8 +5,10 @@ import { useNavigation } from '@react-navigation/native';
 import CountryFlag from "react-native-country-flag";
 import DropDownPicker from 'react-native-dropdown-picker';
 
+import { onAuthStateChanged } from "firebase/auth";
+
 import { collection, onSnapshot, } from "firebase/firestore"
-import { database, auth,storage } from "../firebase-files/FirebaseSetup"
+import { database, auth,storage, } from "../firebase-files/FirebaseSetup"
 import InputComponent from '../component/InputComponent';
 import { writeNewWordBookToDB, writeWholeWordBookToDB,getProfile,editImageLinkInCover } from '../firebase-files/FirebaseHelper';
 
@@ -81,14 +83,41 @@ listenonSnapshot();
 
   const [isadmin,setIsadmin]=useState(false)
 
-  useEffect(() => {
-    async function getDataFromDB() {
-      const data = await getProfile("users", auth.currentUser.uid);
-      // console.log(data)
-      setIsadmin(data.isAdmin)
-    }
-    getDataFromDB();
-  }, []);
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
+
+
+  useEffect(()=>{
+    onAuthStateChanged(auth,(user) => {
+      if (user){
+  setUserLoggedIn(true);
+  async function getDataFromDB() {
+      
+    const data = await getProfile("users", auth.currentUser.uid);
+    // console.log(data)
+    setIsadmin(data.isAdmin)
+   
+  }
+  getDataFromDB();
+      }
+      else{
+        setUserLoggedIn(false);
+        setIsadmin(false);
+  
+      }
+    })
+  })
+
+
+  // useEffect(() => {
+  //   async function getDataFromDB() {
+      
+  //     const data = await getProfile("users", auth.currentUser.uid);
+  //     // console.log(data)
+  //     setIsadmin(data.isAdmin)
+     
+  //   }
+  //   getDataFromDB();
+  // }, []);
 
   function onPressFunction({item}){
     console.log("whichone youare pressing",item)

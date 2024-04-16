@@ -16,9 +16,10 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator 
         screenOptions={{headerShown: false}}>
-        <Stack.Screen name="Login" component={Login} />
+          
+         <Stack.Screen name="User" component={TabNavigator} />
+         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Registration" component={Registration} />
-        <Stack.Screen name="User" component={TabNavigator} />
         <Stack.Screen name="WordList" component={WordList}
 
           options={({ navigation }) => ({

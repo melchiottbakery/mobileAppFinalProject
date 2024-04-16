@@ -10,7 +10,10 @@ import LocationManager from './LocationManager';
 
 
 export default function Welcome() {
-
+  // function loginHandler(){
+  //   console.log("ziyoule")
+  //   navigation.navigate('Login')
+  // }
 
 
   return (
@@ -19,8 +22,9 @@ export default function Welcome() {
       <Text>You can search for the nearest Japanese language schools below</Text>
       <Text>You can also browse existing vocabulary books on the library tab</Text>
       <Text>You can create a new account to manage your learning progress on the profile tab.</Text>
+      {/* <Button title = "login" onPress={loginHandler}></Button> */}
 
-      <Map></Map>
+      <Map/>
 
       {/* <LocationManager></LocationManager> */}
 

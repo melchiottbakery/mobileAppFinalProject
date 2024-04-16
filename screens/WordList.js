@@ -18,7 +18,7 @@ export default function WordList({ route }) {
   const worldBookName = route.params.item.name
   const wordBookid = route.params.item.id
   const isadmin = route.params.isadmin
-  const userId = auth.currentUser.uid
+  // const userId = auth.currentUser.uid
 
   // console.log(route.params.item.name)
   const [library, setlibrary] = useState([]);
@@ -57,7 +57,8 @@ export default function WordList({ route }) {
     // setNewWord([...word, newWord]);
     // console.log(word)
     // writeToDB(newWord);
-    writeNewWordToUserDB(newWord, userId)
+    if(auth.currentUser){
+    writeNewWordToUserDB(newWord, auth.currentUser.uid)}
 
   }
 
@@ -69,7 +70,7 @@ export default function WordList({ route }) {
       <Text>ID: {item.id}</Text>
       <Text>nativeWord: {item.nativeWord}</Text>
       <Text>translationMeaning: {item.translationMeaning}</Text>
-      <Button title="add" onPress={() => onPressFunction({ item })} />
+      {auth.currentUser && <Button title="add" onPress={() => onPressFunction({ item })} />}
     </View>
   );
 

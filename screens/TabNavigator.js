@@ -5,6 +5,8 @@ import Profile from "./Profile";
 import Library from "./Library";
 import MyList from "./MyList";
 import Welcome from "./Welcome";
+import { onAuthStateChanged } from "firebase/auth";
+
 
 const Tab = createBottomTabNavigator();
 import { getProfile } from "../firebase-files/FirebaseHelper";
@@ -30,11 +32,28 @@ export default function TabNavigator() {
   // const hello = 'nihao'
 
 
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
+
+
+  useEffect(()=>{
+    onAuthStateChanged(auth,(user) => {
+      if (user){
+  setUserLoggedIn(true);
+      }
+      else{
+        setUserLoggedIn(false);
+  
+      }
+    })
+  })
+
 
   return (
     <Tab.Navigator initialRouteName="Welcome">
       <Tab.Screen name="Profile" component={Profile} />
       <Tab.Screen name="Welcome" component={Welcome} />
+
+      
       <Tab.Screen
         name="Library"
         component={Library}
@@ -48,7 +67,7 @@ export default function TabNavigator() {
 
       // }}
       />
-      <Tab.Screen name="MyList" component={MyList} />
+      {userLoggedIn && <Tab.Screen name="MyList" component={MyList} />}
     </Tab.Navigator>
   );
 }
