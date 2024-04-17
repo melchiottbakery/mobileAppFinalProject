@@ -46,30 +46,64 @@ export default function Profile({ route, navigation }) {
   }
   const [userLoggedIn, setUserLoggedIn] = useState(false);
 
+//   useEffect(() => {
+
+// // try {
+//   const unsubscribe = onSnapshot(
+
+//     doc(database, "users", auth.currentUser.uid),
+
+//     (doc) => {
+
+//       const data = doc.data();
+//       setOriginNickname(data.nickname)
+//               setNickname(data.nickname)
+//               setEmail(data.email)
+//               downloadImageFromDatabase(data)
+//     });
+
+  
+// // } catch (error) {
+// //   console.log(error)
+  
+// // }
+    
+
+
+//     return () => {
+//       console.log("unsubscribe");
+//       unsubscribe();
+//     };
+//   }, [userLoggedIn]);
+
+
+
+
   useEffect(() => {
-
-
-    const unsubscribe = onSnapshot(
-
-      doc(database, "users", auth.currentUser.uid),
-
-      (doc) => {
-
-        const data = doc.data();
-        setOriginNickname(data.nickname)
-                setNickname(data.nickname)
-                setEmail(data.email)
-                downloadImageFromDatabase(data)
-      });
-
-
-
+    let unsubscribe; // Declare unsubscribe outside the try block
+  
+    try {
+      unsubscribe = onSnapshot(
+        doc(database, "users", auth.currentUser.uid),
+        (doc) => {
+          const data = doc.data();
+          setOriginNickname(data.nickname);
+          setNickname(data.nickname);
+          setEmail(data.email);
+          downloadImageFromDatabase(data);
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  
     return () => {
-      console.log("unsubscribe");
-      unsubscribe();
+      if (unsubscribe) { // Check if unsubscribe is defined before calling it
+        console.log("unsubscribe");
+        unsubscribe();
+      }
     };
   }, [userLoggedIn]);
-
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
