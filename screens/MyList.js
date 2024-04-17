@@ -62,19 +62,19 @@ export default function MyList() {
   //   setData(newData); // 这里假设您使用useState来管理数据
   // };
 
-  function ankiModeHandler() {
-    console.log("anki")
-    const newData = library.map(item => {
-      return {
-        ...item,
-        translationMeaningShow: false
-      };
-    });
+  // function ankiModeHandler() {
+  //   console.log("anki")
+  //   const newData = library.map(item => {
+  //     return {
+  //       ...item,
+  //       translationMeaningShow: false
+  //     };
+  //   });
   
-    // 更新数据
-    setlibrary(newData); 
+  //   // 更新数据
+  //   setlibrary(newData); 
 
-  }
+  // }
 
   // function ankiModeHandler() {
   //   console.log("anki")
@@ -258,13 +258,13 @@ export default function MyList() {
       <View style={{ padding: 30, borderColor: "blue", borderWidth: 3 }}>
         <Text>ID: {item.id}</Text>
         <Text>nativeword: {item.nativeWord}</Text>
-        {/* <Button title="change nativeWordShow" onPress={() => showNativeMeaning({ item })}></Button>
+        <Button title="change nativeWordShow" onPress={() => showNativeMeaning({ item })}></Button>
 
         {!item.nativeWordShow && <Text>show the nativeWord</Text>}
-        {item.nativeWordShow && <Text>meaning: {item.nativeWord}</Text>} */}
+        {item.nativeWordShow && <Text>meaning: {item.nativeWord}</Text>}
 
 
-
+{/* 
         <Button title="change showNative" onPress={() => showNativeHandler({ item })}></Button>
 
 {!item.showNative && <Text>show the nativeWord</Text>}
@@ -275,7 +275,7 @@ export default function MyList() {
         <Button title="change showTranslation" onPress={() => showTranslationHandler({ item })}></Button>
         {!item.showTranslation && <Text>show the translationMeaning</Text>}
 {item.showTranslation && <Text>meaning: {item.translationMeaning}</Text>}
-<Text>nativeWordShow: {String(item.showTranslation)}</Text>
+<Text>nativeWordShow: {String(item.showTranslation)}</Text> */}
 
 
         {/* {!item.translationMeaningShow && <Text>show the translationMeaning</Text>}

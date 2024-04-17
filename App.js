@@ -37,10 +37,10 @@ export default function App({wordBookid}) {
               <Button title="Go to Library" onPress={() => navigation.goBack()}>
               </Button>
             ),
-            headerRight: () => (
-              <Button title="delete" onPress={()=>deleteHandler(wordBookid)}>
-              </Button>
-            ),
+            // headerRight: () => (
+            //   <Button title="delete" onPress={()=>deleteHandler(wordBookid)}>
+            //   </Button>
+            // ),
           })}
         />
         

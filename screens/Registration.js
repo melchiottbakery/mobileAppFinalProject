@@ -118,6 +118,8 @@ export default function Registration({ navigation }) {
         email: email, 
         isAdmin: isAdmin 
       }, "users", userCred._tokenResponse.localId)
+      navigation.navigate("Login");
+
 
     } catch (error) {
       console.log(error.code)

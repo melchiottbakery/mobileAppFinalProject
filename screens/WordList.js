@@ -25,6 +25,13 @@ export default function WordList({ route }) {
   const [deleteLink, setDeleteLink]= useState("")
 
   useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        return <Button title="delete"   onPress={deleteHandler} />;
+      },
+    });
+  }, []);
+  useEffect(() => {
     onSnapshot(collection(database, "library", wordBookid, "wordlist"), (querySnapshot) => {
       let newArray = [];
       if (querySnapshot) {
@@ -41,15 +48,12 @@ export default function WordList({ route }) {
 
 
   function onPressFunction({ item }) {
-
-
     const newWord = {
       nativeWord: item.nativeWord,
       translationMeaning: item.translationMeaning,
       remember: false,
       nativeWordShow: true,
       translationMeaningShow: true,
-
 
     };
 
@@ -77,7 +81,6 @@ export default function WordList({ route }) {
   );
 
   function deleteHandler() {
-
     Alert.alert("Delete", "Are you going to delete ?", [
       {
         text: "No",
@@ -93,18 +96,12 @@ export default function WordList({ route }) {
         }
       },
     ]);
-
-
-
-
-
-
   }
+
   return (
     <View>
       <Text>This is the wordlist screen</Text>
       {isadmin && <Button title="delete the whole book" onPress={deleteHandler}></Button>}
-
       <FlatList
         data={library}
         renderItem={renderItem}

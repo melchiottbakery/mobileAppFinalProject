@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList, Pressable, Button,Image, Alert } from 'react-native'
+import { StyleSheet, Text, View, FlatList, Pressable, Button, Image, Alert } from 'react-native'
 import { SafeAreaView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
@@ -8,9 +8,9 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { onAuthStateChanged } from "firebase/auth";
 
 import { collection, onSnapshot, } from "firebase/firestore"
-import { database, auth,storage, } from "../firebase-files/FirebaseSetup"
+import { database, auth, storage, } from "../firebase-files/FirebaseSetup"
 import InputComponent from '../component/InputComponent';
-import { writeNewWordBookToDB, writeWholeWordBookToDB,getProfile,editImageLinkInCover } from '../firebase-files/FirebaseHelper';
+import { writeNewWordBookToDB, writeWholeWordBookToDB, getProfile, editImageLinkInCover } from '../firebase-files/FirebaseHelper';
 
 import { ref, uploadBytes } from "firebase/storage";
 import { getDownloadURL } from "firebase/storage";
@@ -18,48 +18,47 @@ import { getDownloadURL } from "firebase/storage";
 import * as ImagePicker from 'expo-image-picker';
 import { editImageLinkInDB, setNewUserDocToDB } from "../firebase-files/FirebaseHelper";
 
-export default function Library({route}) {
-  
+export default function Library({ route }) {
+
   const navigation = useNavigation();
 
 
   const [imageDatabasetaUri, setImageDatabasetaUri] = useState('');
   const [imageLocalUri, setImageLocalUri] = useState("");
 
+  const [selectedBook, setSelectedBook] = useState('');
+
+  const [adminTerminalOpen, setAdminTerminalOpen] = useState(false)
+
   const [library, setlibrary] = useState([]);
 
   useEffect(() => {
-    async function listenonSnapshot(){
-    onSnapshot(collection(database, "library"), (querySnapshot) => {
-      let newArray = [];
-      if (querySnapshot) {
-        querySnapshot.forEach((doc) => {
-          // console.log(doc.data().imageUri)
-          // const nihao =  downloadImageFromDatabase(doc.data().imageUri)
-          // console.log("nihao+",nihao)
-          newArray.push({ ...doc.data(),
-            // downloaduri:imageLocalUri,
-             id: doc.id });
-        });
-      };
-      newlibrary(newArray);
-      // setlibrary(newArray);
-    });}
-
-listenonSnapshot();
-
+    async function listenonSnapshot() {
+      onSnapshot(collection(database, "library"), (querySnapshot) => {
+        let newArray = [];
+        if (querySnapshot) {
+          querySnapshot.forEach((doc) => {
+            // console.log(doc.data().imageUri)
+            // const nihao =  downloadImageFromDatabase(doc.data().imageUri)
+            // console.log("nihao+",nihao)
+            newArray.push({
+              ...doc.data(),
+              // downloaduri:imageLocalUri,
+              id: doc.id
+            });
+          });
+        };
+        newlibrary(newArray);
+        // setlibrary(newArray);
+      });
+    }
+    listenonSnapshot();
   }, []);
 
-  function newlibrary(newArray){
+  function newlibrary(newArray) {
     setlibrary(newArray);
-    
     downloadImageFromDatabase(newArray)
-
   }
-
-  useEffect(()=>{console.log("library is",library)})
-
-
 
   async function downloadImageFromDatabase(data) {
     try {
@@ -80,29 +79,27 @@ listenonSnapshot();
       console.error("Error downloading images: ", error);
     }
   }
-
-  const [isadmin,setIsadmin]=useState(false)
+  const [isadmin, setIsadmin] = useState(false)
 
   const [userLoggedIn, setUserLoggedIn] = useState(false);
 
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserLoggedIn(true);
+        async function getDataFromDB() {
 
-  useEffect(()=>{
-    onAuthStateChanged(auth,(user) => {
-      if (user){
-  setUserLoggedIn(true);
-  async function getDataFromDB() {
-      
-    const data = await getProfile("users", auth.currentUser.uid);
-    // console.log(data)
-    setIsadmin(data.isAdmin)
-   
-  }
-  getDataFromDB();
+          const data = await getProfile("users", auth.currentUser.uid);
+          // console.log(data)
+          setIsadmin(data.isAdmin)
+
+        }
+        getDataFromDB();
       }
-      else{
+      else {
         setUserLoggedIn(false);
         setIsadmin(false);
-  
+
       }
     })
   })
@@ -110,116 +107,108 @@ listenonSnapshot();
 
   // useEffect(() => {
   //   async function getDataFromDB() {
-      
+
   //     const data = await getProfile("users", auth.currentUser.uid);
   //     // console.log(data)
   //     setIsadmin(data.isAdmin)
-     
+
   //   }
   //   getDataFromDB();
   // }, []);
 
-  function onPressFunction({item}){
-    console.log("whichone youare pressing",item)
+  function onPressFunction({ item }) {
+    console.log("whichone youare pressing", item)
     // console.log({ item,isadmin})
-    navigation.navigate("WordList", { item,isadmin})
-    
+    navigation.navigate("WordList", { item, isadmin })
+
 
   }
 
   const renderItem = ({ item }) => (
-    <Pressable onPress={()=>onPressFunction({item})}
-    style={{margin:5, padding: 5, borderColor: "red", borderWidth: 3,width:'30%' }}>  
-    <View 
-    // style={{margin:5, padding: 5, borderColor: "red", borderWidth: 3,width:'50%' }}
-    >
-    {item.imageDownloadUri && <Image source={{ uri: item.imageDownloadUri }} style={{ width: 100, height: 100 }} />}
-      <Text>ID: {item.id}</Text>
-      <Text>Title: {item.title}</Text>
-      <Text>Native Language: {item.nativeLanguage}</Text>
-      <Text>Number: {item.number}</Text>
-      <Text>Word Language: {item.translationLanguage}</Text>
-      <CountryFlag isoCode={item.nativeLanguage} size={25} />
-      <CountryFlag isoCode={item.translationLanguage} size={25} />
-    </View>
+    <Pressable onPress={() => onPressFunction({ item })}
+      style={{ margin: 5, padding: 5, borderColor: "red", borderWidth: 3, width: '30%' }}>
+      <View
+      // style={{margin:5, padding: 5, borderColor: "red", borderWidth: 3,width:'50%' }}
+      >
+        {item.imageDownloadUri && <Image source={{ uri: item.imageDownloadUri }} style={{ width: 100, height: 100 }} />}
+        <Text>ID: {item.id}</Text>
+        <Text>Title: {item.title}</Text>
+        <Text>Native Language: {item.nativeLanguage}</Text>
+        <Text>Number: {item.number}</Text>
+        <Text>Word Language: {item.translationLanguage}</Text>
+        <CountryFlag isoCode={item.nativeLanguage} size={25} />
+        <CountryFlag isoCode={item.translationLanguage} size={25} />
+      </View>
     </Pressable>
   );
 
-  const [jsonLink, setJsonLink]=useState(   "https://raw.githubusercontent.com/melchiottbakery/testtesttest/main/db.json")
-  function loadJsonLinkHandler(){
+  const [jsonLink, setJsonLink] = useState("https://raw.githubusercontent.com/melchiottbakery/testtesttest/main/db.json")
+  function loadJsonLinkHandler() {
 
     Alert.alert("Loading", "Would you like to load this book", [
       {
         text: "No",
         onPress: () => console.log("No Pressed"),
       },
-      { text: "Yes", onPress: () => 
-      
       {
-        
-        console.log('jsonLink is'+ jsonLink)
-    fetchJsonLink(jsonLink)
-      }
-       },
+        text: "Yes", onPress: () => {
+          console.log('jsonLink is' + jsonLink)
+          fetchJsonLink(jsonLink)
+        }
+      },
     ]);
 
-
-   
   }
   // "https://raw.githubusercontent.com/melchiottbakery/testtesttest/main/db.json"
   // 'https://my-json-server.typicode.com/melchiottbakery/testtesttest/db.json' 
 
 
   async function fetchJsonLink(inputText) {
-    try { 
+    try {
       const response = await fetch(
         inputText
-    );
-    if (!response.ok) {
-      throw new Error("data wasn't there!"); 
+      );
+      if (!response.ok) {
+        throw new Error("data wasn't there!");
+      }
+      const data = await response.json()
+      console.log(data)
+      let newBookNativeLanguage = data[0].nativeLanguage
+      let newBookNumber = data[0].number
+      let newBookTitle = data[0].title
+      let newBookTranslationLanguage = data[0].translationLanguage
+      let newBookWordlist = data[0].wordlist
+
+      console.log(newBookWordlist)
+
+      writeWholeWordBookToDB({
+        nativeLanguage: newBookNativeLanguage,
+        number: newBookNumber,
+        title: newBookTitle,
+        translationLanguage: newBookTranslationLanguage
+      }, newBookWordlist)
+
     }
-    const data = await response.json()
-    console.log(data)
-    let newBookNativeLanguage= data[0].nativeLanguage
-    let newBookNumber= data[0].number
-    let newBookTitle= data[0].title
-    let newBookTranslationLanguage = data[0].translationLanguage
-    let newBookWordlist= data[0].wordlist
-
-    console.log(newBookWordlist)
-
-    writeWholeWordBookToDB({nativeLanguage:newBookNativeLanguage,
-      number:newBookNumber,
-      title:newBookTitle,
-      translationLanguage:newBookTranslationLanguage
-    },newBookWordlist)
-
-    } 
     catch (error) {
       console.log("fetch users ", error);
-    }   
+    }
   }
-  const [selectedBook, setSelectedBook] = useState('');
 
 
-  
-  const [adminTerminalOpen, setAdminTerminalOpen] =useState(false)
-
-  const data=[{"id": "lXSKbJZFeqUbxf6f6F36", "nativeLanguage": "JP", "number": "3", "title": "JLPT-N2", "translationLanguage": "GB"}, {"id": "uNICsDT6tueasDidHB28", "nativeLanguage": "JP", "number": "2", "title": "JLPT-N5", "translationLanguage": "GB"}, {"id": "wrHWJ0EHDTAuPx71QFOD", "nativeLanguage": "JP", "number": "3", "title": "JLPT-N2", "translationLanguage": "GB"}, {"id": "wuBgTqXRkn31h5MY0W9t", "nativeLanguage": "JP", "number": "3", "title": "JLPT-N2", "translationLanguage": "GB"}, {"id": "wxhsT6QkmImt4ewQth5Q", "nativeLanguage": "JP", "number": "3", "title": "JLPT-N2", "translationLanguage": "GB"}]
   const [open, setOpen] = useState(false);
-  const AdminTerminal= (
+  const AdminTerminal = (
     <View>
-    <InputComponent
-      label="link"
-      value={jsonLink}
-      onChangeText={setJsonLink}
-    ></InputComponent>
-    <Button title='load the book' onPress={loadJsonLinkHandler}></Button>
+      <InputComponent
+        label="link"
+        value={jsonLink}
+        onChangeText={setJsonLink}
+      ></InputComponent>
+      <Button title='load the book' onPress={loadJsonLinkHandler}></Button>
 
-<DropDownPicker
-open={open}
-setOpen={setOpen}
-items={library.map(item => ({ label: item.id, value: item.id }))}
+      <DropDownPicker
+        open={open}
+        setOpen={setOpen}
+        items={library.map(item => ({ label: item.id, value: item.id }))}
         containerStyle={{ height: 40, width: 200 }}
         style={{ backgroundColor: '#fafafa' }}
         dropDownStyle={{ backgroundColor: '#fafafa' }}
@@ -230,21 +219,21 @@ items={library.map(item => ({ label: item.id, value: item.id }))}
 
         setValue={setSelectedBook}
         value={selectedBook}
-></DropDownPicker>
+      ></DropDownPicker>
 
-<Button title= "use the camera" onPress={cameraFunction}></Button>
+      <Button title="use the camera" onPress={cameraFunction}></Button>
 
-{imageLocalUri &&(  <Image source={{ uri: imageLocalUri }} style={{ width: 100, height: 100 }} />
-)
-}
-<Button title="save the image " onPress={saveImageChange}></Button>
-  </View>
+      {imageLocalUri && (<Image source={{ uri: imageLocalUri }} style={{ width: 100, height: 100 }} />
+      )
+      }
+      <Button title="save the image " onPress={saveImageChange}></Button>
+    </View>
 
   )
   const [status, requestPermission] = ImagePicker.useCameraPermissions();
 
-  async function verifyCameraPermission(){
-    if(status.granted){
+  async function verifyCameraPermission() {
+    if (status.granted) {
       return true;
     }
     try {
@@ -252,15 +241,15 @@ items={library.map(item => ({ label: item.id, value: item.id }))}
       return permissonResponse.granted;
 
     } catch (error) {
-      console.log(error);   
+      console.log(error);
     }
   }
-  function saveImageChange(){
+  function saveImageChange() {
     uploadImageFromLocal(imageLocalUri)
     setImageLocalUri('');
   }
 
-  async function uploadImageFromLocal(imageLocalUri){
+  async function uploadImageFromLocal(imageLocalUri) {
     try {
       const response = await fetch(imageLocalUri);
       // console.log("uploadImageFromLocal is",response)
@@ -270,7 +259,7 @@ items={library.map(item => ({ label: item.id, value: item.id }))}
       const imageRef = await ref(storage, `bookCover/${imageName}`)
       const uploadResult = await uploadBytes(imageRef, imageBlob);
       console.log("upload successed")
-      
+
 
       // setImageLocalUri('')
       // setOpenSaveButton(false)
@@ -281,61 +270,46 @@ items={library.map(item => ({ label: item.id, value: item.id }))}
     } catch (error) {
       console.log(error)
     }
-
-  }  
-
-
-  function writeImageLinkToBook(storagePath){
-    editImageLinkInCover(selectedBook,{imageUri:storagePath},)
-  
-   
   }
-  
+
+  function writeImageLinkToBook(storagePath) {
+    editImageLinkInCover(selectedBook, { imageUri: storagePath },)
+  }
 
 
-
-  async function cameraFunction(){
+  async function cameraFunction() {
     try {
-
       const checkPermission = await verifyCameraPermission();
-
-      if (!checkPermission){
+      if (!checkPermission) {
         Alert.alert("Please give permission for the use of camera");
         return;
-    }
-
-      const useCamera =  await ImagePicker.launchCameraAsync(
-        {allowsEditing: true});
+      }
+      const useCamera = await ImagePicker.launchCameraAsync(
+        { allowsEditing: true });
       // console.log(useCamera.assets[0].uri)
       setImageLocalUri(useCamera.assets[0].uri)
       // uploadImageFromLocal(imageLocalUri)
     } catch (error) {
       console.log(error)
-      
+
     }
   }
 
   return (
-    
-    <View style={{flex:1}}> 
+    <View style={{ flex: 1 }}>
 
-{isadmin && (
+      {isadmin && (
         <>
-          <Button title="open/close admin terminal" onPress={()=>setAdminTerminalOpen(!adminTerminalOpen)}></Button>
-          {adminTerminalOpen && AdminTerminal }
+          <Button title="open/close admin terminal" onPress={() => setAdminTerminalOpen(!adminTerminalOpen)}></Button>
+          {adminTerminalOpen && AdminTerminal}
         </>
       )}
-      
-   {/* {isadmin && AdminButton} */}
-
-      <FlatList numColumns='3' 
-      horizontal={false}
-      data={library}
-      renderItem={renderItem}
-      keyExtractor={(item, index) => index.toString()}
-    />
-
-    
+      <FlatList numColumns='3'
+        horizontal={false}
+        data={library}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => index.toString()}
+      />
     </View>
   )
 }

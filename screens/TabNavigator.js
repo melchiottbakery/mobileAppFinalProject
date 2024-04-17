@@ -8,13 +8,15 @@ import Welcome from "./Welcome";
 import { onAuthStateChanged } from "firebase/auth";
 
 
-const Tab = createBottomTabNavigator();
 import { getProfile } from "../firebase-files/FirebaseHelper";
 import { auth } from '../firebase-files/FirebaseSetup';
 
 // import { useNavigation } from '@react-navigation/native';
 
 // const navigation = useNavigation();
+
+const Tab = createBottomTabNavigator();
+
 
 export default function TabNavigator(props) {
 

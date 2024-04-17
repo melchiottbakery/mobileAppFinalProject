@@ -1,4 +1,4 @@
-import { collection, addDoc, setDoc,getDoc } from "firebase/firestore";
+import { collection, addDoc, setDoc,getDoc, updateDoc, getDocs } from "firebase/firestore";
 import { database } from "./FirebaseSetup";
 import { doc, deleteDoc, onSnapshot } from "firebase/firestore";
 
@@ -95,7 +95,6 @@ export async function editInDB(id, data) {
       console.log(err);
     }
   }
-
 
 
   export async function setNewUserDocToDB(data, col, uid) {
@@ -204,55 +203,58 @@ export async function writeWholeWordBookToDB(coverData,wordData) {
   }
 }
 
-async function writeAnkiToDBhelper(docid,uid){
-  await setDoc(doc(database, "users",uid,'wordlist',docid), 
-      {translationMeaningShow:false}, { merge: true });
-
+export async function writeAnkiToDB(uid){
+  try{
+  const querySnapshot = await getDocs(collection(database, "users", uid, "wordlist"));
+  querySnapshot.forEach((doc) => {
+  updateDoc(doc.ref,{nativeWordShow:false})
+    // doc.data() is never undefined for query doc snapshots
+    // console.log(doc.id, " => ", doc.data());
+  });
+  // await setDoc(doc(database, "users",uid,'wordlist',docid), 
+  //     {nativeWordShow:false}, { merge: true });
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
 
 }
 
-export async function writeAnkiToDB(uid) {
-  try {    
-    // const collectionRef = collection(database,'users',uid,'wordlist');
-    // const snapshot = await collectionRef.get();
-    // snapshot.forEach(async (doc) => {
-    //   // Update each document
-    //   await doc.ref.update({
-    //     translationMeaningShow: false
-    //   });
-    // });
+// export async function writeAnkiToDB(uid) {
+//   try {    
 
 
   
-  const unsubscribe= onSnapshot(collection(database, "users", uid, "wordlist"), (querySnapshot) => {
-    if (querySnapshot) {
-      querySnapshot.forEach((doc) => {
-        console.log(doc.data())
-        writeAnkiToDBhelper(doc.data().nativeWord,uid);
+//   const unsubscribe= onSnapshot(collection(database, "users", uid, "wordlist"), (querySnapshot) => {
+//     if (querySnapshot) {
+//       querySnapshot.forEach((doc) => {
+//         console.log(doc.data())
+//         writeAnkiToDBhelper(doc.data().nativeWord,uid);
        
 
-      });
-    };
-  });
-    // const docRef= await addDoc(collection(database, 'library' ), coverData);
+//       });
+//     };
+//   });
+//     // const docRef= await addDoc(collection(database, 'library' ), coverData);
     
-    // Object.keys(wordData).forEach(async key => {
-    //   const { nativeWord, translationMeaning } = wordData[key];
-    //   // console.log(newBookWordlist[key])
-    //   await setDoc(doc(database, "library",docRef.id,'wordlist',key), 
-    //   {nativeWord:nativeWord, translationMeaning:translationMeaning}, { merge: true });
-    //   // console.log(`Key: ${key}, Native Word: ${nativeWord}, Translation Meaning: ${translationMeaning}`);
-    // });
+//     // Object.keys(wordData).forEach(async key => {
+//     //   const { nativeWord, translationMeaning } = wordData[key];
+//     //   // console.log(newBookWordlist[key])
+//     //   await setDoc(doc(database, "library",docRef.id,'wordlist',key), 
+//     //   {nativeWord:nativeWord, translationMeaning:translationMeaning}, { merge: true });
+//     //   // console.log(`Key: ${key}, Native Word: ${nativeWord}, Translation Meaning: ${translationMeaning}`);
+//     // });
 
-    // await setDoc(doc(database, "users",userId,), data, { merge: true });
+//     // await setDoc(doc(database, "users",userId,), data, { merge: true });
 
-    // docRef.id
-    // console.log("writenewlibaray successful, the doc id is",docRef.id)
-    unsubscribe()
-  } catch (err) {
-    console.log(err);
-  }
-}
+//     // docRef.id
+//     // console.log("writenewlibaray successful, the doc id is",docRef.id)
+//     unsubscribe()
+//   } catch (err) {
+//     console.log(err);
+//   }
+// }
 
 
 export async function writeNewWordToWordBookDB(id, data) {

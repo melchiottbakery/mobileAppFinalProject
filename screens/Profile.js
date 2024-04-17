@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, Image, Button, Alert, Pressable } from "react-n
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import InputComponent from "../component/InputComponent";
-import { auth, storage } from '../firebase-files/FirebaseSetup';
+import { auth, database, storage } from '../firebase-files/FirebaseSetup';
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { ref, uploadBytes } from "firebase/storage";
 import { getDownloadURL } from "firebase/storage";
@@ -15,6 +15,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 
 import { editImageLinkInDB, getProfile, setNewUserDocToDB } from "../firebase-files/FirebaseHelper";
+import { collection, doc, onSnapshot } from "firebase/firestore";
 
 
 
@@ -45,51 +46,77 @@ export default function Profile({ route, navigation }) {
   }
   const [userLoggedIn, setUserLoggedIn] = useState(false);
 
-
-  useEffect(()=>{
-    onAuthStateChanged(auth,(user) => {
-      if (user){
-  setUserLoggedIn(true);
+  useEffect(() => {
 
 
-  async function getDataFromDB() {
-    
-    const data = await getProfile("users", auth.currentUser.uid);
-    // console.log(data)
-    setOriginNickname(data.nickname)
-    setNickname(data.nickname)
-    setEmail(data.email)
-    downloadImageFromDatabase(data)
-  }
-  if(auth.currentUser){
-  getDataFromDB();}
+    const unsubscribe = onSnapshot(
+
+      doc(database, "users", auth.currentUser.uid),
+
+      (doc) => {
+
+        const data = doc.data();
+        setOriginNickname(data.nickname)
+                setNickname(data.nickname)
+                setEmail(data.email)
+                downloadImageFromDatabase(data)
+      });
 
 
-      }
-      else{
-        setUserLoggedIn(false);
 
-  
-      }
-    })
-  })
-  
+    return () => {
+      console.log("unsubscribe");
+      unsubscribe();
+    };
+  }, [userLoggedIn]);
+
 
   useEffect(() => {
-    async function getDataFromDB() {
-    
-      const data = await getProfile("users", auth.currentUser.uid);
-      // console.log(data)
-      setOriginNickname(data.nickname)
-      setNickname(data.nickname)
-      setEmail(data.email)
-      downloadImageFromDatabase(data)
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserLoggedIn(true);
 
 
-    }
-    if(auth.currentUser){
-    getDataFromDB();}
-  }, []);
+        //       async function getDataFromDB() {
+
+        //         const data = await getProfile("users", auth.currentUser.uid);
+        //         console.log("onauth ",data)
+        //         setOriginNickname(data.nickname)
+        //         setNickname(data.nickname)
+        //         setEmail(data.email)
+        //         downloadImageFromDatabase(data)
+        //       }
+        //       if (auth.currentUser) {
+        //         getDataFromDB();
+        //       }
+
+
+      }
+      else {
+        setUserLoggedIn(false);
+
+
+      }
+    })
+  }, [])
+
+
+  // useEffect(() => {
+  //   async function getDataFromDB() {
+
+  //     const data = await getProfile("users", auth.currentUser.uid);
+  //     // console.log(data)
+  //     setOriginNickname(data.nickname)
+  //     setNickname(data.nickname)
+  //     setEmail(data.email)
+  //     downloadImageFromDatabase(data)
+
+
+  //   }
+  //   if (auth.currentUser) {
+  //     getDataFromDB();
+  //   }
+  // }, []);
 
   const [imageDatabasetaUri, setImageDatabasetaUri] = useState("");
 
@@ -151,7 +178,7 @@ export default function Profile({ route, navigation }) {
       // console.log(useCamera)
       console.log(useCamera.assets[0].uri)
       setImageLocalUri(useCamera.assets[0].uri)
-      
+
       setOpenSaveButton(true)
       // uploadImageFromLocal(imageLocalUri)
     } catch (error) {
@@ -166,9 +193,6 @@ export default function Profile({ route, navigation }) {
 
   function saveImageChange() {
     uploadImageFromLocal(imageLocalUri)
-
-    ///
-    
     setImageLocalUri('')
   }
 
@@ -214,11 +238,11 @@ export default function Profile({ route, navigation }) {
 
   }
 
-  const [openButton,setOpenButton ] =useState(false)
+  const [openButton, setOpenButton] = useState(false)
 
   const showButton = originNickname !== nickname;
 
-  const AppStack=(
+  const AppStack = (
     <>
       {/*  <Text>This is the Profile screen</Text> */}
 
@@ -265,26 +289,26 @@ export default function Profile({ route, navigation }) {
         (<Button title="save image changes" onPress={saveImageChange}></Button>
         )
       }
-      <Pressable onPressIn={()=>setOpenButton(!openButton)}>
-      <InputComponent
-        label="Nickname"
-        value={nickname}
-        onChangeText={setNickname}
-        editable={false}
-      />
+      <Pressable onPressIn={() => setOpenButton(!openButton)}>
+        <InputComponent
+          label="Nickname"
+          value={nickname}
+          onChangeText={setNickname}
+          editable={true}
+        />
       </Pressable>
 
       {openButton && (
-        
+
         <InputComponent
-        value={uploadnickname}
-        onChangeText={setUploadNickname}
-        editable={true}
-      />)}
+          value={uploadnickname}
+          onChangeText={setUploadNickname}
+          editable={true}
+        />)}
 
 
       {openButton && (
-        
+
         <Button title="Change The Nickname" onPress={changeNameHandler}></Button>)}
 
       <InputComponent
@@ -303,16 +327,16 @@ export default function Profile({ route, navigation }) {
         />
 
       </View>
-      </>
+    </>
   )
 
-  function loginHandler(){
+  function loginHandler() {
     console.log("ziyoule")
     navigation.navigate('Login')
   }
-  const AppAuth=(
+  const AppAuth = (
     <>
-    <Button title = "login" onPress={loginHandler}></Button>
+      <Button title="login" onPress={loginHandler}></Button>
     </>
   )
 
