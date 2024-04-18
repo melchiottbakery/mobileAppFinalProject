@@ -19,7 +19,7 @@ import { collection, doc, onSnapshot } from "firebase/firestore";
 
 
 
-export default function Profile({ route, navigation }) {
+export default function Profile({  navigation }) {
 
 
   const [originNickname, setOriginNickname] = useState('');
@@ -94,7 +94,7 @@ export default function Profile({ route, navigation }) {
         }
       );
     } catch (error) {
-      console.log(error);
+      console.log('type of error',error);
     }
   
     return () => {
@@ -167,7 +167,8 @@ export default function Profile({ route, navigation }) {
       // setDownloadImage(data.imageUri)
     } catch (error) {
       console.log(error)
-      setImageDatabasetaUri('https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGljfGVufDB8fDB8fHww')
+      // setImageDatabasetaUri('https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGljfGVufDB8fDB8fHww')
+      setImageDatabasetaUri('https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg')
 
 
     }
@@ -190,7 +191,11 @@ export default function Profile({ route, navigation }) {
             setNickname('')
             setOriginNickname('')
             setEmail('')
-            setImageDatabasetaUri('https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGljfGVufDB8fDB8fHww')
+            // setImageDatabasetaUri('https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGljfGVufDB8fDB8fHww')
+            setImageDatabasetaUri('https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg')
+
+            // navigation.navigate("Registration")
+
 
             // navigation.navigate("Registration")
           } catch (error) {

@@ -209,13 +209,22 @@ export default function Library({ route }) {
         open={open}
         setOpen={setOpen}
         items={library.map(item => ({ label: item.id, value: item.id }))}
-        containerStyle={{ height: 40, width: 200 }}
-        style={{ backgroundColor: '#fafafa' }}
+        // containerStyle={{ height: 60, width: 200 }}
+        // containerStyle={{
+        //   zIndex: open ? 1000 : 0
+        // }}
+        // maxHeight={500}
+
+        style={{ backgroundColor: '#fafafa' , }}
+        
         dropDownStyle={{ backgroundColor: '#fafafa' }}
         onChangeItem={item => setSelectedId(item.value)
         }
 
-        zIndex={1000}
+        
+        // zIndex={-5}
+        // zIndexInverse={1000}
+        zIndex={5000}
 
         setValue={setSelectedBook}
         value={selectedBook}
@@ -226,7 +235,7 @@ export default function Library({ route }) {
       {imageLocalUri && (<Image source={{ uri: imageLocalUri }} style={{ width: 100, height: 100 }} />
       )
       }
-      <Button title="save the image " onPress={saveImageChange}></Button>
+     {imageLocalUri &&<Button title="save the image " onPress={saveImageChange}/> } 
     </View>
 
   )
@@ -360,12 +369,15 @@ export default function Library({ route }) {
   return (
     <View style={{ flex: 1 }}>
 
+{/* bug for the list  */}
+<>
       {isadmin && (
         <>
           {/* <Button title="open/close admin terminal" onPress={() => setAdminTerminalOpen(!adminTerminalOpen)}></Button> */}
           {adminTerminalOpen && AdminTerminal}
         </>
       )}
+      </>
 
       {isadmin ? <FlatList numColumns='3'
         horizontal={false}

@@ -49,7 +49,10 @@ export default function Registration({ navigation }) {
     setPassword("");
     setConfirmedPassword("");
     setIsAdmin(false);
-    navigation.navigate("Login");
+    // navigation.navigate("Login");
+    navigation.navigate("Login",{data:'Sign Up Successful'});
+
+    
   };
 
   function validateForm() {
@@ -118,7 +121,8 @@ export default function Registration({ navigation }) {
         email: email, 
         isAdmin: isAdmin 
       }, "users", userCred._tokenResponse.localId)
-      navigation.navigate("Login");
+      navigation.navigate("Login",{data:'Sign Up Successful'});
+
 
 
     } catch (error) {
@@ -190,8 +194,8 @@ export default function Registration({ navigation }) {
       {/* <Text>a button cancel and go back</Text>
       <Text>a button Registration</Text> */}
       <View style={styles.buttonContainer}>
-        <Button title="Cancel" onPress={handleCancel} />
-        <Button title="Set" onPress={handleSet} disabled={validateForm()} />
+        <Button title="Back to Login" onPress={handleCancel} />
+        <Button title="SignUp" onPress={handleSet} disabled={validateForm()} />
       </View>
     </SafeAreaView>
   );

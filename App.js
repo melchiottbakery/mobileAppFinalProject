@@ -36,8 +36,38 @@ export default function App({wordBookid}) {
         screenOptions={{headerShown: false}}>
           
          <Stack.Screen name="User" component={TabNavigator} />
-         <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Registration" component={Registration} />
+
+         
+         <Stack.Screen name="Login" component={Login} 
+         
+         options={({ navigation }) => ({
+          headerShown:true,
+
+          headerLeft: () => (
+            <Button title="Back to Profile" onPress={() => navigation.goBack()}>
+            </Button>
+          ),
+          // headerRight: () => (
+          //   <Button title="delete" onPress={()=>deleteHandler(wordBookid)}>
+          //   </Button>
+          // ),
+        })}
+         />
+        <Stack.Screen name="Registration" component={Registration} 
+        
+        options={({ navigation }) => ({
+          headerShown:true,
+
+          headerLeft: () => (
+            <Button title="Back to Login" onPress={() => navigation.navigate('Login')}>
+            </Button>
+          ),
+          // headerRight: () => (
+          //   <Button title="delete" onPress={()=>deleteHandler(wordBookid)}>
+          //   </Button>
+          // ),
+        })}
+        />
         <Stack.Screen name="WordList" component={WordList}
 
           options={({ navigation }) => ({
