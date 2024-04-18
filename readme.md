@@ -158,4 +158,6 @@ npx expo install expo-location
 for interactive map:
 npx expo install react-native-maps
 
-npm install react-native-dropdown-picker
+npx expo install expo-notifications
+
+npx expo install @react-native-community/datetimepicker

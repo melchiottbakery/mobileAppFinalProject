@@ -8,6 +8,16 @@ import TabNavigator from "./screens/TabNavigator";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import * as Notifications from "expo-notifications";
+
+Notifications.setNotificationHandler({
+  handleNotification: async function () {
+    return {
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+    };
+  }
+});
 
 const Stack = createStackNavigator();
 

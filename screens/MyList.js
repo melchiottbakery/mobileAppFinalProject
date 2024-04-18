@@ -1,53 +1,67 @@
-import { StyleSheet, Text, View, FlatList, Pressable, Button, Alert } from 'react-native'
-import { SafeAreaView } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { useNavigation } from '@react-navigation/native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  Pressable,
+  Button,
+  Alert,
+} from "react-native";
+import { SafeAreaView } from "react-native";
+import React, { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import NotificationManager from "../component/NotificationManager";
+//import InputComponent from '../component/InputComponent';
 
+import { collection, onSnapshot, query } from "firebase/firestore";
+import { database } from "../firebase-files/FirebaseSetup";
+import {
+  deleteFromDB,
+  deleteWordFromUserDB,
+  editInDB,
+  editRememberInDB,
+  writeAnkiToDB,
+} from "../firebase-files/FirebaseHelper";
 
-
-import { collection, onSnapshot, query } from "firebase/firestore"
-import { database } from "../firebase-files/FirebaseSetup"
-import { deleteFromDB, deleteWordFromUserDB, editInDB, editRememberInDB, writeAnkiToDB } from '../firebase-files/FirebaseHelper';
-
-import { auth } from '../firebase-files/FirebaseSetup';
-import AudioManager from './AudioManager';
+import { auth } from "../firebase-files/FirebaseSetup";
+import AudioManager from "./AudioManager";
 
 export default function MyList() {
-
-  const userId = auth.currentUser.uid
+  const userId = auth.currentUser.uid;
   const [library, setlibrary] = useState([]);
 
   useEffect(() => {
     //need to fix if there is as the new user registeration, there is no collection called wordlist
 
     try {
-      onSnapshot(collection(database, "users", auth.currentUser.uid, 'wordlist'), (querySnapshot) => {
-        let newArray = [];
-        if (querySnapshot) {
-          querySnapshot.forEach((doc) => {
-            newArray.push({ ...doc.data()
-              ,showTranslation:true,showNative:true, id: doc.id });
-          });
-        };
-        setlibrary(newArray);
-      });
-
+      onSnapshot(
+        collection(database, "users", auth.currentUser.uid, "wordlist"),
+        (querySnapshot) => {
+          let newArray = [];
+          if (querySnapshot) {
+            querySnapshot.forEach((doc) => {
+              newArray.push({
+                ...doc.data(),
+                showTranslation: true,
+                showNative: true,
+                id: doc.id,
+              });
+            });
+          }
+          setlibrary(newArray);
+        }
+      );
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-
-
-
   }, []);
 
-  console.log(library)
+  console.log(library);
 
   function ankiModeHandler() {
-    console.log("anki")
-    handleToggleMeaningShow()
-
+    console.log("anki");
+    handleToggleMeaningShow();
   }
-
 
   // const handleButtonPress = () => {
   //   // 使用map函数遍历数据，并更新translationMeaningShow属性为false
@@ -57,7 +71,7 @@ export default function MyList() {
   //       translationMeaningShow: false
   //     };
   //   });
-  
+
   //   // 更新数据
   //   setData(newData); // 这里假设您使用useState来管理数据
   // };
@@ -70,9 +84,9 @@ export default function MyList() {
   //       translationMeaningShow: false
   //     };
   //   });
-  
+
   //   // 更新数据
-  //   setlibrary(newData); 
+  //   setlibrary(newData);
 
   // }
 
@@ -84,10 +98,7 @@ export default function MyList() {
 
   function handleToggleMeaningShow() {
     writeAnkiToDB(auth.currentUser.uid);
-
-  };
-
-
+  }
 
   function onPressFunction({ item }) {
     // console.log(item)
@@ -97,21 +108,21 @@ export default function MyList() {
       nativeWord: item.nativeWord,
       remember: true,
     };
-    editRememberInDB(item.id, userId, rememberWord)
+    editRememberInDB(item.id, userId, rememberWord);
     // editInDB(item.id, rememberWord);
   }
 
   function onDeleteFunction({ item }) {
     Alert.alert(
-      'Confirmation',
-      'Are you sure you want to delete this remembered word?',
+      "Confirmation",
+      "Are you sure you want to delete this remembered word?",
       [
         {
-          text: 'Cancel',
-          onPress: () => { },
+          text: "Cancel",
+          onPress: () => {},
         },
         {
-          text: 'Delete',
+          text: "Delete",
           onPress: deleteAction,
         },
       ]
@@ -121,14 +132,12 @@ export default function MyList() {
       try {
         // deleteFromDB(item.id);
         // navigation.goBack();
-        deleteWordFromUserDB(item.id, userId)
+        deleteWordFromUserDB(item.id, userId);
+      } catch (error) {
+        Alert.alert("Error", error);
       }
-      catch (error) {
-        Alert.alert('Error', error);
-      }
-    };
+    }
   }
-
 
   function onForgetFunction({ item }) {
     // console.log(item)
@@ -139,7 +148,7 @@ export default function MyList() {
 
       remember: false,
     };
-    editRememberInDB(item.id, userId, forgetWord)
+    editRememberInDB(item.id, userId, forgetWord);
 
     // editInDB(item.id, forgetWord);
   }
@@ -149,14 +158,13 @@ export default function MyList() {
   // setShowText(true);
   //  }
 
-
   function showTranslationMeaning({ item }) {
-    console.log("which one will you change", item)
+    console.log("which one will you change", item);
 
     const translationMeaningShow = {
-      translationMeaningShow: !item.translationMeaningShow
+      translationMeaningShow: !item.translationMeaningShow,
     };
-    editRememberInDB(item.id, userId, translationMeaningShow)
+    editRememberInDB(item.id, userId, translationMeaningShow);
     // editInDB(item.id, rememberWord);
   }
 
@@ -164,13 +172,11 @@ export default function MyList() {
     // console.log(item)
 
     const nativeWordShow = {
-      nativeWordShow: !item.nativeWordShow
+      nativeWordShow: !item.nativeWordShow,
     };
-    editRememberInDB(item.id, userId, nativeWordShow)
+    editRememberInDB(item.id, userId, nativeWordShow);
     // editInDB(item.id, rememberWord);
   }
-
-
 
   // function ankiModeHandler(){
   //   const q = query(collection(database, "users",auth.currentUser.uid,'wordlist'));
@@ -184,7 +190,6 @@ export default function MyList() {
   //                 };
   //                 editRememberInDB(doc.data().nativeWord,userId,translationMeaningShow)
 
-
   //     });
   //   })
   // }
@@ -194,8 +199,6 @@ export default function MyList() {
 
   // function ankiModeHandler(){
   //   console.log("anki presseed")
-
-
 
   //   const unsubscribe= onSnapshot(collection(database, "users",auth.currentUser.uid,'wordlist'), (querySnapshot) => {
   //      console.log("nihao",querySnapshot)
@@ -217,54 +220,53 @@ export default function MyList() {
   //   // unsubscribe();
   // }
 
-
-
-  function showNativeHandler({item}) {
-    console.log("press word is",{item})
+  function showNativeHandler({ item }) {
+    console.log("press word is", { item });
     // 使用map函数遍历数据，仅更新id为“千代田”的对象的nativeWordShow属性为false，其他对象保持不变
-    const newData = library.map(items => {
+    const newData = library.map((items) => {
       if (items.id === item.nativeWord) {
         return {
           ...items,
-          showNative: !item.showNative
+          showNative: !item.showNative,
         };
       } else {
         return items;
       }
     });
-  
+
     // 更新数据
     setlibrary(newData); // 这里假设您使用useState来管理数据
-  };
+  }
 
-  function showTranslationHandler({item}) {
-    console.log("press word is",{item})
-    const newData = library.map(items => {
+  function showTranslationHandler({ item }) {
+    console.log("press word is", { item });
+    const newData = library.map((items) => {
       if (items.id === item.nativeWord) {
         return {
           ...items,
-          showTranslation: !item.showTranslation
+          showTranslation: !item.showTranslation,
         };
       } else {
         return items;
       }
     });
-      setlibrary(newData); 
-  };
+    setlibrary(newData);
+  }
 
   const renderItem = ({ item }) => (
-    <Pressable >
-
+    <Pressable>
       <View style={{ padding: 30, borderColor: "blue", borderWidth: 3 }}>
         <Text>ID: {item.id}</Text>
         <Text>nativeword: {item.nativeWord}</Text>
-        <Button title="change nativeWordShow" onPress={() => showNativeMeaning({ item })}></Button>
+        <Button
+          title="change nativeWordShow"
+          onPress={() => showNativeMeaning({ item })}
+        ></Button>
 
         {!item.nativeWordShow && <Text>show the nativeWord</Text>}
         {item.nativeWordShow && <Text>meaning: {item.nativeWord}</Text>}
 
-
-{/* 
+        {/* 
         <Button title="change showNative" onPress={() => showNativeHandler({ item })}></Button>
 
 {!item.showNative && <Text>show the nativeWord</Text>}
@@ -277,7 +279,6 @@ export default function MyList() {
 {item.showTranslation && <Text>meaning: {item.translationMeaning}</Text>}
 <Text>nativeWordShow: {String(item.showTranslation)}</Text> */}
 
-
         {/* {!item.translationMeaningShow && <Text>show the translationMeaning</Text>}
         {item.translationMeaningShow && <Text>meaning: {item.translationMeaning}</Text>} */}
 
@@ -287,35 +288,38 @@ export default function MyList() {
 
         <Text>translationMeaningShow: {String(item.translationMeaningShow)}</Text> */}
 
-
-
         <Text>remember: {String(item.remember)}</Text>
         <AudioManager wordToSound={item.id}></AudioManager>
 
         {item.remember === false && ( // Check if item.remember is false
-          <Button title=" MARK AS REMEBERED" onPress={() => onPressFunction({ item })} />
-
+          <Button
+            title=" MARK AS REMEBERED"
+            onPress={() => onPressFunction({ item })}
+          />
         )}
         {item.remember === true && ( // Check if item.remember is false
-          <Button title="i need review again" onPress={() => onForgetFunction({ item })} />
-
+          <Button
+            title="i need review again"
+            onPress={() => onForgetFunction({ item })}
+          />
         )}
 
         {item.remember === true && ( // Check if item.remember is false
-          <Button color='red' title="Delete" onPress={() => onDeleteFunction({ item })} />
+          <Button
+            color="red"
+            title="Delete"
+            onPress={() => onDeleteFunction({ item })}
+          />
         )}
         {/* <Button title="marker" onPress={()=>onPressFunction({item})} /> */}
-
-
-
       </View>
     </Pressable>
   );
 
   // console.log(library)
 
-  const [showRemember, setShowRemember] = useState(false)
-  const [showForget, setShowForget] = useState(false)
+  const [showRemember, setShowRemember] = useState(false);
+  const [showForget, setShowForget] = useState(false);
 
   function showRememberHandler() {
     setShowRemember(true);
@@ -331,55 +335,51 @@ export default function MyList() {
     setShowForget(false);
   }
 
-
-
-
   return (
     <View style={{ flex: 1 }}>
       <Text>This is the my screen</Text>
+
+      {/* <NotificationManager /> */}
       {/* {library && <Text>please add new words</Text>} */}
       {library.length === 0 ? (
         <Text>There is no new word for you, try to add some from library</Text>
       ) : (
         // Render something else when the library is not empty
         <>
+          <NotificationManager />
           <Button title="anki-mode" onPress={ankiModeHandler} />
           {/* <Button title='choose remember' onPress={showRememberHandler} />
   <Button title='choose forget' onPress={showForgetHandler}/>
   <Button title='choose clear' onPress={showClearHandler}/> */}
 
-
-          {
-            showRemember && <FlatList
-              data={library.filter(item => item.remember)}
+          {showRemember && (
+            <FlatList
+              data={library.filter((item) => item.remember)}
               // data={library}
               renderItem={renderItem}
               keyExtractor={(item, index) => index.toString()}
             />
-          }
-          {
-            showForget && <FlatList
-              data={library.filter(item => !item.remember)}
+          )}
+          {showForget && (
+            <FlatList
+              data={library.filter((item) => !item.remember)}
               // data={library}
               renderItem={renderItem}
               keyExtractor={(item, index) => index.toString()}
             />
-          }
-          {!showForget && !showRemember &&
+          )}
+          {!showForget && !showRemember && (
             <FlatList
               // data={library.filter(item => item.remember)}
               data={library}
               renderItem={renderItem}
               keyExtractor={(item, index) => index.toString()}
             />
-          }
-
-
+          )}
         </>
       )}
-
     </View>
-  )
+  );
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
