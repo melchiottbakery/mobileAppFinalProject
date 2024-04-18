@@ -44,8 +44,7 @@ export default function NotificationManager() {
           body: "Don't forget to set timer to start learning!",
         },
         trigger: {
-          hour: parseInt(hours, 10),
-          minute: parseInt(minutes, 10),
+        seconds: parseInt(hours) * 3600 + parseInt(minutes) * 60,
         },
       });
     } catch (err) {
