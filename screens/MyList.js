@@ -20,7 +20,10 @@ import {
   deleteWordFromUserDB,
   editInDB,
   editRememberInDB,
+  writeAllAnkiToDB,
   writeAnkiToDB,
+  writeAntiAnkiToDB,
+  writeClearAnkiToDB,
 } from "../firebase-files/FirebaseHelper";
 
 import { auth } from "../firebase-files/FirebaseSetup";
@@ -29,6 +32,8 @@ import AudioManager from "./AudioManager";
 export default function MyList() {
   const userId = auth.currentUser.uid;
   const [library, setlibrary] = useState([]);
+  const navigation = useNavigation();
+
 
   useEffect(() => {
     //need to fix if there is as the new user registeration, there is no collection called wordlist
@@ -42,8 +47,6 @@ export default function MyList() {
             querySnapshot.forEach((doc) => {
               newArray.push({
                 ...doc.data(),
-                showTranslation: true,
-                showNative: true,
                 id: doc.id,
               });
             });
@@ -58,10 +61,6 @@ export default function MyList() {
 
   console.log(library);
 
-  function ankiModeHandler() {
-    console.log("anki");
-    handleToggleMeaningShow();
-  }
 
   // const handleButtonPress = () => {
   //   // 使用map函数遍历数据，并更新translationMeaningShow属性为false
@@ -96,9 +95,7 @@ export default function MyList() {
 
   // }
 
-  function handleToggleMeaningShow() {
-    writeAnkiToDB(auth.currentUser.uid);
-  }
+
 
   function onPressFunction({ item }) {
     // console.log(item)
@@ -175,6 +172,8 @@ export default function MyList() {
       nativeWordShow: !item.nativeWordShow,
     };
     editRememberInDB(item.id, userId, nativeWordShow);
+    // console.log('show nativemeaning pressed')
+
     // editInDB(item.id, rememberWord);
   }
 
@@ -263,30 +262,36 @@ export default function MyList() {
           onPress={() => showNativeMeaning({ item })}
         ></Button>
 
+
+<Button
+          title="change translationMeaningShow"
+          onPress={() => showTranslationMeaning({ item })}
+        ></Button>
+
         {!item.nativeWordShow && <Text>show the nativeWord</Text>}
         {item.nativeWordShow && <Text>meaning: {item.nativeWord}</Text>}
 
-        {/* 
-        <Button title="change showNative" onPress={() => showNativeHandler({ item })}></Button>
+        
+        {/* <Button title="change showNative" onPress={() => showNativeHandler({ item })}></Button>
 
 {!item.showNative && <Text>show the nativeWord</Text>}
 {item.showNative && <Text>meaning: {item.nativeWord}</Text>}
-<Text>nativeWordShow: {String(item.showNative)}</Text>
+<Text>nativeWordShow: {String(item.showNative)}</Text> */}
 
 
-        <Button title="change showTranslation" onPress={() => showTranslationHandler({ item })}></Button>
+        {/* <Button title="change showTranslation" onPress={() => showTranslationHandler({ item })}></Button>
         {!item.showTranslation && <Text>show the translationMeaning</Text>}
 {item.showTranslation && <Text>meaning: {item.translationMeaning}</Text>}
 <Text>nativeWordShow: {String(item.showTranslation)}</Text> */}
 
-        {/* {!item.translationMeaningShow && <Text>show the translationMeaning</Text>}
-        {item.translationMeaningShow && <Text>meaning: {item.translationMeaning}</Text>} */}
+        {!item.translationMeaningShow && <Text>show the translationMeaning</Text>}
+        {item.translationMeaningShow && <Text>meaning: {item.translationMeaning}</Text>}
 
         {/* <Text>meaning: {item.translationMeaning}</Text> */}
 
-        {/* <Text>nativeWordShow: {String(item.nativeWordShow)}</Text>
+        <Text>nativeWordShow: {String(item.nativeWordShow)}</Text>
 
-        <Text>translationMeaningShow: {String(item.translationMeaningShow)}</Text> */}
+        <Text>translationMeaningShow: {String(item.translationMeaningShow)}</Text>
 
         <Text>remember: {String(item.remember)}</Text>
         <AudioManager wordToSound={item.id}></AudioManager>
@@ -335,6 +340,48 @@ export default function MyList() {
     setShowForget(false);
   }
 
+  const [openRemind, setOpenRemind]= useState(false)
+
+  function remindHandler(){
+
+setOpenRemind(!openRemind)
+  }
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        return  <Button title="Remind" onPress={remindHandler} />;
+      },
+    });
+  }, );
+
+  function ankiModeHandler() {
+    console.log("anki");
+    writeAnkiToDB(auth.currentUser.uid);
+  }
+  
+
+  function antiankiModeHandler() {
+    console.log("antianki");
+    writeAntiAnkiToDB(auth.currentUser.uid);
+  }
+
+
+  // function allankiModeHandler() {
+  //   console.log("allanki");
+  //   writeAnkiToDB(auth.currentUser.uid);
+  //   writeAntiAnkiToDB(auth.currentUser.uid);
+  // }
+
+  function allankiModeHandler() {
+    console.log("allanki");
+    writeAllAnkiToDB(auth.currentUser.uid);
+  }
+
+  function clearankiModeHandler() {
+    console.log("anki-clear");
+    writeClearAnkiToDB(auth.currentUser.uid);
+  }
+
   return (
     <View style={{ flex: 1 }}>
       <Text>This is the my screen</Text>
@@ -346,8 +393,12 @@ export default function MyList() {
       ) : (
         // Render something else when the library is not empty
         <>
-          <NotificationManager />
+          {openRemind && <NotificationManager />}
           <Button title="anki-mode" onPress={ankiModeHandler} />
+          <Button title="Anti-anki-mode" onPress={antiankiModeHandler} />
+          <Button title="All-Hidden-mode" onPress={allankiModeHandler} />
+          <Button title="Clear-anki-mode" onPress={clearankiModeHandler} />
+
           {/* <Button title='choose remember' onPress={showRememberHandler} />
   <Button title='choose forget' onPress={showForgetHandler}/>
   <Button title='choose clear' onPress={showClearHandler}/> */}

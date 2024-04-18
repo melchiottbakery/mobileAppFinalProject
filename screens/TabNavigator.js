@@ -52,7 +52,7 @@ export default function TabNavigator(props) {
 
   return (
     <Tab.Navigator initialRouteName="Welcome">
-      <Tab.Screen name="Profile" component={Profile} />
+      
       <Tab.Screen name="Welcome" component={Welcome} />
 
       
@@ -69,6 +69,7 @@ export default function TabNavigator(props) {
 
       // }}
       />
+      <Tab.Screen name="Profile" component={Profile} />
       {userLoggedIn && <Tab.Screen name="MyList" component={MyList} />}
     </Tab.Navigator>
   );

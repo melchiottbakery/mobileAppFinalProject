@@ -207,7 +207,64 @@ export async function writeAnkiToDB(uid){
   try{
   const querySnapshot = await getDocs(collection(database, "users", uid, "wordlist"));
   querySnapshot.forEach((doc) => {
+  updateDoc(doc.ref,{translationMeaningShow:false})
+    // doc.data() is never undefined for query doc snapshots
+    // console.log(doc.id, " => ", doc.data());
+  });
+  // await setDoc(doc(database, "users",uid,'wordlist',docid), 
+  //     {nativeWordShow:false}, { merge: true });
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+
+}
+
+
+export async function writeAntiAnkiToDB(uid){
+  try{
+  const querySnapshot = await getDocs(collection(database, "users", uid, "wordlist"));
+  querySnapshot.forEach((doc) => {
   updateDoc(doc.ref,{nativeWordShow:false})
+    // doc.data() is never undefined for query doc snapshots
+    // console.log(doc.id, " => ", doc.data());
+  });
+  // await setDoc(doc(database, "users",uid,'wordlist',docid), 
+  //     {nativeWordShow:false}, { merge: true });
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+
+}
+
+
+export async function writeAllAnkiToDB(uid){
+  try{
+  const querySnapshot = await getDocs(collection(database, "users", uid, "wordlist"));
+  querySnapshot.forEach((doc) => {
+  updateDoc(doc.ref,{nativeWordShow:false,translationMeaningShow:false})
+    // doc.data() is never undefined for query doc snapshots
+    // console.log(doc.id, " => ", doc.data());
+  });
+  // await setDoc(doc(database, "users",uid,'wordlist',docid), 
+  //     {nativeWordShow:false}, { merge: true });
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+
+}
+
+
+export async function writeClearAnkiToDB(uid){
+  try{
+  const querySnapshot = await getDocs(collection(database, "users", uid, "wordlist"));
+  querySnapshot.forEach((doc) => {
+  updateDoc(doc.ref,{nativeWordShow:true,translationMeaningShow:true})
     // doc.data() is never undefined for query doc snapshots
     // console.log(doc.id, " => ", doc.data());
   });

@@ -27,10 +27,11 @@ export default function WordList({ route }) {
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => {
-        return <Button title="delete"   onPress={deleteHandler} />;
+        return isadmin && <Button title="delete" onPress={deleteHandler} />;
       },
     });
   }, []);
+
   useEffect(() => {
     onSnapshot(collection(database, "library", wordBookid, "wordlist"), (querySnapshot) => {
       let newArray = [];
@@ -68,7 +69,20 @@ export default function WordList({ route }) {
 
   }
 
-  const renderItem = ({ item }) => (
+  const renderItemUser = ({ item }) => (
+
+
+
+    <View style={{ padding: 30, borderColor: "green", borderWidth: 1 }}>
+      <Text>ID: {item.id}</Text>
+      <Text>nativeWord: {item.nativeWord}</Text>
+      <Text>translationMeaning: {item.translationMeaning}</Text>
+      {auth.currentUser && <Button title="add" onPress={() => onPressFunction({ item })} />}
+    </View>
+  );
+
+
+  const renderItemAdmin = ({ item }) => (
 
 
 
@@ -99,12 +113,19 @@ export default function WordList({ route }) {
   }
 
   return (
-    <View>
+    <View styles={{flex:1}}>
       <Text>This is the wordlist screen</Text>
-      {isadmin && <Button title="delete the whole book" onPress={deleteHandler}></Button>}
+      {!auth.currentUser && <Text>You can add the word and play the pronounciation when you log in</Text> }
+
+      {/* {isadmin && <Button title="delete the whole book" onPress={deleteHandler}></Button>} */}
+      {/* {isadmin &&<FlatList
+        data={library}
+        renderItem={renderItemAdmin}
+        keyExtractor={(item, index) => index.toString()}
+      />} */}
       <FlatList
         data={library}
-        renderItem={renderItem}
+        renderItem={renderItemUser}
         keyExtractor={(item, index) => index.toString()}
       />
     </View>

@@ -295,21 +295,95 @@ export default function Library({ route }) {
     }
   }
 
+
+  const renderItemUser = ({ item }) => (
+    <Pressable onPress={() => onPressFunction({ item })}
+      style={{ margin: 5, padding: 5, borderColor: "red", borderWidth: 3, width: '30%' }}>
+      <View
+      // style={{margin:5, padding: 5, borderColor: "red", borderWidth: 3,width:'50%' }}
+      >
+        {item.imageDownloadUri && <Image source={{ uri: item.imageDownloadUri }} style={{ width: 100, height: 100 }} />}
+        {/* <Text>ID: {item.id}</Text> */}
+        <Text>Title: {item.title}</Text>
+        {/* <Text>Native Language: {item.nativeLanguage}</Text> */}
+        <Text>Word Numbers: {item.number}</Text>
+        {/* <Text>Word Language: {item.translationLanguage}</Text> */}
+        <CountryFlag isoCode={item.nativeLanguage} size={25} />
+        <CountryFlag isoCode={item.translationLanguage} size={25} />
+      </View>
+    </Pressable>
+  );
+
+
+  const renderItemAdmin = ({ item }) => (
+    <Pressable onPress={() => onPressFunction({ item })}
+      style={{ margin: 5, padding: 5, borderColor: "red", borderWidth: 3, width: '30%' }}>
+      <View
+      // style={{margin:5, padding: 5, borderColor: "red", borderWidth: 3,width:'50%' }}
+      >
+        {item.imageDownloadUri && <Image source={{ uri: item.imageDownloadUri }} style={{ width: 100, height: 100 }} />}
+        <Text>ID: {item.id}</Text>
+        <Text>Title: {item.title}</Text>
+        <Text>Native Language: {item.nativeLanguage}</Text>
+        <Text>Word Numbers: {item.number}</Text>
+        <Text>Word Language: {item.translationLanguage}</Text>
+        <CountryFlag isoCode={item.nativeLanguage} size={25} />
+        <CountryFlag isoCode={item.translationLanguage} size={25} />
+      </View>
+    </Pressable>
+  );
+
+
+//   const [openRemind, setOpenRemind]= useState(false)
+
+//   function remindHandler(){
+
+// setOpenRemind(!openRemind)
+//   }
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        return  isadmin && <Button title="Admin terminal" onPress={() => setAdminTerminalOpen(!adminTerminalOpen)} />;
+      },
+    });
+  }, );
+
+// useEffect(() => {
+//   navigation.setOptions({
+//     headerRight: () => {
+//       return isadmin && <Button title="delete" onPress={deleteHandler} />;
+//     },
+//   });
+// }, []);
+
+
   return (
     <View style={{ flex: 1 }}>
 
       {isadmin && (
         <>
-          <Button title="open/close admin terminal" onPress={() => setAdminTerminalOpen(!adminTerminalOpen)}></Button>
+          {/* <Button title="open/close admin terminal" onPress={() => setAdminTerminalOpen(!adminTerminalOpen)}></Button> */}
           {adminTerminalOpen && AdminTerminal}
         </>
       )}
-      <FlatList numColumns='3'
+
+      {isadmin ? <FlatList numColumns='3'
+        horizontal={false}
+        data={library}
+        renderItem={renderItemAdmin}
+        keyExtractor={(item, index) => index.toString()}
+      /> :<FlatList numColumns='3'
+        horizontal={false}
+        data={library}
+        renderItem={renderItemUser}
+        keyExtractor={(item, index) => index.toString()}
+      />}
+      {/* <FlatList numColumns='3'
         horizontal={false}
         data={library}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
-      />
+      /> */}
     </View>
   )
 }

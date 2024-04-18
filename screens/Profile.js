@@ -186,6 +186,12 @@ export default function Profile({ route, navigation }) {
         text: "Yes", onPress: () => {
           try {
             signOut(auth)
+            
+            setNickname('')
+            setOriginNickname('')
+            setEmail('')
+            setImageDatabasetaUri('https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGljfGVufDB8fDB8fHww')
+
             // navigation.navigate("Registration")
           } catch (error) {
             console.log(error)
@@ -262,14 +268,32 @@ export default function Profile({ route, navigation }) {
   }
 
 
+  // function changeNameHandler() {
+  //   console.log("pressed")
+  //   setNewUserDocToDB({ nickname: uploadnickname }, "users", auth.currentUser.uid)
+  //   // setOriginNickname(nickname);
+  //   setNickname(uploadnickname)
+  //   setOpenButton(false)
+
+
+  // }
+
+
+
   function changeNameHandler() {
     console.log("pressed")
-    setNewUserDocToDB({ nickname: uploadnickname }, "users", auth.currentUser.uid)
+    setNewUserDocToDB({ nickname: nickname }, "users", auth.currentUser.uid)
     // setOriginNickname(nickname);
-    setNickname(uploadnickname)
+    setNickname(nickname)
     setOpenButton(false)
 
 
+
+  }
+
+
+  function cancelchangeNameHandler(){
+    setNickname(originNickname);
   }
 
   const [openButton, setOpenButton] = useState(false)
@@ -323,27 +347,37 @@ export default function Profile({ route, navigation }) {
         (<Button title="save image changes" onPress={saveImageChange}></Button>
         )
       }
-      <Pressable onPressIn={() => setOpenButton(!openButton)}>
+      {/* <Pressable onPressIn={() => setOpenButton(!openButton)}> */}
         <InputComponent
           label="Nickname"
           value={nickname}
           onChangeText={setNickname}
           editable={true}
         />
-      </Pressable>
+      {/* </Pressable> */}
 
-      {openButton && (
+      {/* {openButton && (
 
         <InputComponent
           value={uploadnickname}
           onChangeText={setUploadNickname}
           editable={true}
-        />)}
+        />)} */}
+
+{showButton && (
+
+<Button title="Change The Nickname" onPress={changeNameHandler}></Button>
+)}
+
+{showButton && (
+
+<Button title="cancel" onPress={cancelchangeNameHandler}></Button>
+)}
 
 
-      {openButton && (
+      {/* {openButton && (
 
-        <Button title="Change The Nickname" onPress={changeNameHandler}></Button>)}
+        <Button title="Change The Nickname" onPress={changeNameHandler}></Button>)} */}
 
       <InputComponent
         //here is a InputComponent can show the email, but user cannot pressed or
@@ -365,12 +399,11 @@ export default function Profile({ route, navigation }) {
   )
 
   function loginHandler() {
-    console.log("ziyoule")
     navigation.navigate('Login')
   }
   const AppAuth = (
     <>
-      <Button title="login" onPress={loginHandler}></Button>
+      <Button title="Login/Signup" onPress={loginHandler}></Button>
     </>
   )
 
