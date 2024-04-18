@@ -68,7 +68,6 @@ export default function NotificationManager() {
     <View>
         <InputComponent
         label="Set hours here:"
-        keyboardType="numeric"
         value={hours}
         onChangeText={(input) => {
             setHours(input);
@@ -79,7 +78,6 @@ export default function NotificationManager() {
 
         <InputComponent
         label="Set minutes here:"
-        keyboardType="numeric"
         value={minutes}
         onChangeText={(input) => {
             setMinutes(input);
