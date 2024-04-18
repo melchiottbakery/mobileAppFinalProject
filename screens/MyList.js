@@ -349,7 +349,7 @@ setOpenRemind(!openRemind)
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => {
-        return  <Button title="Remind" onPress={remindHandler} />;
+        return  library.length !== 0 && <Button title="Remind" onPress={remindHandler} />;
       },
     });
   }, );
