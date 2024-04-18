@@ -1,10 +1,11 @@
-import { Alert, StyleSheet, View, Button } from "react-native";
+import { Alert, StyleSheet, View, Button, ActivityIndicator } from "react-native";
 import React, { useState } from "react";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { mapsApiKey } from "@env";
 
 export default function Map() {
+  const [isLoading, setIsLoading] = useState(false);
   const [location, setLocation] = useState(null);
   const [status, requestPermission] = Location.useForegroundPermissions();
   const [schools, setSchools] = useState([]);
@@ -29,6 +30,7 @@ export default function Map() {
   }
 
   async function findESLHandler() {
+    setIsLoading(true);
     try {
       const checkPermission = await verifyPermission();
       if (!checkPermission) {
@@ -48,6 +50,8 @@ export default function Map() {
       fetchNearbySchools(userLocation);
     } catch (err) {
       console.log(err);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -104,6 +108,7 @@ export default function Map() {
         }
       </MapView>
       <Button title="Find Nearby Japanese Language Schools" onPress={findESLHandler} />
+      {isLoading && <ActivityIndicator size="large" />}
     </View>
   );
 }

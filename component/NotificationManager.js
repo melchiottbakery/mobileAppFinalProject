@@ -1,11 +1,11 @@
 import { StyleSheet, Text, View, Button, Alert, Platform } from "react-native";
 import React, { useState } from "react";
 import * as Notifications from "expo-notifications";
-import DateTimePicker from "@react-native-community/datetimepicker";
+
 
 export default function NotificationManager() {
-  const [showPicker, setShowPicker] = useState(false);
-  const [date, setDate] = useState(new Date());
+//   const [showPicker, setShowPicker] = useState(false);
+//   const [date, setDate] = useState(new Date());
 
   async function verifyPermission() {
     try {
@@ -30,15 +30,14 @@ export default function NotificationManager() {
         return;
       }
 
-      const trigger = new Date(date.getTime());
+      //const trigger = new Date(date.getTime());
       const id = await Notifications.scheduleNotificationAsync({
         content: {
           title: "time's up!",
           body: "Don't forget to set timer to start learning!",
         },
         trigger: {
-          hour: trigger.getHours(),
-          minute: trigger.getMinutes(),
+          seconds: 5,
         },
       });
     } catch (err) {
@@ -46,23 +45,15 @@ export default function NotificationManager() {
     }
   }
 
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setShowPicker(Platform.OS === "ios");
-    setDate(currentDate);
-    if (event.type === "set") {
-      localNotificationHandler();
-      setShowPicker(false);
-    }
-  };
+  
 
   return (
     <View>
       <Button
         title="set time interval here"
-        onPress={() => setShowPicker(true)}
+        onPress={localNotificationHandler}
       />
-      {showPicker && (
+      {/* {showPicker && (
         <DateTimePicker
           value={date}
           mode="time"
@@ -70,7 +61,7 @@ export default function NotificationManager() {
           display="default"
           onChange={onChange}
         />
-      )}
+      )} */}
     </View>
   );
 }
