@@ -11,7 +11,7 @@ import { SafeAreaView } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import NotificationManager from "../component/NotificationManager";
-//import InputComponent from '../component/InputComponent';
+
 
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { database } from "../firebase-files/FirebaseSetup";

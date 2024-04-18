@@ -1,11 +1,14 @@
-import { StyleSheet, Text, View, Button, Alert, Platform } from "react-native";
+import { StyleSheet, Text, View, Button, Alert} from "react-native";
 import React, { useState } from "react";
 import * as Notifications from "expo-notifications";
+import InputComponent from '../component/InputComponent';
 
 
 export default function NotificationManager() {
-//   const [showPicker, setShowPicker] = useState(false);
-//   const [date, setDate] = useState(new Date());
+  const [hours, setHours] = useState("");
+  const [minutes, setMinutes] = useState("");
+  const [hoursError, setHoursError] = useState("");
+  const [minutesError, setMinutesError] = useState("");
 
   async function verifyPermission() {
     try {
@@ -23,6 +26,10 @@ export default function NotificationManager() {
   }
 
   async function localNotificationHandler() {
+    if (!validateInput(hours, setHoursError) || !validateInput(minutes, setMinutesError)) {
+        Alert.alert("Invalid Time Input");
+        return; // Prevent a schedul if validation fails
+      }
     try {
       const havePermission = await verifyPermission();
       if (!havePermission) {
@@ -37,7 +44,8 @@ export default function NotificationManager() {
           body: "Don't forget to set timer to start learning!",
         },
         trigger: {
-          seconds: 5,
+          hour: parseInt(hours, 10),
+          minute: parseInt(minutes, 10),
         },
       });
     } catch (err) {
@@ -45,23 +53,46 @@ export default function NotificationManager() {
     }
   }
 
-  
+  function validateInput(input, setError) {
+    // Check if the input is a number and within the range 0 to 99
+    const number = parseInt(input, 10);
+    if (!isNaN(number) && number >= 0 && number <= 99) {
+        setError("");
+        return true;
+    } else {
+        setError("Please enter a valid number between 0 and 99");
+        return false;
+    }
+}
 
   return (
     <View>
+        <InputComponent
+        label="Set hours here:"
+        keyboardType="numeric"
+        value={hours}
+        onChangeText={(input) => {
+            setHours(input);
+            validateInput(input, setHoursError);
+        }}
+        error={hoursError}
+        />
+
+        <InputComponent
+        label="Set minutes here:"
+        keyboardType="numeric"
+        value={minutes}
+        onChangeText={(input) => {
+            setMinutes(input);
+            validateInput(input, setMinutesError);
+        }}
+        error={minutesError}
+        />
+
       <Button
         title="set time interval here"
         onPress={localNotificationHandler}
       />
-      {/* {showPicker && (
-        <DateTimePicker
-          value={date}
-          mode="time"
-          is24Hour={true}
-          display="default"
-          onChange={onChange}
-        />
-      )} */}
     </View>
   );
 }

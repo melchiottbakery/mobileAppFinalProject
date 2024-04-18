@@ -159,5 +159,3 @@ for interactive map:
 npx expo install react-native-maps
 
 npx expo install expo-notifications
-
-npx expo install @react-native-community/datetimepicker
