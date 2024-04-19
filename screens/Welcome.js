@@ -1,8 +1,11 @@
-import { Button, StyleSheet, Text, View,Slider } from 'react-native'
+import { Button, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from "react";
 import Map from '../component/Map';
 
+
 export default function Welcome() {
+
+
 
   return (
     <View style={styles.container}>
@@ -20,5 +23,22 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  }
+  },
+  selectedNumber: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  slider: {
+    width: '80%',
+  },
+  sliderValue: {
+    fontSize: 18,
+    marginTop: 10,
+  },
+  newTime: {
+    fontSize: 18,
+    marginTop: 10,
+    fontStyle: 'italic',
+  },
 })

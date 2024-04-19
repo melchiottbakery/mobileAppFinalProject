@@ -3,9 +3,9 @@ import { SafeAreaView } from 'react-native'
 import { Pressable } from "react-native";
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
+import { AntDesign } from '@expo/vector-icons';
 
 import { auth } from '../firebase-files/FirebaseSetup';
-import { AntDesign } from "@expo/vector-icons";
 
 import { collection, onSnapshot } from "firebase/firestore";
 import { database } from "../firebase-files/FirebaseSetup"
@@ -82,6 +82,17 @@ export default function WordList({ route }) {
 
   }
 
+  const addButton =(
+    <>
+     <TouchableOpacity onPress={() => onPressFunction({ item })}>
+     <AntDesign name="pluscircleo" size={24} color="black" />
+     {/* <MaterialIcons name="add-alarm" size={30} color="black" /> */}
+    </TouchableOpacity>
+    
+    </>
+
+  )
+
   const renderItemUser = ({ item }) => (
 
 
@@ -90,6 +101,10 @@ export default function WordList({ route }) {
       <Text>ID: {item.id}</Text>
       <Text>nativeWord: {item.nativeWord}</Text>
       <Text>translationMeaning: {item.translationMeaning}</Text>
+
+      {/* {auth.currentUser && addButton} */}
+
+
       {auth.currentUser && <Button title="add" onPress={() => onPressFunction({ item })} />}
     </View>
   );
@@ -103,7 +118,10 @@ export default function WordList({ route }) {
       <Text>ID: {item.id}</Text>
       <Text>nativeWord: {item.nativeWord}</Text>
       <Text>translationMeaning: {item.translationMeaning}</Text>
-      {auth.currentUser && <Button title="add" onPress={() => onPressFunction({ item })} />}
+
+      {auth.currentUser && addButton}
+
+      {/* {auth.currentUser && <Button title="add" onPress={() => onPressFunction({ item })} />} */}
     </View>
   );
 
@@ -131,16 +149,16 @@ export default function WordList({ route }) {
       {!auth.currentUser && <Text>You can add the word and play the pronounciation when you log in</Text> }
 
       {/* {isadmin && <Button title="delete the whole book" onPress={deleteHandler}></Button>} */}
-      {/* {isadmin &&<FlatList
+      {isadmin &&<FlatList
         data={library}
         renderItem={renderItemAdmin}
         keyExtractor={(item, index) => index.toString()}
-      />} */}
-      <FlatList
+      />}
+      {!isadmin && <FlatList
         data={library}
         renderItem={renderItemUser}
         keyExtractor={(item, index) => index.toString()}
-      />
+      />}
     </View>
   )
 }

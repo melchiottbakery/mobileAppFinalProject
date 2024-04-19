@@ -25,9 +25,11 @@ import {
   writeAntiAnkiToDB,
   writeClearAnkiToDB,
 } from "../firebase-files/FirebaseHelper";
+import { MaterialIcons } from '@expo/vector-icons';
 
 import { auth } from "../firebase-files/FirebaseSetup";
 import AudioManager from "../component/AudioManager";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function MyList() {
   const userId = auth.currentUser.uid;
@@ -60,40 +62,6 @@ export default function MyList() {
   }, []);
 
   console.log(library);
-
-
-  // const handleButtonPress = () => {
-  //   // 使用map函数遍历数据，并更新translationMeaningShow属性为false
-  //   const newData = data.map(item => {
-  //     return {
-  //       ...item,
-  //       translationMeaningShow: false
-  //     };
-  //   });
-
-  //   // 更新数据
-  //   setData(newData); // 这里假设您使用useState来管理数据
-  // };
-
-  // function ankiModeHandler() {
-  //   console.log("anki")
-  //   const newData = library.map(item => {
-  //     return {
-  //       ...item,
-  //       translationMeaningShow: false
-  //     };
-  //   });
-
-  //   // 更新数据
-  //   setlibrary(newData);
-
-  // }
-
-  // function ankiModeHandler() {
-  //   console.log("anki")
-  //   handleToggleMeaningShow()
-
-  // }
 
 
 
@@ -177,80 +145,7 @@ export default function MyList() {
     // editInDB(item.id, rememberWord);
   }
 
-  // function ankiModeHandler(){
-  //   const q = query(collection(database, "users",auth.currentUser.uid,'wordlist'));
-  //   // console.log(q.firestore.databaseId)
-  //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  //     querySnapshot.forEach((doc) => {
-  //         // cities.push(doc.data().name);
-  //         console.log("niha54765876576o",doc.data())
-  //         const translationMeaningShow = {
-  //                     translationMeaningShow : false
-  //                 };
-  //                 editRememberInDB(doc.data().nativeWord,userId,translationMeaningShow)
 
-  //     });
-  //   })
-  // }
-
-  // const q = query(collection(database, "users",auth.currentUser.uid,'wordlist'));
-  // console.log(q)
-
-  // function ankiModeHandler(){
-  //   console.log("anki presseed")
-
-  //   const unsubscribe= onSnapshot(collection(database, "users",auth.currentUser.uid,'wordlist'), (querySnapshot) => {
-  //      console.log("nihao",querySnapshot)
-  //     // let newArray = [];
-  //     if (querySnapshot) {
-  //       querySnapshot.forEach((doc) => {
-
-  //         console.log(doc.data().nativeWord)
-  //         const translationMeaningShow = {
-  //           translationMeaningShow : false
-  //       };
-  //       editRememberInDB(doc.data().nativeWord,userId,translationMeaningShow)
-
-  //         // newArray.push({ ...doc.data(), id: doc.id });
-  //       });
-  //     };
-  //     // setlibrary(newArray);
-  //   });
-  //   // unsubscribe();
-  // }
-
-  function showNativeHandler({ item }) {
-    console.log("press word is", { item });
-    // 使用map函数遍历数据，仅更新id为“千代田”的对象的nativeWordShow属性为false，其他对象保持不变
-    const newData = library.map((items) => {
-      if (items.id === item.nativeWord) {
-        return {
-          ...items,
-          showNative: !item.showNative,
-        };
-      } else {
-        return items;
-      }
-    });
-
-    // 更新数据
-    setlibrary(newData); // 这里假设您使用useState来管理数据
-  }
-
-  function showTranslationHandler({ item }) {
-    console.log("press word is", { item });
-    const newData = library.map((items) => {
-      if (items.id === item.nativeWord) {
-        return {
-          ...items,
-          showTranslation: !item.showTranslation,
-        };
-      } else {
-        return items;
-      }
-    });
-    setlibrary(newData);
-  }
 
   const renderItem = ({ item }) => (
     <Pressable>
@@ -349,10 +244,30 @@ export default function MyList() {
 
 setOpenRemind(!openRemind)
   }
+
+
+
+  const reminderButton =(
+    <>
+     <TouchableOpacity onPress={remindHandler}>
+     <MaterialIcons name="add-alarm" size={30} color="black" />
+    </TouchableOpacity>
+    
+    </>
+
+  )
+
+  // useEffect(() => {
+  //   navigation.setOptions({
+  //     headerRight: () => {
+  //       return  library.length !== 0 && <Button title="Remind" onPress={remindHandler} />;
+  //     },
+  //   });
+  // }, );
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => {
-        return  library.length !== 0 && <Button title="Remind" onPress={remindHandler} />;
+        return  library.length !== 0 && reminderButton;
       },
     });
   }, );
@@ -396,7 +311,7 @@ setOpenRemind(!openRemind)
       ) : (
         // Render something else when the library is not empty
         <>
-          {openRemind && <NotificationManager />}
+          {openRemind && <NotificationManager remindHandler={remindHandler}/>}
           <Button title="anki-mode" onPress={ankiModeHandler} />
           <Button title="Anti-anki-mode" onPress={antiankiModeHandler} />
           <Button title="All-Hidden-mode" onPress={allankiModeHandler} />
