@@ -1,6 +1,8 @@
-import { Button, StyleSheet, Text, View } from 'react-native'
+import { Button, StyleSheet, Text, View,TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Audio } from 'expo-av';
+import { FontAwesome } from '@expo/vector-icons'; 
+import { AntDesign } from '@expo/vector-icons';
 
 
 export default function AudioManager({ wordToSound }) {
@@ -27,7 +29,11 @@ export default function AudioManager({ wordToSound }) {
   }, [sound]);
   return (
     <View>
-      <Button title='play the sound' onPress={playSound}></Button>
+      {/* <Button title='play the sound' onPress={playSound}></Button> */}
+
+      <TouchableOpacity onPress={playSound}>
+      <AntDesign name="sound" size={30} color="black" />
+      </TouchableOpacity>
     </View>
   )
 }

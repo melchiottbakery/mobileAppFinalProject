@@ -1,15 +1,16 @@
-import { StyleSheet, Text, View, FlatList, Button, Alert } from 'react-native'
+import { StyleSheet, Text, View, FlatList, Button, Alert,TouchableOpacity } from 'react-native'
 import { SafeAreaView } from 'react-native'
 import { Pressable } from "react-native";
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 
 import { auth } from '../firebase-files/FirebaseSetup';
+import { AntDesign } from "@expo/vector-icons";
 
 import { collection, onSnapshot } from "firebase/firestore";
 import { database } from "../firebase-files/FirebaseSetup"
 import { writeToDB, writeNewWordToUserDB, deleteBookFromLibraryDB, deleteCollection } from "../firebase-files/FirebaseHelper";
-
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function WordList({ route }) {
   const navigation = useNavigation();
@@ -27,10 +28,22 @@ export default function WordList({ route }) {
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => {
-        return isadmin && <Button title="delete" onPress={deleteHandler} />;
+        return  isadmin && deleteButton;
+// isadmin && <Button title="delete" onPress={deleteHandler} />;
       },
     });
   }, []);
+
+
+  const deleteButton =(
+    <>
+     <TouchableOpacity onPress={deleteHandler}>
+     <MaterialCommunityIcons name="delete-alert" size={30} color="red" />
+      </TouchableOpacity>
+    
+    </>
+
+  )
 
   useEffect(() => {
     onSnapshot(collection(database, "library", wordBookid, "wordlist"), (querySnapshot) => {

@@ -107,8 +107,11 @@ export default function Map() {
         ))
         }
       </MapView>
+      {isLoading? <ActivityIndicator size="large" /> :
       <Button title="Find Nearby Japanese Language Schools" onPress={findESLHandler} />
-      {isLoading && <ActivityIndicator size="large" />}
+      }
+      {/* <Button title="Find Nearby Japanese Language Schools" onPress={findESLHandler} />
+      {isLoading && <ActivityIndicator size="large" />} */}
     </View>
   );
 }

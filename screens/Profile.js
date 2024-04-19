@@ -7,7 +7,7 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { ref, uploadBytes } from "firebase/storage";
 import { getDownloadURL } from "firebase/storage";
 
-
+import { SimpleLineIcons } from '@expo/vector-icons';
 
 
 
@@ -16,6 +16,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 import { editImageLinkInDB, getProfile, setNewUserDocToDB } from "../firebase-files/FirebaseHelper";
 import { collection, doc, onSnapshot } from "firebase/firestore";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 
 
@@ -393,11 +394,15 @@ export default function Profile({  navigation }) {
 
       {/* // if you can add a alert for this one? */}
       <View style={styles.buttonContainer}>
-        <Button
+        {/* <Button
           //a button cancel and go back to the Login screen
           title="LOG OUT"
           onPress={logoutHandler}
-        />
+        /> */}
+      <TouchableOpacity onPress={logoutHandler}>
+
+<SimpleLineIcons name="logout" size={24} color="black" />
+</TouchableOpacity>
 
       </View>
     </>
