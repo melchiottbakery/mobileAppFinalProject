@@ -215,7 +215,23 @@ export default function Library({ route }) {
         // }}
         // maxHeight={500}
 
-        style={{ backgroundColor: '#fafafa' , }}
+        // style={{ backgroundColor: '#fafafa' , }}
+
+        style={{
+          backgroundColor: '#fafafa',
+          marginBottom: 20,
+          borderRadius: 5,
+          borderColor: 'purple',
+          borderWidth: 2,
+        }}
+
+        textStyle={{
+          fontSize: 15,
+          color: 'blue',
+          fontWeight: 'bold',
+        }}
+
+
         
         dropDownStyle={{ backgroundColor: '#fafafa' }}
         onChangeItem={item => setSelectedId(item.value)
