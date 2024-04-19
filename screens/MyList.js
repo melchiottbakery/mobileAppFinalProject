@@ -27,7 +27,7 @@ import {
 } from "../firebase-files/FirebaseHelper";
 
 import { auth } from "../firebase-files/FirebaseSetup";
-import AudioManager from "./AudioManager";
+import AudioManager from "../component/AudioManager";
 
 export default function MyList() {
   const userId = auth.currentUser.uid;

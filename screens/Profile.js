@@ -179,7 +179,7 @@ export default function Profile({  navigation }) {
 
   //add Alert for the Cancel button
   function logoutHandler() {
-    Alert.alert("Cancel", "Are you going back to Login?", [
+    Alert.alert("LOGOUT", "Are you going to LOGOUT?", [
       {
         text: "No",
         onPress: () => console.log("No Pressed"),

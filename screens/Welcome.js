@@ -1,4 +1,4 @@
-import { Button, StyleSheet, Text, View } from 'react-native'
+import { Button, StyleSheet, Text, View,Slider } from 'react-native'
 import React, { useEffect, useState } from "react";
 import Map from '../component/Map';
 
