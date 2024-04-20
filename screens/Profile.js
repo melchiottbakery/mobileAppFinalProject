@@ -6,7 +6,9 @@ import { auth, database, storage } from '../firebase-files/FirebaseSetup';
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { ref, uploadBytes } from "firebase/storage";
 import { getDownloadURL } from "firebase/storage";
+import { Entypo } from '@expo/vector-icons';
 
+import { FontAwesome } from '@expo/vector-icons';
 import { SimpleLineIcons } from '@expo/vector-icons';
 
 
@@ -159,10 +161,12 @@ export default function Profile({  navigation }) {
   const [imageDatabasetaUri, setImageDatabasetaUri] = useState("");
 
   async function downloadImageFromDatabase(data) {
+    if(dataimageUri){
     try {
       downloadImageUri = data.imageUri
       const imageRef = ref(storage, downloadImageUri);
       const imageDownloadUri = await getDownloadURL(imageRef);
+      //bugs
       console.log("downloaded" + imageDownloadUri)
       setImageDatabasetaUri(imageDownloadUri)
 
@@ -170,12 +174,13 @@ export default function Profile({  navigation }) {
 
       // setDownloadImage(data.imageUri)
     } catch (error) {
-      console.log(error)
+      console.log('console.error',error)
       // setImageDatabasetaUri('https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGljfGVufDB8fDB8fHww')
       setImageDatabasetaUri('https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg')
 
 
     }
+  }
   }
 
 
@@ -315,7 +320,16 @@ export default function Profile({  navigation }) {
 
       {/*  <Text>Add a pic as a placeholder</Text> */}
       <Pressable onPress={cameraFunction}>
+
         <View style={styles.imageContainer}>
+          <View style={{
+            position: "absolute",
+            right:100,
+            bottom: 3,}
+          }>
+        <Entypo name="camera" size={30} color="black" />
+        </View>
+
           {/* <Image source={require("../assets/imageUpload.jpeg")} style={styles.image} />
         {imageLocalUri && (
         <Image source={{ uri: imageLocalUri }} style={{ width: 100, height: 100 }} />
@@ -323,6 +337,7 @@ export default function Profile({  navigation }) {
       {
         imageDatabasetaUri &&   <Image style = {styles.image} source= {{uri:imageDatabasetaUri}}/>
       } */}
+
           {imageLocalUri ?
             <Image source={{ uri: imageLocalUri }} style={{ width: 100, height: 100 }} /> :
             <>
@@ -353,8 +368,15 @@ export default function Profile({  navigation }) {
       </Pressable>
       {openSaveButton &&
 
-        (<Button title="save image changes" onPress={saveImageChange}></Button>
-        )
+        (
+        
+          <TouchableOpacity onPress={saveImageChange}>
+<FontAwesome name="upload" size={30} color="black" />
+    </TouchableOpacity>
+        // <Button title="save image changes" onPress={saveImageChange}></Button>
+        
+      
+      )
       }
       {/* <Pressable onPressIn={() => setOpenButton(!openButton)}> */}
         <InputComponent
@@ -428,12 +450,12 @@ export default function Profile({  navigation }) {
   // )
 
   const AppAuth = (
-    <>
+    <View style={styles.appauthcontainer}>
      <TouchableOpacity onPress={loginHandler}>
      <SimpleLineIcons name="login" size={30} color="black" />
          </TouchableOpacity>
       {/* <Button title="Login/Signup" onPress={loginHandler}></Button> */}
-    </>
+      </View>
   )
 
   return (
@@ -444,11 +466,17 @@ export default function Profile({  navigation }) {
 }
 
 const styles = StyleSheet.create({
+  appauthcontainer:{
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor:"#FFE2C2"
+  },
 
   container: {
     flex: 1,
     // alignItems: 'center',
-    justifyContent: 'center',
+    // justifyContent: 'center',
     backgroundColor:"#FFE2C2"
   },
 

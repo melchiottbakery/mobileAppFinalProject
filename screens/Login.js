@@ -69,7 +69,7 @@ export default function Login({ navigation,route }) {
 
   ///bug 
 
-  const [displayText, setDisplayText] = useState('');
+  // const [displayText, setDisplayText] = useState('');
 
   // useEffect(() => {
   //   // 设置文本内容
@@ -94,16 +94,20 @@ export default function Login({ navigation,route }) {
 
 
   useEffect(() => {
-    if (route.params && route.params.data) {
-        setDisplayText(route.params.data);
+    if (route.params && route.params.userEmail) {
+      
+      setEmail(route.params.userEmail)
+      setPassword(route.params.userPassword)
+      // userAuthHandler();
+        // setDisplayText(route.params.data);
         
-        // Clear the text after 5 seconds
-        const timer = setTimeout(() => {
-            setDisplayText('');
-        }, 5000);
+        // // // Clear the text after 5 seconds
+        // const timer = setTimeout(() => {
+        //     setDisplayText('');
+        // }, 5000);
 
-        // Clear the timer to avoid memory leaks
-        return () => clearTimeout(timer);
+        // // Clear the timer to avoid memory leaks
+        // return () => clearTimeout(timer);
     }
 }, []);
 
@@ -153,7 +157,7 @@ export default function Login({ navigation,route }) {
         <Button title="Login" onPress={handleLogin} disabled={validateForm()} />
         <Button title="Register" onPress={handleRegister} />
         
-        <Text>{displayText}</Text>
+        {/* <Text>{displayText}</Text> */}
 
       </View>
     </SafeAreaView>

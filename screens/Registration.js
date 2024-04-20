@@ -50,7 +50,7 @@ export default function Registration({ navigation }) {
     setConfirmedPassword("");
     setIsAdmin(false);
     // navigation.navigate("Login");
-    navigation.navigate("Login",{data:'Sign Up Successful'});
+    navigation.navigate("Login",{userEmail:email,userPassword:password});
 
     
   };
@@ -121,7 +121,7 @@ export default function Registration({ navigation }) {
         email: email, 
         isAdmin: isAdmin 
       }, "users", userCred._tokenResponse.localId)
-      navigation.navigate("Login",{data:'Sign Up Successful'});
+      navigation.navigate("Login",{userEmail:email,userPassword:password});
 
 
 

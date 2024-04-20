@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import CountryFlag from "react-native-country-flag";
 import DropDownPicker from 'react-native-dropdown-picker';
-
+import { FontAwesome5 } from '@expo/vector-icons';
 import { onAuthStateChanged } from "firebase/auth";
 import { FontAwesome6 } from '@expo/vector-icons';
 import { collection, onSnapshot, } from "firebase/firestore"
@@ -198,19 +198,34 @@ export default function Library({ route }) {
 
   const [open, setOpen] = useState(false);
   const AdminTerminal = (
-    <View>
+    <View style={{alignItems: 'center'}}>
+<View style={{ flexDirection: 'row', alignItems: 'center',    justifyContent: 'center',
+ }}>
+          <View  style={{ flex: 1 }}>
       <InputComponent
         label="link"
         value={jsonLink}
         onChangeText={setJsonLink}
       ></InputComponent>
+      </View>
+      <View>
 
-      
-<TouchableOpacity onPress={loadJsonLinkHandler}>
+      <TouchableOpacity onPress={loadJsonLinkHandler}>
 <MaterialIcons name="cloud-upload" size={30} color="black" />        
  </TouchableOpacity>
-      {/* <Button title='load the book' onPress={loadJsonLinkHandler}></Button> */}
+ </View>
 
+      </View>
+      
+
+      
+<View style={{ flexDirection: 'row', 
+alignItems: 'center',    
+// justifyContent: 'center',
+ }}>      
+ {/* <Button title='load the book' onPress={loadJsonLinkHandler}></Button> */}
+
+<View style={{width:"70%"}}>
       <DropDownPicker
         open={open}
         setOpen={setOpen}
@@ -249,16 +264,28 @@ export default function Library({ route }) {
         setValue={setSelectedBook}
         value={selectedBook}
       ></DropDownPicker>
+      </View>
 
 <TouchableOpacity onPress={cameraFunction}>
 <Entypo name="camera" size={30} color="black" />
          </TouchableOpacity>
-      {/* <Button title="use the camera" onPress={cameraFunction}></Button> */}
 
+         </View>
+      {/* <Button title="use the camera" onPress={cameraFunction}></Button> */}
       {imageLocalUri && (<Image source={{ uri: imageLocalUri }} style={{ width: 100, height: 100 }} />
       )
       }
-     {imageLocalUri &&<Button title="save the image " onPress={saveImageChange}/> } 
+     {imageLocalUri &&
+     (     
+<View>
+
+<TouchableOpacity onPress={saveImageChange}>
+<FontAwesome5 name="file-upload" size={24} color="black" />       
+  </TouchableOpacity>
+     {/* <Button title="sa23ve the image " onPress={saveImageChange}/> */}
+     </View> )} 
+
+
     </View>
 
   )
