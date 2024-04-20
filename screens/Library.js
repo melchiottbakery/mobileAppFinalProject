@@ -356,7 +356,7 @@ export default function Library({ route }) {
       <View
       // style={{margin:5, padding: 5, borderColor: "red", borderWidth: 3,width:'50%' }}
       >
-        {item.imageDownloadUri && <Image source={{ uri: item.imageDownloadUri }} style={{ width: 100, height: 100 }} />}
+        {item.imageDownloadUri && <Image source={{ uri: item.imageDownloadUri }} style={{ width: "100%", height: 100 }} />}
         {/* <Text>ID: {item.id}</Text> */}
         <Text>Title: {item.title}</Text>
         {/* <Text>Native Language: {item.nativeLanguage}</Text> */}
@@ -382,7 +382,7 @@ export default function Library({ route }) {
       <View
       // style={{margin:5, padding: 5, borderColor: "red", borderWidth: 3,width:'50%' }}
       >
-        {item.imageDownloadUri && <Image source={{ uri: item.imageDownloadUri }} style={{ width: 100, height: 100 }} />}
+        {item.imageDownloadUri && <Image source={{ uri: item.imageDownloadUri }} style={{ width: "100%", height: 100 }} />}
         <Text>ID: {item.id}</Text>
         <Text>Title: {item.title}</Text>
         <Text>Native Language: {item.nativeLanguage}</Text>

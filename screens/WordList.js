@@ -79,32 +79,51 @@ export default function WordList({ route }) {
   }
 
   const addButton = (
-    <>
+    <View>
       <TouchableOpacity onPress={() => onPressFunction({ item })}>
         <AntDesign name="pluscircleo" size={24} color="black" />
         {/* <MaterialIcons name="add-alarm" size={30} color="black" /> */}
       </TouchableOpacity>
-    </>
+    </View>
 
   )
 
   const renderItemUser = ({ item }) => (
-    <View style={{ padding: 30, borderColor: "green", borderWidth: 1 }}>
-      <Text>ID: {item.id}</Text>
+<View style={{ padding: 20, borderColor: "green", borderWidth: 1,
+    flexDirection:'row',   flex: 1,
+    alignItems: 'center',
+    // justifyContent: 'center',
+   }}>      
+         {auth.currentUser && addButton}
+
+      {/* <Text>ID: {item.id}</Text> */}
+      <View style={{paddingLeft:20}}>
+
       <Text>nativeWord: {item.nativeWord}</Text>
       <Text>translationMeaning: {item.translationMeaning}</Text>
+      </View>
+
       {/* {auth.currentUser && addButton} */}
-      {auth.currentUser && <Button title="add" onPress={() => onPressFunction({ item })} />}
+      {/* {auth.currentUser && addButton} */}
+
+      {/* {auth.currentUser && <Button title="add" onPress={() => onPressFunction({ item })} />} */}
     </View>
   );
 
 
   const renderItemAdmin = ({ item }) => (
-    <View style={{ padding: 30, borderColor: "green", borderWidth: 1 }}>
+    <View style={{ padding: 20, borderColor: "green", borderWidth: 1,
+    flexDirection:'row',   flex: 1,
+    alignItems: 'center',
+    // justifyContent: 'center',
+   }}>
+    {auth.currentUser && addButton}
+      <View style={{paddingLeft:20}}>
       <Text>ID: {item.id}</Text>
       <Text>nativeWord: {item.nativeWord}</Text>
       <Text>translationMeaning: {item.translationMeaning}</Text>
-      {auth.currentUser && addButton}
+      </View>
+      
       {/* {auth.currentUser && <Button title="add" onPress={() => onPressFunction({ item })} />} */}
     </View>
   );

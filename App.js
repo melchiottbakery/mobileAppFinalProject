@@ -56,8 +56,12 @@ export default function App({wordBookid}) {
           
 
           headerLeft: () => (
-            <Button title="Back to Profile" onPress={() => navigation.navigate(Profile)}>
-            </Button>
+            // <Button title="Back to Profile" onPress={() => navigation.navigate(Profile)}>
+            // </Button>
+
+<TouchableOpacity onPress={() => navigation.goBack()}>
+<Ionicons name="arrow-back-outline" size={30} color="black" />
+    </TouchableOpacity>
           ),
           // headerRight: () => (
           //   <Button title="delete" onPress={()=>deleteHandler(wordBookid)}>

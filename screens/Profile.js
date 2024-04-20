@@ -85,7 +85,7 @@ export default function Profile({ navigation }) {
   const [imageDatabasetaUri, setImageDatabasetaUri] = useState("");
 
   async function downloadImageFromDatabase(data) {
-    if (dataimageUri) {
+    if (data.imageUri) {
       try {
         downloadImageUri = data.imageUri
         const imageRef = ref(storage, downloadImageUri);
