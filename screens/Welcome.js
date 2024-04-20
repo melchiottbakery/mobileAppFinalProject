@@ -9,11 +9,10 @@ export default function Welcome() {
 
   return (
     <View style={styles.container}>
-      <Text>Welcome to our Japanese-English vocabulary application.</Text>
-      <Text>You can search for the nearest Japanese language schools below</Text>
-      <Text>You can also browse existing vocabulary books on the library tab</Text>
-      <Text>You can create a new account to manage your learning progress on the profile tab.</Text>
-      <Map/>
+      <Text>Thanks for using our Japanese-English vocabulary library.</Text>
+      <Text>Please feel free to browse our vocabulary books.</Text>
+      <Text>Track your learning progress by creating an account.</Text>
+      <Map />
     </View>
   )
 }
@@ -23,22 +22,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor:"#FFE2C2"
   },
-  selectedNumber: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  slider: {
-    width: '80%',
-  },
-  sliderValue: {
-    fontSize: 18,
-    marginTop: 10,
-  },
-  newTime: {
-    fontSize: 18,
-    marginTop: 10,
-    fontStyle: 'italic',
-  },
+  // Mapcontainer: {
+  //   flex: 1,
+  //   // alignItems: 'center',
+  //   justifyContent: 'center',
+  //   backgroundColor:"#FFE2C2"
+  // },
+
 })

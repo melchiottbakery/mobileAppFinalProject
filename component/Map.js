@@ -1,13 +1,15 @@
-import { Alert, StyleSheet, View, Button, ActivityIndicator } from "react-native";
+import { Alert, StyleSheet, View, Button, ActivityIndicator,Text } from "react-native";
 import React, { useState } from "react";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { mapsApiKey } from "@env";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function Map() {
   const [isLoading, setIsLoading] = useState(false);
   const [location, setLocation] = useState(null);
   const [status, requestPermission] = Location.useForegroundPermissions();
+  console.log(status)
   const [schools, setSchools] = useState([]);
   const [mapRegion, setMapRegion] = useState({
     // map initial region of Vancouver
@@ -41,6 +43,7 @@ export default function Map() {
         return;
       }
       const locationResult = await Location.getCurrentPositionAsync();
+      console.log('nihao',locationResult)
       const userLocation = {
         latitude: locationResult.coords.latitude,
         longitude: locationResult.coords.longitude,
@@ -107,8 +110,18 @@ export default function Map() {
         ))
         }
       </MapView>
-      {isLoading? <ActivityIndicator size="large" /> :
-      <Button title="Find Nearby Japanese Language Schools" onPress={findESLHandler} />
+      {isLoading? <ActivityIndicator size="large" /> :(
+        <View style={{width: '50%',
+        alignItems: 'center',
+        
+        justifyContent: 'center', }}>
+
+            <TouchableOpacity style={styles.button} onPress={findESLHandler}>
+            <Text style={styles.buttonText}>Find Nearby Japanese Language Schools</Text>
+            </TouchableOpacity>
+        </View>
+      )
+      // <Button title="Find Nearby Japanese Language Schools" onPress={findESLHandler} />
       }
       {/* <Button title="Find Nearby Japanese Language Schools" onPress={findESLHandler} />
       {isLoading && <ActivityIndicator size="large" />} */}
@@ -120,9 +133,24 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     height: "60%",
+    // flex: 1,
+    alignItems: 'center',
+    // justifyContent: 'center',
+
   },
   map: {
     width: "100%",
     height: "100%",
+  },
+  button: {
+    backgroundColor: '#976732', // Example color
+    padding: 10,
+    borderRadius: 5,
+    width:"50",
+  },
+  buttonText: {
+    color: '#fff1e1', // Example color
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
 });

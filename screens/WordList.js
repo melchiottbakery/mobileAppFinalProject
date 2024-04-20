@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
 
 import { auth } from '../firebase-files/FirebaseSetup';
-
+import { Ionicons } from '@expo/vector-icons';
 import { collection, onSnapshot } from "firebase/firestore";
 import { database } from "../firebase-files/FirebaseSetup"
 import { writeToDB, writeNewWordToUserDB, deleteBookFromLibraryDB, deleteCollection } from "../firebase-files/FirebaseHelper";
@@ -144,7 +144,7 @@ export default function WordList({ route }) {
   }
 
   return (
-    <View styles={{flex:1}}>
+    <View style={styles.container}>
       <Text>This is the wordlist screen</Text>
       {!auth.currentUser && <Text>You can add the word and play the pronounciation when you log in</Text> }
 
@@ -163,4 +163,13 @@ export default function WordList({ route }) {
   )
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+
+  container: {
+    flex: 1,
+    // alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor:"#FFE2C2"
+  },
+
+})

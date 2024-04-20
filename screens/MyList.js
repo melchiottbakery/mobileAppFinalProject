@@ -301,7 +301,7 @@ setOpenRemind(!openRemind)
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       <Text>This is the my screen</Text>
 
       {/* <NotificationManager /> */}
@@ -351,4 +351,14 @@ setOpenRemind(!openRemind)
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+
+  container: {
+    flex: 1,
+    // alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor:"#FFE2C2"
+  },
+
+
+});

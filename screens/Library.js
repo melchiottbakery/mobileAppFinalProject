@@ -6,17 +6,18 @@ import CountryFlag from "react-native-country-flag";
 import DropDownPicker from 'react-native-dropdown-picker';
 
 import { onAuthStateChanged } from "firebase/auth";
-
+import { FontAwesome6 } from '@expo/vector-icons';
 import { collection, onSnapshot, } from "firebase/firestore"
 import { database, auth, storage, } from "../firebase-files/FirebaseSetup"
 import InputComponent from '../component/InputComponent';
 import { writeNewWordBookToDB, writeWholeWordBookToDB, getProfile, editImageLinkInCover } from '../firebase-files/FirebaseHelper';
-
+import { MaterialIcons } from '@expo/vector-icons';
 import { ref, uploadBytes } from "firebase/storage";
 import { getDownloadURL } from "firebase/storage";
-
+import { Entypo } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { editImageLinkInDB, setNewUserDocToDB } from "../firebase-files/FirebaseHelper";
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function Library({ route }) {
 
@@ -203,7 +204,12 @@ export default function Library({ route }) {
         value={jsonLink}
         onChangeText={setJsonLink}
       ></InputComponent>
-      <Button title='load the book' onPress={loadJsonLinkHandler}></Button>
+
+      
+<TouchableOpacity onPress={loadJsonLinkHandler}>
+<MaterialIcons name="cloud-upload" size={30} color="black" />        
+ </TouchableOpacity>
+      {/* <Button title='load the book' onPress={loadJsonLinkHandler}></Button> */}
 
       <DropDownPicker
         open={open}
@@ -218,25 +224,23 @@ export default function Library({ route }) {
         // style={{ backgroundColor: '#fafafa' , }}
 
         style={{
-          backgroundColor: '#fafafa',
+          backgroundColor: '',
           marginBottom: 20,
           borderRadius: 5,
-          borderColor: 'purple',
+          borderColor: "#B88956",
           borderWidth: 2,
         }}
 
         textStyle={{
           fontSize: 15,
-          color: 'blue',
+          // color: 'blue',
           fontWeight: 'bold',
         }}
 
 
-        
-        dropDownStyle={{ backgroundColor: '#fafafa' }}
         onChangeItem={item => setSelectedId(item.value)
         }
-
+        placeholder='Choose the book to add a cover'
         
         // zIndex={-5}
         // zIndexInverse={1000}
@@ -246,7 +250,10 @@ export default function Library({ route }) {
         value={selectedBook}
       ></DropDownPicker>
 
-      <Button title="use the camera" onPress={cameraFunction}></Button>
+<TouchableOpacity onPress={cameraFunction}>
+<Entypo name="camera" size={30} color="black" />
+         </TouchableOpacity>
+      {/* <Button title="use the camera" onPress={cameraFunction}></Button> */}
 
       {imageLocalUri && (<Image source={{ uri: imageLocalUri }} style={{ width: 100, height: 100 }} />
       )
@@ -323,7 +330,7 @@ export default function Library({ route }) {
 
   const renderItemUser = ({ item }) => (
     <Pressable onPress={() => onPressFunction({ item })}
-      style={{ margin: 5, padding: 5, borderColor: "red", borderWidth: 3, width: '30%' }}>
+      style={{ margin: 5, padding: 5, borderColor: "#B88956", borderWidth: 3, width: '30%' }}>
       <View
       // style={{margin:5, padding: 5, borderColor: "red", borderWidth: 3,width:'50%' }}
       >
@@ -333,8 +340,15 @@ export default function Library({ route }) {
         {/* <Text>Native Language: {item.nativeLanguage}</Text> */}
         <Text>Word Numbers: {item.number}</Text>
         {/* <Text>Word Language: {item.translationLanguage}</Text> */}
+        <View style={{ flexDirection: 'row' ,justifyContent: "space-around",}}>
+          <View>
         <CountryFlag isoCode={item.nativeLanguage} size={25} />
+        </View>
+        <View>
         <CountryFlag isoCode={item.translationLanguage} size={25} />
+        </View>
+        </View>
+        
       </View>
     </Pressable>
   );
@@ -342,7 +356,7 @@ export default function Library({ route }) {
 
   const renderItemAdmin = ({ item }) => (
     <Pressable onPress={() => onPressFunction({ item })}
-      style={{ margin: 5, padding: 5, borderColor: "red", borderWidth: 3, width: '30%' }}>
+      style={{ margin: 5, padding: 5, borderColor: "#B88956", borderWidth: 3, width: '30%' }}>
       <View
       // style={{margin:5, padding: 5, borderColor: "red", borderWidth: 3,width:'50%' }}
       >
@@ -352,8 +366,14 @@ export default function Library({ route }) {
         <Text>Native Language: {item.nativeLanguage}</Text>
         <Text>Word Numbers: {item.number}</Text>
         <Text>Word Language: {item.translationLanguage}</Text>
+        <View style={{ flexDirection: 'row' ,justifyContent: "space-around",}}>
+          <View>
         <CountryFlag isoCode={item.nativeLanguage} size={25} />
+        </View>
+        <View>
         <CountryFlag isoCode={item.translationLanguage} size={25} />
+        </View>
+        </View>
       </View>
     </Pressable>
   );
@@ -365,11 +385,23 @@ export default function Library({ route }) {
 
 // setOpenRemind(!openRemind)
 //   }
+
+
+
+const adminButton =(
+  <>
+   <TouchableOpacity onPress={() => setAdminTerminalOpen(!adminTerminalOpen)}>
+   <FontAwesome6 name="computer" size={30} color="black" />
+    </TouchableOpacity>
+  
+  </>
+
+)
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => {
-        return  isadmin && <Button title="Admin terminal" onPress={() => setAdminTerminalOpen(!adminTerminalOpen)} />;
-      },
+        return  isadmin &&adminButton      },
     });
   }, );
 
@@ -383,7 +415,7 @@ export default function Library({ route }) {
 
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
 
 {/* bug for the list  */}
 <>
@@ -396,6 +428,7 @@ export default function Library({ route }) {
       </>
 
       {isadmin ? <FlatList numColumns='3'
+      style={{zIndex:-1}}
         horizontal={false}
         data={library}
         renderItem={renderItemAdmin}
@@ -416,4 +449,13 @@ export default function Library({ route }) {
   )
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+
+  container: {
+    flex: 1,
+    // alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor:"#FFE2C2"
+  },
+
+})

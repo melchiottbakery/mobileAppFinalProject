@@ -204,6 +204,8 @@ export default function Registration({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor:"#FFE2C2"
+
   },
 
   buttonContainer: {

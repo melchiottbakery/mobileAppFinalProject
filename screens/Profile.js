@@ -82,8 +82,9 @@ export default function Profile({  navigation }) {
 
   useEffect(() => {
     let unsubscribe; // Declare unsubscribe outside the try block
-  
+    if (auth.currentUser){
     try {
+
       unsubscribe = onSnapshot(
         doc(database, "users", auth.currentUser.uid),
         (doc) => {
@@ -94,9 +95,11 @@ export default function Profile({  navigation }) {
           downloadImageFromDatabase(data);
         }
       );
+
+      
     } catch (error) {
       console.log('type of error',error);
-    }
+    }}
   
     return () => {
       if (unsubscribe) { // Check if unsubscribe is defined before calling it
@@ -411,20 +414,44 @@ export default function Profile({  navigation }) {
   function loginHandler() {
     navigation.navigate('Login')
   }
+
+
+  
+  // const loginButton =(
+  //   <>
+  //    <TouchableOpacity onPress={loginHandler}>
+  //    <MaterialIcons name="add-alarm" size={30} color="black" />
+  //   </TouchableOpacity>
+    
+  //   </>
+
+  // )
+
   const AppAuth = (
     <>
-      <Button title="Login/Signup" onPress={loginHandler}></Button>
+     <TouchableOpacity onPress={loginHandler}>
+     <SimpleLineIcons name="login" size={30} color="black" />
+         </TouchableOpacity>
+      {/* <Button title="Login/Signup" onPress={loginHandler}></Button> */}
     </>
   )
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
       {userLoggedIn ? AppStack : AppAuth}
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+
+  container: {
+    flex: 1,
+    // alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor:"#FFE2C2"
+  },
+
   imageContainer: {
     alignItems: "center",
     marginTop: 20,

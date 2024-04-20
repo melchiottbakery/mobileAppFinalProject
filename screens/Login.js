@@ -62,7 +62,7 @@ export default function Login({ navigation,route }) {
     // the function on when Register button pressed
     //console.log(email);
     //console.log(password);
-    navigation.navigate("Registration");
+    navigation.replace("Registration");
   };
 
 
@@ -163,7 +163,10 @@ export default function Login({ navigation,route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "center",    
+    backgroundColor:"#FFE2C2",
+
+
   },
 
   headerContainer: {

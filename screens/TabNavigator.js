@@ -57,7 +57,30 @@ export default function TabNavigator(props) {
 
 
   return (
-    <Tab.Navigator initialRouteName="Welcome">
+    <Tab.Navigator initialRouteName="Welcome"
+    screenOptions={{
+      tabBarActiveTintColor: "#B88956",
+      tabBarStyle: { backgroundColor: '#FFF1E1' },
+      headerStyle: {
+        backgroundColor: '#DEB68A',
+    },
+    // headerTintColor: '#957A5D',
+        headerTitleStyle: {
+            // fontWeight: 'bold',
+            fontSize: 20,
+        },
+
+
+    // #976732
+    }}
+
+    // screenOptions={{
+    //   tabBarActiveTintColor: "#FFF1E1",
+    //   tabBarStyle: { backgroundColor: '#B88956' }
+    // }}
+
+
+    >
       
       <Tab.Screen name="Welcome" component={Welcome} 
       
@@ -74,7 +97,7 @@ export default function TabNavigator(props) {
           fontSize: 12,
         },
         tabBarIcon: ({ color, size }) => (
-          <FontAwesome5 name="home" size={24} color="black" />
+          <FontAwesome5 name="home" size={24} color={color} />
         ),
       }}
       />
@@ -96,7 +119,7 @@ export default function TabNavigator(props) {
             fontSize: 12,
           },
           tabBarIcon: ({ color, size }) => (
-<Ionicons name="library" size={24} color="black" />          ),
+<Ionicons name="library" size={24} color={color} />          ),
         }}
 
 
@@ -125,13 +148,15 @@ export default function TabNavigator(props) {
           fontSize: 12,
         },
         tabBarIcon: ({ color, size }) => (
-<Octicons name="person-fill" size={24} color="black" />        ),
+<Octicons name="person-fill" size={24} color={color} />        ),
       }}
       
       />
       {userLoggedIn && <
       Tab.Screen name="MyList" 
       component={MyList} 
+
+    
 
       options={{
         // headerStyle: { height: 100 },
@@ -145,7 +170,7 @@ export default function TabNavigator(props) {
           fontSize: 12,
         },
         tabBarIcon: ({ color, size }) => (
-<MaterialCommunityIcons name="view-list" size={24} color="black" />
+<MaterialCommunityIcons name="view-list" size={24} color={color} />
 ),
       }}
 
