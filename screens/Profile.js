@@ -7,29 +7,20 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { ref, uploadBytes } from "firebase/storage";
 import { getDownloadURL } from "firebase/storage";
 import { Entypo } from '@expo/vector-icons';
-
 import { FontAwesome } from '@expo/vector-icons';
 import { SimpleLineIcons } from '@expo/vector-icons';
-
-
-
 import * as ImagePicker from 'expo-image-picker';
-
-
 import { editImageLinkInDB, getProfile, setNewUserDocToDB } from "../firebase-files/FirebaseHelper";
 import { collection, doc, onSnapshot } from "firebase/firestore";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 
 
-export default function Profile({  navigation }) {
-
+export default function Profile({ navigation }) {
 
   const [originNickname, setOriginNickname] = useState('');
 
-
   const [nickname, setNickname] = useState('');
-  const [uploadnickname, setUploadNickname] = useState('');
 
   const [email, setEmail] = useState('');
 
@@ -49,60 +40,28 @@ export default function Profile({  navigation }) {
   }
   const [userLoggedIn, setUserLoggedIn] = useState(false);
 
-//   useEffect(() => {
-
-// // try {
-//   const unsubscribe = onSnapshot(
-
-//     doc(database, "users", auth.currentUser.uid),
-
-//     (doc) => {
-
-//       const data = doc.data();
-//       setOriginNickname(data.nickname)
-//               setNickname(data.nickname)
-//               setEmail(data.email)
-//               downloadImageFromDatabase(data)
-//     });
-
-  
-// // } catch (error) {
-// //   console.log(error)
-  
-// // }
-    
-
-
-//     return () => {
-//       console.log("unsubscribe");
-//       unsubscribe();
-//     };
-//   }, [userLoggedIn]);
-
-
-
-
   useEffect(() => {
     let unsubscribe; // Declare unsubscribe outside the try block
-    if (auth.currentUser){
-    try {
+    if (auth.currentUser) {
+      try {
 
-      unsubscribe = onSnapshot(
-        doc(database, "users", auth.currentUser.uid),
-        (doc) => {
-          const data = doc.data();
-          setOriginNickname(data.nickname);
-          setNickname(data.nickname);
-          setEmail(data.email);
-          downloadImageFromDatabase(data);
-        }
-      );
+        unsubscribe = onSnapshot(
+          doc(database, "users", auth.currentUser.uid),
+          (doc) => {
+            const data = doc.data();
+            setOriginNickname(data.nickname);
+            setNickname(data.nickname);
+            setEmail(data.email);
+            downloadImageFromDatabase(data);
+          }
+        );
 
-      
-    } catch (error) {
-      console.log('type of error',error);
-    }}
-  
+
+      } catch (error) {
+        console.log('type of error', error);
+      }
+    }
+
     return () => {
       if (unsubscribe) { // Check if unsubscribe is defined before calling it
         console.log("unsubscribe");
@@ -116,74 +75,35 @@ export default function Profile({  navigation }) {
       if (user) {
         setUserLoggedIn(true);
 
-
-        //       async function getDataFromDB() {
-
-        //         const data = await getProfile("users", auth.currentUser.uid);
-        //         console.log("onauth ",data)
-        //         setOriginNickname(data.nickname)
-        //         setNickname(data.nickname)
-        //         setEmail(data.email)
-        //         downloadImageFromDatabase(data)
-        //       }
-        //       if (auth.currentUser) {
-        //         getDataFromDB();
-        //       }
-
-
       }
       else {
         setUserLoggedIn(false);
-
-
       }
     })
   }, [])
 
-
-  // useEffect(() => {
-  //   async function getDataFromDB() {
-
-  //     const data = await getProfile("users", auth.currentUser.uid);
-  //     // console.log(data)
-  //     setOriginNickname(data.nickname)
-  //     setNickname(data.nickname)
-  //     setEmail(data.email)
-  //     downloadImageFromDatabase(data)
-
-
-  //   }
-  //   if (auth.currentUser) {
-  //     getDataFromDB();
-  //   }
-  // }, []);
-
   const [imageDatabasetaUri, setImageDatabasetaUri] = useState("");
 
   async function downloadImageFromDatabase(data) {
-    if(dataimageUri){
-    try {
-      downloadImageUri = data.imageUri
-      const imageRef = ref(storage, downloadImageUri);
-      const imageDownloadUri = await getDownloadURL(imageRef);
-      //bugs
-      console.log("downloaded" + imageDownloadUri)
-      setImageDatabasetaUri(imageDownloadUri)
+    if (dataimageUri) {
+      try {
+        downloadImageUri = data.imageUri
+        const imageRef = ref(storage, downloadImageUri);
+        const imageDownloadUri = await getDownloadURL(imageRef);
+        //bugs
+        console.log("downloaded" + imageDownloadUri)
+        setImageDatabasetaUri(imageDownloadUri)
 
 
 
-      // setDownloadImage(data.imageUri)
-    } catch (error) {
-      console.log('console.error',error)
-      // setImageDatabasetaUri('https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGljfGVufDB8fDB8fHww')
-      setImageDatabasetaUri('https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg')
-
-
+        // setDownloadImage(data.imageUri)
+      } catch (error) {
+        console.log('console.error', error)
+        // setImageDatabasetaUri('https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGljfGVufDB8fDB8fHww')
+        setImageDatabasetaUri('https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg')
+      }
     }
   }
-  }
-
-
 
   //add Alert for the Cancel button
   function logoutHandler() {
@@ -196,15 +116,12 @@ export default function Profile({  navigation }) {
         text: "Yes", onPress: () => {
           try {
             signOut(auth)
-            
+
             setNickname('')
             setOriginNickname('')
             setEmail('')
             // setImageDatabasetaUri('https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGljfGVufDB8fDB8fHww')
             setImageDatabasetaUri('https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg')
-
-            // navigation.navigate("Registration")
-
 
             // navigation.navigate("Registration")
           } catch (error) {
@@ -243,8 +160,6 @@ export default function Profile({  navigation }) {
 
   const [openSaveButton, setOpenSaveButton] = useState(false)
 
-
-
   function saveImageChange() {
     uploadImageFromLocal(imageLocalUri)
     setImageLocalUri('')
@@ -260,8 +175,6 @@ export default function Profile({  navigation }) {
       const imageRef = await ref(storage, `profileImages/${imageName}`)
       const uploadResult = await uploadBytes(imageRef, imageBlob);
       console.log("upload successed")
-
-
       // setImageLocalUri('')
       setOpenSaveButton(false)
 
@@ -271,16 +184,11 @@ export default function Profile({  navigation }) {
     } catch (error) {
       console.log(error)
     }
-
   }
-
 
   function writeImageLinkToUser(storagePath) {
     editImageLinkInDB(auth.currentUser.uid, { imageUri: storagePath },)
-
-
   }
-
 
   // function changeNameHandler() {
   //   console.log("pressed")
@@ -288,12 +196,7 @@ export default function Profile({  navigation }) {
   //   // setOriginNickname(nickname);
   //   setNickname(uploadnickname)
   //   setOpenButton(false)
-
-
   // }
-
-
-
   function changeNameHandler() {
     console.log("pressed")
     setNewUserDocToDB({ nickname: nickname }, "users", auth.currentUser.uid)
@@ -301,15 +204,11 @@ export default function Profile({  navigation }) {
     setNickname(nickname)
     setOpenButton(false)
 
-
-
   }
 
-
-  function cancelchangeNameHandler(){
+  function cancelchangeNameHandler() {
     setNickname(originNickname);
   }
-
   const [openButton, setOpenButton] = useState(false)
 
   const showButton = originNickname !== nickname;
@@ -317,18 +216,18 @@ export default function Profile({  navigation }) {
   const AppStack = (
     <>
       {/*  <Text>This is the Profile screen</Text> */}
-
       {/*  <Text>Add a pic as a placeholder</Text> */}
       <Pressable onPress={cameraFunction}>
 
         <View style={styles.imageContainer}>
           <View style={{
             position: "absolute",
-            right:100,
-            bottom: 3,}
+            right: 100,
+            bottom: 3,
+          }
           }>
-        <Entypo name="camera" size={30} color="black" />
-        </View>
+            <Entypo name="camera" size={30} color="black" />
+          </View>
 
           {/* <Image source={require("../assets/imageUpload.jpeg")} style={styles.image} />
         {imageLocalUri && (
@@ -369,22 +268,22 @@ export default function Profile({  navigation }) {
       {openSaveButton &&
 
         (
-        
+
           <TouchableOpacity onPress={saveImageChange}>
-<FontAwesome name="upload" size={30} color="black" />
-    </TouchableOpacity>
-        // <Button title="save image changes" onPress={saveImageChange}></Button>
-        
-      
-      )
+            <FontAwesome name="upload" size={30} color="black" />
+          </TouchableOpacity>
+          // <Button title="save image changes" onPress={saveImageChange}></Button>
+
+
+        )
       }
       {/* <Pressable onPressIn={() => setOpenButton(!openButton)}> */}
-        <InputComponent
-          label="Nickname"
-          value={nickname}
-          onChangeText={setNickname}
-          editable={true}
-        />
+      <InputComponent
+        label="Nickname"
+        value={nickname}
+        onChangeText={setNickname}
+        editable={true}
+      />
       {/* </Pressable> */}
 
       {/* {openButton && (
@@ -395,15 +294,15 @@ export default function Profile({  navigation }) {
           editable={true}
         />)} */}
 
-{showButton && (
+      {showButton && (
 
-<Button title="Change The Nickname" onPress={changeNameHandler}></Button>
-)}
+        <Button title="Change The Nickname" onPress={changeNameHandler}></Button>
+      )}
 
-{showButton && (
+      {showButton && (
 
-<Button title="cancel" onPress={cancelchangeNameHandler}></Button>
-)}
+        <Button title="cancel" onPress={cancelchangeNameHandler}></Button>
+      )}
 
 
       {/* {openButton && (
@@ -424,10 +323,10 @@ export default function Profile({  navigation }) {
           title="LOG OUT"
           onPress={logoutHandler}
         /> */}
-      <TouchableOpacity onPress={logoutHandler}>
+        <TouchableOpacity onPress={logoutHandler}>
 
-<SimpleLineIcons name="logout" size={24} color="black" />
-</TouchableOpacity>
+          <SimpleLineIcons name="logout" size={24} color="black" />
+        </TouchableOpacity>
 
       </View>
     </>
@@ -438,24 +337,24 @@ export default function Profile({  navigation }) {
   }
 
 
-  
+
   // const loginButton =(
   //   <>
   //    <TouchableOpacity onPress={loginHandler}>
   //    <MaterialIcons name="add-alarm" size={30} color="black" />
   //   </TouchableOpacity>
-    
+
   //   </>
 
   // )
 
   const AppAuth = (
     <View style={styles.appauthcontainer}>
-     <TouchableOpacity onPress={loginHandler}>
-     <SimpleLineIcons name="login" size={30} color="black" />
-         </TouchableOpacity>
+      <TouchableOpacity onPress={loginHandler}>
+        <SimpleLineIcons name="login" size={30} color="black" />
+      </TouchableOpacity>
       {/* <Button title="Login/Signup" onPress={loginHandler}></Button> */}
-      </View>
+    </View>
   )
 
   return (
@@ -466,18 +365,18 @@ export default function Profile({  navigation }) {
 }
 
 const styles = StyleSheet.create({
-  appauthcontainer:{
+  appauthcontainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor:"#FFE2C2"
+    backgroundColor: "#FFE2C2"
   },
 
   container: {
     flex: 1,
     // alignItems: 'center',
     // justifyContent: 'center',
-    backgroundColor:"#FFE2C2"
+    backgroundColor: "#FFE2C2"
   },
 
   imageContainer: {

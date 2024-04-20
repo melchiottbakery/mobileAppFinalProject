@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor:"#FFE2C2"
+    backgroundColor: "#FFE2C2"
   },
   // Mapcontainer: {
   //   flex: 1,

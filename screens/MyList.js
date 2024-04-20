@@ -84,7 +84,7 @@ export default function MyList() {
       [
         {
           text: "Cancel",
-          onPress: () => {},
+          onPress: () => { },
         },
         {
           text: "Delete",
@@ -158,7 +158,7 @@ export default function MyList() {
         ></Button>
 
 
-<Button
+        <Button
           title="change translationMeaningShow"
           onPress={() => showTranslationMeaning({ item })}
         ></Button>
@@ -166,7 +166,7 @@ export default function MyList() {
         {!item.nativeWordShow && <Text>show the nativeWord</Text>}
         {item.nativeWordShow && <Text>meaning: {item.nativeWord}</Text>}
 
-        
+
         {/* <Button title="change showNative" onPress={() => showNativeHandler({ item })}></Button>
 
 {!item.showNative && <Text>show the nativeWord</Text>}
@@ -196,7 +196,6 @@ export default function MyList() {
             title=" MARK AS REMEBERED"
             onPress={() => onPressFunction({ item })}
           />
-
 
           // ✅
         )}
@@ -238,45 +237,33 @@ export default function MyList() {
     setShowForget(false);
   }
 
-  const [openRemind, setOpenRemind]= useState(false)
+  const [openRemind, setOpenRemind] = useState(false)
 
-  function remindHandler(){
+  function remindHandler() {
 
-setOpenRemind(!openRemind)
+    setOpenRemind(!openRemind)
   }
 
-
-
-  const reminderButton =(
+  const reminderButton = (
     <>
-     <TouchableOpacity onPress={remindHandler}>
-     <MaterialIcons name="add-alarm" size={30} color="black" />
-    </TouchableOpacity>
-    
+      <TouchableOpacity onPress={remindHandler}>
+        <MaterialIcons name="add-alarm" size={30} color="black" />
+      </TouchableOpacity>
     </>
-
   )
 
-  // useEffect(() => {
-  //   navigation.setOptions({
-  //     headerRight: () => {
-  //       return  library.length !== 0 && <Button title="Remind" onPress={remindHandler} />;
-  //     },
-  //   });
-  // }, );
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => {
-        return  library.length !== 0 && reminderButton;
+        return library.length !== 0 && reminderButton;
       },
     });
-  }, );
+  },);
 
   function ankiModeHandler() {
     console.log("anki");
     writeAnkiToDB(auth.currentUser.uid);
   }
-  
 
   function antiankiModeHandler() {
     console.log("antianki");
@@ -311,7 +298,7 @@ setOpenRemind(!openRemind)
       ) : (
         // Render something else when the library is not empty
         <>
-          {openRemind && <NotificationManager remindHandler={remindHandler}/>}
+          {openRemind && <NotificationManager remindHandler={remindHandler} />}
           <Button title="anki-mode" onPress={ankiModeHandler} />
           <Button title="Anti-anki-mode" onPress={antiankiModeHandler} />
           <Button title="All-Hidden-mode" onPress={allankiModeHandler} />
@@ -357,7 +344,7 @@ const styles = StyleSheet.create({
     flex: 1,
     // alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor:"#FFE2C2"
+    backgroundColor: "#FFE2C2"
   },
 
 

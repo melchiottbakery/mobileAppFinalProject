@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, View, Button, ActivityIndicator,Text } from "react-native";
+import { Alert, StyleSheet, View, Button, ActivityIndicator, Text } from "react-native";
 import React, { useState } from "react";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
@@ -43,7 +43,7 @@ export default function Map() {
         return;
       }
       const locationResult = await Location.getCurrentPositionAsync();
-      console.log('nihao',locationResult)
+      console.log('nihao', locationResult)
       const userLocation = {
         latitude: locationResult.coords.latitude,
         longitude: locationResult.coords.longitude,
@@ -110,18 +110,20 @@ export default function Map() {
         ))
         }
       </MapView>
-      {isLoading? <ActivityIndicator size="large" /> :(
-        <View style={{width: '50%',
-        alignItems: 'center',
-        
-        justifyContent: 'center', }}>
+      {isLoading ? <ActivityIndicator size="large" /> : (
+        <View style={{
+          width: '50%',
+          alignItems: 'center',
 
-            <TouchableOpacity style={styles.button} onPress={findESLHandler}>
+          justifyContent: 'center',
+        }}>
+
+          <TouchableOpacity style={styles.button} onPress={findESLHandler}>
             <Text style={styles.buttonText}>Find Nearby Japanese Language Schools</Text>
-            </TouchableOpacity>
+          </TouchableOpacity>
         </View>
       )
-      // <Button title="Find Nearby Japanese Language Schools" onPress={findESLHandler} />
+        // <Button title="Find Nearby Japanese Language Schools" onPress={findESLHandler} />
       }
       {/* <Button title="Find Nearby Japanese Language Schools" onPress={findESLHandler} />
       {isLoading && <ActivityIndicator size="large" />} */}
@@ -146,7 +148,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#976732', // Example color
     padding: 10,
     borderRadius: 5,
-    width:"50",
+    width: "50",
   },
   buttonText: {
     color: '#fff1e1', // Example color

@@ -5,8 +5,8 @@ import InputComponent from "../component/InputComponent";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase-files/FirebaseSetup";
 
-export default function Login({ navigation,route }) {
-  console.log('route is',route)
+export default function Login({ navigation, route }) {
+  console.log('route is', route)
   const [email, setEmail] = useState("ww2w@qq.com");
   const [password, setPassword] = useState("dongbeidaban");
   const [error, setError] = useState("");
@@ -65,52 +65,14 @@ export default function Login({ navigation,route }) {
     navigation.replace("Registration");
   };
 
-
-
-  ///bug 
-
-  // const [displayText, setDisplayText] = useState('');
-
-  // useEffect(() => {
-  //   // 设置文本内容
-  //   // console.log(route.params.data)
-  //   if (route.params) {
-  //         setDisplayText(String(route.params.data));
-
-  //   }
-
-  //   // setDisplayText('nihao');
-
-
-  //   // 5秒后清除文本内容
-  //   const timer = setTimeout(() => {
-  //     setDisplayText('');
-  //   }, 3000);
-
-  //   // 清除定时器以避免内存泄漏
-  //   return () => clearTimeout(timer);
-  // },[]);
-
-
-
   useEffect(() => {
     if (route.params && route.params.userEmail) {
-      
+
       setEmail(route.params.userEmail)
       setPassword(route.params.userPassword)
-      // userAuthHandler();
-        // setDisplayText(route.params.data);
-        
-        // // // Clear the text after 5 seconds
-        // const timer = setTimeout(() => {
-        //     setDisplayText('');
-        // }, 5000);
 
-        // // Clear the timer to avoid memory leaks
-        // return () => clearTimeout(timer);
     }
-}, []);
-
+  }, []);
 
 
 
@@ -156,7 +118,7 @@ export default function Login({ navigation,route }) {
         <Button title="Reset" onPress={handleReset} />
         <Button title="Login" onPress={handleLogin} disabled={validateForm()} />
         <Button title="Register" onPress={handleRegister} />
-        
+
         {/* <Text>{displayText}</Text> */}
 
       </View>
@@ -167,8 +129,8 @@ export default function Login({ navigation,route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",    
-    backgroundColor:"#FFE2C2",
+    justifyContent: "center",
+    backgroundColor: "#FFE2C2",
 
 
   },

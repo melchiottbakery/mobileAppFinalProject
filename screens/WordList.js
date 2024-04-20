@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList, Button, Alert,TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, FlatList, Button, Alert, TouchableOpacity } from 'react-native'
 import { SafeAreaView } from 'react-native'
 import { Pressable } from "react-native";
 import React, { useEffect, useState } from 'react'
@@ -23,26 +23,24 @@ export default function WordList({ route }) {
 
   // console.log(route.params.item.name)
   const [library, setlibrary] = useState([]);
-  const [deleteLink, setDeleteLink]= useState("")
+  const [deleteLink, setDeleteLink] = useState("")
 
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => {
-        return  isadmin && deleteButton;
-// isadmin && <Button title="delete" onPress={deleteHandler} />;
+        return isadmin && deleteButton;
+        // isadmin && <Button title="delete" onPress={deleteHandler} />;
       },
     });
   }, []);
 
 
-  const deleteButton =(
+  const deleteButton = (
     <>
-     <TouchableOpacity onPress={deleteHandler}>
-     <MaterialCommunityIcons name="delete-alert" size={30} color="red" />
+      <TouchableOpacity onPress={deleteHandler}>
+        <MaterialCommunityIcons name="delete-alert" size={30} color="red" />
       </TouchableOpacity>
-    
     </>
-
   )
 
   useEffect(() => {
@@ -57,9 +55,6 @@ export default function WordList({ route }) {
       setDeleteLink(wordBookid);
     });
   }, []);
-
-
-
 
   function onPressFunction({ item }) {
     const newWord = {
@@ -77,50 +72,39 @@ export default function WordList({ route }) {
     // setNewWord([...word, newWord]);
     // console.log(word)
     // writeToDB(newWord);
-    if(auth.currentUser){
-    writeNewWordToUserDB(newWord, auth.currentUser.uid)}
+    if (auth.currentUser) {
+      writeNewWordToUserDB(newWord, auth.currentUser.uid)
+    }
 
   }
 
-  const addButton =(
+  const addButton = (
     <>
-     <TouchableOpacity onPress={() => onPressFunction({ item })}>
-     <AntDesign name="pluscircleo" size={24} color="black" />
-     {/* <MaterialIcons name="add-alarm" size={30} color="black" /> */}
-    </TouchableOpacity>
-    
+      <TouchableOpacity onPress={() => onPressFunction({ item })}>
+        <AntDesign name="pluscircleo" size={24} color="black" />
+        {/* <MaterialIcons name="add-alarm" size={30} color="black" /> */}
+      </TouchableOpacity>
     </>
 
   )
 
   const renderItemUser = ({ item }) => (
-
-
-
     <View style={{ padding: 30, borderColor: "green", borderWidth: 1 }}>
       <Text>ID: {item.id}</Text>
       <Text>nativeWord: {item.nativeWord}</Text>
       <Text>translationMeaning: {item.translationMeaning}</Text>
-
       {/* {auth.currentUser && addButton} */}
-
-
       {auth.currentUser && <Button title="add" onPress={() => onPressFunction({ item })} />}
     </View>
   );
 
 
   const renderItemAdmin = ({ item }) => (
-
-
-
     <View style={{ padding: 30, borderColor: "green", borderWidth: 1 }}>
       <Text>ID: {item.id}</Text>
       <Text>nativeWord: {item.nativeWord}</Text>
       <Text>translationMeaning: {item.translationMeaning}</Text>
-
       {auth.currentUser && addButton}
-
       {/* {auth.currentUser && <Button title="add" onPress={() => onPressFunction({ item })} />} */}
     </View>
   );
@@ -146,10 +130,10 @@ export default function WordList({ route }) {
   return (
     <View style={styles.container}>
       <Text>This is the wordlist screen</Text>
-      {!auth.currentUser && <Text>You can add the word and play the pronounciation when you log in</Text> }
+      {!auth.currentUser && <Text>You can add the word and play the pronounciation when you log in</Text>}
 
       {/* {isadmin && <Button title="delete the whole book" onPress={deleteHandler}></Button>} */}
-      {isadmin &&<FlatList
+      {isadmin && <FlatList
         data={library}
         renderItem={renderItemAdmin}
         keyExtractor={(item, index) => index.toString()}
@@ -169,7 +153,7 @@ const styles = StyleSheet.create({
     flex: 1,
     // alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor:"#FFE2C2"
+    backgroundColor: "#FFE2C2"
   },
 
 })

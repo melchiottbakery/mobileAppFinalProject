@@ -198,92 +198,88 @@ export default function Library({ route }) {
 
   const [open, setOpen] = useState(false);
   const AdminTerminal = (
-    <View style={{alignItems: 'center'}}>
-<View style={{ flexDirection: 'row', alignItems: 'center',    justifyContent: 'center',
- }}>
-          <View  style={{ flex: 1 }}>
-      <InputComponent
-        label="link"
-        value={jsonLink}
-        onChangeText={setJsonLink}
-      ></InputComponent>
-      </View>
-      <View>
+    <View style={{ alignItems: 'center' }}>
+      <View style={{
+        flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
+      }}>
+        <View style={{ flex: 1 }}>
+          <InputComponent
+            label="link"
+            value={jsonLink}
+            onChangeText={setJsonLink}
+          ></InputComponent>
+        </View>
+        <View>
 
-      <TouchableOpacity onPress={loadJsonLinkHandler}>
-<MaterialIcons name="cloud-upload" size={30} color="black" />        
- </TouchableOpacity>
- </View>
+          <TouchableOpacity onPress={loadJsonLinkHandler}>
+            <MaterialIcons name="cloud-upload" size={30} color="black" />
+          </TouchableOpacity>
+        </View>
 
-      </View>
-      
-
-      
-<View style={{ flexDirection: 'row', 
-alignItems: 'center',    
-// justifyContent: 'center',
- }}>      
- {/* <Button title='load the book' onPress={loadJsonLinkHandler}></Button> */}
-
-<View style={{width:"70%"}}>
-      <DropDownPicker
-        open={open}
-        setOpen={setOpen}
-        items={library.map(item => ({ label: item.id, value: item.id }))}
-        // containerStyle={{ height: 60, width: 200 }}
-        // containerStyle={{
-        //   zIndex: open ? 1000 : 0
-        // }}
-        // maxHeight={500}
-
-        // style={{ backgroundColor: '#fafafa' , }}
-
-        style={{
-          backgroundColor: '',
-          marginBottom: 20,
-          borderRadius: 5,
-          borderColor: "#B88956",
-          borderWidth: 2,
-        }}
-
-        textStyle={{
-          fontSize: 15,
-          // color: 'blue',
-          fontWeight: 'bold',
-        }}
-
-
-        onChangeItem={item => setSelectedId(item.value)
-        }
-        placeholder='Choose the book to add a cover'
-        
-        // zIndex={-5}
-        // zIndexInverse={1000}
-        zIndex={5000}
-
-        setValue={setSelectedBook}
-        value={selectedBook}
-      ></DropDownPicker>
       </View>
 
-<TouchableOpacity onPress={cameraFunction}>
-<Entypo name="camera" size={30} color="black" />
-         </TouchableOpacity>
 
-         </View>
+
+      <View style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        // justifyContent: 'center',
+      }}>
+        {/* <Button title='load the book' onPress={loadJsonLinkHandler}></Button> */}
+
+        <View style={{ width: "70%" }}>
+          <DropDownPicker
+            open={open}
+            setOpen={setOpen}
+            items={library.map(item => ({ label: item.id, value: item.id }))}
+            // containerStyle={{ height: 60, width: 200 }}
+            // containerStyle={{
+            //   zIndex: open ? 1000 : 0
+            // }}
+            // maxHeight={500}
+
+            // style={{ backgroundColor: '#fafafa' , }}
+
+            style={{
+              backgroundColor: '',
+              marginBottom: 20,
+              borderRadius: 5,
+              borderColor: "#B88956",
+              borderWidth: 2,
+            }}
+
+            textStyle={{
+              fontSize: 15,
+              // color: 'blue',
+              fontWeight: 'bold',
+            }}
+            onChangeItem={item => setSelectedId(item.value)
+            }
+            placeholder='Choose the book to add a cover'
+            zIndex={5000}
+            setValue={setSelectedBook}
+            value={selectedBook}
+          ></DropDownPicker>
+        </View>
+
+        <TouchableOpacity onPress={cameraFunction}>
+          <Entypo name="camera" size={30} color="black" />
+        </TouchableOpacity>
+
+      </View>
       {/* <Button title="use the camera" onPress={cameraFunction}></Button> */}
       {imageLocalUri && (<Image source={{ uri: imageLocalUri }} style={{ width: 100, height: 100 }} />
       )
       }
-     {imageLocalUri &&
-     (     
-<View>
+      {imageLocalUri &&
+        (
+          <View>
 
-<TouchableOpacity onPress={saveImageChange}>
-<FontAwesome5 name="file-upload" size={24} color="black" />       
-  </TouchableOpacity>
-     {/* <Button title="sa23ve the image " onPress={saveImageChange}/> */}
-     </View> )} 
+            <TouchableOpacity onPress={saveImageChange}>
+              <FontAwesome5 name="file-upload" size={24} color="black" />
+            </TouchableOpacity>
+            {/* <Button title="sa23ve the image " onPress={saveImageChange}/> */}
+          </View>)}
 
 
     </View>
@@ -354,7 +350,6 @@ alignItems: 'center',
     }
   }
 
-
   const renderItemUser = ({ item }) => (
     <Pressable onPress={() => onPressFunction({ item })}
       style={{ margin: 5, padding: 5, borderColor: "#B88956", borderWidth: 3, width: '30%' }}>
@@ -367,15 +362,15 @@ alignItems: 'center',
         {/* <Text>Native Language: {item.nativeLanguage}</Text> */}
         <Text>Word Numbers: {item.number}</Text>
         {/* <Text>Word Language: {item.translationLanguage}</Text> */}
-        <View style={{ flexDirection: 'row' ,justifyContent: "space-around",}}>
+        <View style={{ flexDirection: 'row', justifyContent: "space-around", }}>
           <View>
-        <CountryFlag isoCode={item.nativeLanguage} size={25} />
+            <CountryFlag isoCode={item.nativeLanguage} size={25} />
+          </View>
+          <View>
+            <CountryFlag isoCode={item.translationLanguage} size={25} />
+          </View>
         </View>
-        <View>
-        <CountryFlag isoCode={item.translationLanguage} size={25} />
-        </View>
-        </View>
-        
+
       </View>
     </Pressable>
   );
@@ -393,74 +388,67 @@ alignItems: 'center',
         <Text>Native Language: {item.nativeLanguage}</Text>
         <Text>Word Numbers: {item.number}</Text>
         <Text>Word Language: {item.translationLanguage}</Text>
-        <View style={{ flexDirection: 'row' ,justifyContent: "space-around",}}>
+        <View style={{ flexDirection: 'row', justifyContent: "space-around", }}>
           <View>
-        <CountryFlag isoCode={item.nativeLanguage} size={25} />
-        </View>
-        <View>
-        <CountryFlag isoCode={item.translationLanguage} size={25} />
-        </View>
+            <CountryFlag isoCode={item.nativeLanguage} size={25} />
+          </View>
+          <View>
+            <CountryFlag isoCode={item.translationLanguage} size={25} />
+          </View>
         </View>
       </View>
     </Pressable>
   );
 
+  //   const [openRemind, setOpenRemind]= useState(false)
+  //   function remindHandler(){
+  // setOpenRemind(!openRemind)
+  //   }
 
-//   const [openRemind, setOpenRemind]= useState(false)
-
-//   function remindHandler(){
-
-// setOpenRemind(!openRemind)
-//   }
-
-
-
-const adminButton =(
-  <>
-   <TouchableOpacity onPress={() => setAdminTerminalOpen(!adminTerminalOpen)}>
-   <FontAwesome6 name="computer" size={30} color="black" />
-    </TouchableOpacity>
-  
-  </>
-
-)
+  const adminButton = (
+    <>
+      <TouchableOpacity onPress={() => setAdminTerminalOpen(!adminTerminalOpen)}>
+        <FontAwesome6 name="computer" size={30} color="black" />
+      </TouchableOpacity>
+    </>
+  )
 
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => {
-        return  isadmin &&adminButton      },
+        return isadmin && adminButton
+      },
     });
-  }, );
+  },);
 
-// useEffect(() => {
-//   navigation.setOptions({
-//     headerRight: () => {
-//       return isadmin && <Button title="delete" onPress={deleteHandler} />;
-//     },
-//   });
-// }, []);
-
+  // useEffect(() => {
+  //   navigation.setOptions({
+  //     headerRight: () => {
+  //       return isadmin && <Button title="delete" onPress={deleteHandler} />;
+  //     },
+  //   });
+  // }, []);
 
   return (
     <View style={styles.container}>
 
-{/* bug for the list  */}
-<>
-      {isadmin && (
-        <>
-          {/* <Button title="open/close admin terminal" onPress={() => setAdminTerminalOpen(!adminTerminalOpen)}></Button> */}
-          {adminTerminalOpen && AdminTerminal}
-        </>
-      )}
+      {/* bug for the list  */}
+      <>
+        {isadmin && (
+          <>
+            {/* <Button title="open/close admin terminal" onPress={() => setAdminTerminalOpen(!adminTerminalOpen)}></Button> */}
+            {adminTerminalOpen && AdminTerminal}
+          </>
+        )}
       </>
 
       {isadmin ? <FlatList numColumns='3'
-      style={{zIndex:-1}}
+        style={{ zIndex: -1 }}
         horizontal={false}
         data={library}
         renderItem={renderItemAdmin}
         keyExtractor={(item, index) => index.toString()}
-      /> :<FlatList numColumns='3'
+      /> : <FlatList numColumns='3'
         horizontal={false}
         data={library}
         renderItem={renderItemUser}
@@ -482,7 +470,7 @@ const styles = StyleSheet.create({
     flex: 1,
     // alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor:"#FFE2C2"
+    backgroundColor: "#FFE2C2"
   },
 
 })

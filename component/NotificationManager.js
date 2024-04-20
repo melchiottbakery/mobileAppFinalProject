@@ -1,10 +1,10 @@
-import { StyleSheet, Text, View, Button, Alert} from "react-native";
+import { StyleSheet, Text, View, Button, Alert } from "react-native";
 import React, { useState } from "react";
 import * as Notifications from "expo-notifications";
 import Slider from '@react-native-community/slider';
 
 
-export default function NotificationManager({remindHandler}) {
+export default function NotificationManager({ remindHandler }) {
 
   async function verifyPermission() {
     try {
@@ -37,7 +37,7 @@ export default function NotificationManager({remindHandler}) {
           body: "It is time to review words!",
         },
         trigger: {
-        seconds: parseInt(quotient) * 3600 + parseInt(remainder) * 60,
+          seconds: parseInt(quotient) * 3600 + parseInt(remainder) * 60,
         },
       });
 
@@ -53,29 +53,29 @@ export default function NotificationManager({remindHandler}) {
   }
 
 
-const [selectedNumber, setSelectedNumber] = useState(1);
-const [quotient, setQuotient] = useState(0);
-const [remainder, setRemainder] = useState(1);
-const [newTime, setNewTime] = useState(null);
+  const [selectedNumber, setSelectedNumber] = useState(1);
+  const [quotient, setQuotient] = useState(0);
+  const [remainder, setRemainder] = useState(1);
+  const [newTime, setNewTime] = useState(null);
 
 
-const handleValueChange = (value) => {
-  const number = Math.floor(value);
-  setSelectedNumber(number);
-  const q = Math.floor(number / 60);
-  const r = number % 60;
-  setQuotient(q);
-  setRemainder(r);
+  const handleValueChange = (value) => {
+    const number = Math.floor(value);
+    setSelectedNumber(number);
+    const q = Math.floor(number / 60);
+    const r = number % 60;
+    setQuotient(q);
+    setRemainder(r);
 
-  const currentTime = new Date();
-  // Calculate new time by adding quotient (hours) and remainder (minutes)
-  const updatedTime = new Date(currentTime.getTime() + q * 60 * 60 * 1000 + r * 60 * 1000);
-  setNewTime(updatedTime);
-};
+    const currentTime = new Date();
+    // Calculate new time by adding quotient (hours) and remainder (minutes)
+    const updatedTime = new Date(currentTime.getTime() + q * 60 * 60 * 1000 + r * 60 * 1000);
+    setNewTime(updatedTime);
+  };
 
   return (
     <View >
-<Slider
+      <Slider
         // style={{width: 200, height: 40}}
 
         style={styles.slider}
@@ -86,40 +86,38 @@ const handleValueChange = (value) => {
         onValueChange={handleValueChange}
       />
 
-<Text style={styles.sliderValue}>{selectedNumber}</Text>
-<Text style={styles.sliderValue}>{quotient} Hours and {remainder} Minutes</Text>
+      <Text style={styles.sliderValue}>{selectedNumber}</Text>
+      <Text style={styles.sliderValue}>{quotient} Hours and {remainder} Minutes</Text>
       {newTime && (
         <Text style={styles.newTime}>The expected reminder time is : {newTime.toLocaleString()}</Text>
       )}
 
-
-      <Button
-        title="set time interval here"
-        onPress={localNotificationHandler}
-      />
+      <Button title="set time interval here" onPress={localNotificationHandler} />
     </View>
   );
 }
 
-const styles = StyleSheet.create({container: {
-  flex: 1,
-  alignItems: 'center',
-  justifyContent: 'center',
-},
-selectedNumber: {
-  fontSize: 24,
-  fontWeight: 'bold',
-  marginBottom: 20,
-},
-slider: {
-  width: '80%',
-},
-sliderValue: {
-  fontSize: 18,
-  marginTop: 10,
-},
-newTime: {
-  fontSize: 18,
-  marginTop: 10,
-  fontStyle: 'italic',
-},});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  selectedNumber: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  slider: {
+    width: '80%',
+  },
+  sliderValue: {
+    fontSize: 18,
+    marginTop: 10,
+  },
+  newTime: {
+    fontSize: 18,
+    marginTop: 10,
+    fontStyle: 'italic',
+  },
+});

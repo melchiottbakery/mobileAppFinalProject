@@ -30,18 +30,6 @@ export default function Registration({ navigation }) {
   const [confirmedPasswordError, setConfirmedPasswordError] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
 
-  // I have dashed this line, it will be a wrong prompt for this one
-
-  // navigation.navigate("profile", {nickname: nickname, email: email, password: password});
-
-  //to be changed
-  // const [formData, setFormData] = useState({});
-
-  //to be changed
-  // const handleChange = (key, value) => {
-  //   setFormData({ ...formData, [key]: value });
-  // };
-
   function handleCancel() {
     setNickname("");
     setEmail("");
@@ -50,9 +38,9 @@ export default function Registration({ navigation }) {
     setConfirmedPassword("");
     setIsAdmin(false);
     // navigation.navigate("Login");
-    navigation.navigate("Login",{userEmail:email,userPassword:password});
+    navigation.navigate("Login");
 
-    
+
   };
 
   function validateForm() {
@@ -116,14 +104,12 @@ export default function Registration({ navigation }) {
       // console.log(userCred)
       console.log(userCred._tokenResponse.localId)
       // console.log(nickname)
-      setNewUserDocToDB({ 
-        nickname: nickname, 
-        email: email, 
-        isAdmin: isAdmin 
+      setNewUserDocToDB({
+        nickname: nickname,
+        email: email,
+        isAdmin: isAdmin
       }, "users", userCred._tokenResponse.localId)
-      navigation.navigate("Login",{userEmail:email,userPassword:password});
-
-
+      navigation.navigate("Login", { userEmail: email, userPassword: password });
 
     } catch (error) {
       console.log(error.code)
@@ -204,7 +190,7 @@ export default function Registration({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:"#FFE2C2"
+    backgroundColor: "#FFE2C2"
 
   },
 
