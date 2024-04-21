@@ -162,117 +162,117 @@ export default function MyList() {
           title="change translationMeaningShow"
           onPress={() => showTranslationMeaning({ item })}
         ></Button> */}
-<View style={{flexDirection:"row" }}>
+        <View style={{ flexDirection: "row" }}>
 
-<View style={{marginRight:30}}>
-        <AudioManager wordToSound={item.id}></AudioManager>
-        </View>
+          <View style={{ marginRight: 30 }}>
+            <AudioManager wordToSound={item.id}></AudioManager>
+          </View>
 
-<View >
-<View>
-        {!item.nativeWordShow && (
-          <TouchableOpacity onPress={() => showNativeMeaning({ item })}>
-            <Text style={{fontSize:30}}>Show the Word</Text>
-          </TouchableOpacity>
-          // <Text>show the nativeWord</Text>
-        )}
-        {item.nativeWordShow && (
+          <View >
+            <View>
+              {!item.nativeWordShow && (
+                <TouchableOpacity onPress={() => showNativeMeaning({ item })}>
+                  <Text style={{ fontSize: 30 }}>Show the Word</Text>
+                </TouchableOpacity>
+                // <Text>show the nativeWord</Text>
+              )}
+              {item.nativeWordShow && (
 
-          <TouchableOpacity onPress={() => showNativeMeaning({ item })}>
-            <Text style={{fontSize:30}}>{item.nativeWord}</Text>
-          </TouchableOpacity>
-          // <Text>meaning: {item.nativeWord}</Text>
-        )}
+                <TouchableOpacity onPress={() => showNativeMeaning({ item })}>
+                  <Text style={{ fontSize: 30 }}>{item.nativeWord}</Text>
+                </TouchableOpacity>
+                // <Text>meaning: {item.nativeWord}</Text>
+              )}
 
-</View>
-        {/* <Button title="change showNative" onPress={() => showNativeHandler({ item })}></Button>
+            </View>
+            {/* <Button title="change showNative" onPress={() => showNativeHandler({ item })}></Button>
 {!item.showNative && <Text>show the nativeWord</Text>}
 {item.showNative && <Text>meaning: {item.nativeWord}</Text>}
 <Text>nativeWordShow: {String(item.showNative)}</Text> */}
-        {/* <Button title="change showTranslation" onPress={() => showTranslationHandler({ item })}></Button>
+            {/* <Button title="change showTranslation" onPress={() => showTranslationHandler({ item })}></Button>
         {!item.showTranslation && <Text>show the translationMeaning</Text>}
 {item.showTranslation && <Text>meaning: {item.translationMeaning}</Text>}
 <Text>nativeWordShow: {String(item.showTranslation)}</Text> */}
-<View>
+            <View>
 
-        {!item.translationMeaningShow && (
-          <TouchableOpacity onPress={() => showTranslationMeaning({ item })}>
-            <Text style={{fontSize:20}}>Show the Meaning</Text>
-          </TouchableOpacity>
-          // <Text>show the translationMeaning</Text>
-        )}
-        {item.translationMeaningShow && (
-          <TouchableOpacity onPress={() => showTranslationMeaning({ item })}>
-            <Text style={{fontSize:20}}>{item.translationMeaning}</Text>
-          </TouchableOpacity>
-          // <Text>meaning: {item.translationMeaning}</Text>
-        )}
-</View>
-</View>
+              {!item.translationMeaningShow && (
+                <TouchableOpacity onPress={() => showTranslationMeaning({ item })}>
+                  <Text style={{ fontSize: 20 }}>Show the Meaning</Text>
+                </TouchableOpacity>
+                // <Text>show the translationMeaning</Text>
+              )}
+              {item.translationMeaningShow && (
+                <TouchableOpacity onPress={() => showTranslationMeaning({ item })}>
+                  <Text style={{ fontSize: 20 }}>{item.translationMeaning}</Text>
+                </TouchableOpacity>
+                // <Text>meaning: {item.translationMeaning}</Text>
+              )}
+            </View>
+          </View>
 
-        {/* <Text>meaning: {item.translationMeaning}</Text> */}
-        {/* <Text>nativeWordShow: {String(item.nativeWordShow)}</Text>
+          {/* <Text>meaning: {item.translationMeaning}</Text> */}
+          {/* <Text>nativeWordShow: {String(item.nativeWordShow)}</Text>
         <Text>translationMeaningShow: {String(item.translationMeaningShow)}</Text> */}
 
- 
-        {/* <Text>remember: {String(item.remember)}</Text> */}
 
-      
+          {/* <Text>remember: {String(item.remember)}</Text> */}
+
+
         </View>
 
-<View>
-  <View>
-        {item.remember === false && (
+        <View>
+          <View>
+            {item.remember === false && (
 
-          <TouchableOpacity onPress={() => onPressFunction({ item })}>
-            <Fontisto name="checkbox-passive" size={24} color="black" />
-            {/* <AntDesign name="pluscircleo" size={24} color="black" /> */}
-            {/* <MaterialIcons name="add-alarm" size={30} color="black" /> */}
-          </TouchableOpacity>
-          // Check if item.remember is false
-          // <Button
-          //   title=" MARK AS REMEBERED"
-          //   onPress={() => onPressFunction({ item }   )}
-          // />
+              <TouchableOpacity onPress={() => onPressFunction({ item })}>
+                <Fontisto name="checkbox-passive" size={24} color="black" />
+                {/* <AntDesign name="pluscircleo" size={24} color="black" /> */}
+                {/* <MaterialIcons name="add-alarm" size={30} color="black" /> */}
+              </TouchableOpacity>
+              // Check if item.remember is false
+              // <Button
+              //   title=" MARK AS REMEBERED"
+              //   onPress={() => onPressFunction({ item }   )}
+              // />
 
-          // ✅
-        )}
+              // ✅
+            )}
 
-</View>
-<View style={{flexDirection:"row",justifyContent:"space-between" }}>
-  <View >
-        {item.remember === true && ( // Check if item.remember is false
+          </View>
+          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+            <View >
+              {item.remember === true && ( // Check if item.remember is false
 
-          <TouchableOpacity onPress={() => onForgetFunction({ item })}>
-            <Fontisto name="checkbox-active" size={24} color="black" />
-            {/* <AntDesign name="pluscircleo" size={24} color="black" /> */}
-            {/* <MaterialIcons name="add-alarm" size={30} color="black" /> */}
-          </TouchableOpacity>
+                <TouchableOpacity onPress={() => onForgetFunction({ item })}>
+                  <Fontisto name="checkbox-active" size={24} color="black" />
+                  {/* <AntDesign name="pluscircleo" size={24} color="black" /> */}
+                  {/* <MaterialIcons name="add-alarm" size={30} color="black" /> */}
+                </TouchableOpacity>
 
-          // <Button
-          //   title="i need review again"
-          //   onPress={() => onForgetFunction({ item })}
-          // />
-        )}
+                // <Button
+                //   title="i need review again"
+                //   onPress={() => onForgetFunction({ item })}
+                // />
+              )}
 
-</View>
-        {item.remember === true && (
+            </View>
+            {item.remember === true && (
 
-          <TouchableOpacity onPress={() => onDeleteFunction({ item })}>
-            <AntDesign name="delete" size={24} color="red" />
-            {/* <AntDesign name="pluscircleo" size={24} color="black" /> */}
-            {/* <MaterialIcons name="add-alarm" size={30} color="black" /> */}
-          </TouchableOpacity>
-          // Check if item.remember is false
-          // <Button
-          //   color="red"
-          //   title="Delete"
-          //   onPress={() => onDeleteFunction({ item })}
-          // />
-        )}
-        {/* <Button title="marker" onPress={()=>onPressFunction({item})} /> */}
+              <TouchableOpacity onPress={() => onDeleteFunction({ item })}>
+                <AntDesign name="delete" size={24} color="red" />
+                {/* <AntDesign name="pluscircleo" size={24} color="black" /> */}
+                {/* <MaterialIcons name="add-alarm" size={30} color="black" /> */}
+              </TouchableOpacity>
+              // Check if item.remember is false
+              // <Button
+              //   color="red"
+              //   title="Delete"
+              //   onPress={() => onDeleteFunction({ item })}
+              // />
+            )}
+            {/* <Button title="marker" onPress={()=>onPressFunction({item})} /> */}
+          </View>
         </View>
-        </View>    
       </View>
     </Pressable>
   );
@@ -348,7 +348,7 @@ export default function MyList() {
 
   return (
     <View style={styles.container}>
-      <Text>This is the my screen</Text>
+      {/* <Text>This is the my screen</Text> */}
 
       {/* <NotificationManager /> */}
       {/* {library && <Text>please add new words</Text>} */}

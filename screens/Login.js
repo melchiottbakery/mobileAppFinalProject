@@ -116,15 +116,15 @@ export default function Login({ navigation, route }) {
       </View>
 
       <View style={styles.buttonContainer}>
-      <TouchableOpacity style={styles.button} onPress={handleReset}>
-            <Text style={styles.buttonText}>Reset</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={validateForm()}>
-            <Text style={styles.buttonText}>Login</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={handleRegister} >
-            <Text style={styles.buttonText}>Register</Text>
-          </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleReset}>
+          <Text style={styles.buttonText}>Reset</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={validateForm()}>
+          <Text style={styles.buttonText}>Login</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleRegister} >
+          <Text style={styles.buttonText}>Register</Text>
+        </TouchableOpacity>
         {/* <Button title="Reset" onPress={handleReset} />
         <Button title="Login" onPress={handleLogin} disabled={validateForm()} />
         <Button title="Register" onPress={handleRegister} /> */}

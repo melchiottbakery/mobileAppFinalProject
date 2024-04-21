@@ -89,36 +89,37 @@ export default function WordList({ route }) {
   )
 
   const renderItemUser = ({ item }) => (
-//  <View style={{ padding: 20, borderColor: "green", borderWidth: 1,
-//     flexDirection:'row',   flex: 1,
-//     alignItems: 'center',
-//     // justifyContent: 'center',
-//   }}>       
+    //  <View style={{ padding: 20, borderColor: "green", borderWidth: 1,
+    //     flexDirection:'row',   flex: 1,
+    //     alignItems: 'center',
+    //     // justifyContent: 'center',
+    //   }}>       
 
-<View style={{ padding: 20, margin:3, borderColor: "#B88956", borderWidth: 2,
-    flexDirection:'row',   flex: 1,
-    alignItems: 'center',
-    // justifyContent: 'center',
-   }}>
-   
-         {auth.currentUser &&(
-          <View>
-      <TouchableOpacity onPress={() => onPressFunction({ item })}>
-        <AntDesign name="pluscircleo" size={24} color="black" />
-        {/* <MaterialIcons name="add-alarm" size={30} color="black" /> */}
-      </TouchableOpacity>
-    </View>
+    <View style={{
+      padding: 20, margin: 3, borderColor: "#B88956", borderWidth: 2,
+      flexDirection: 'row', flex: 1,
+      alignItems: 'center',
+      // justifyContent: 'center',
+    }}>
 
-         ) 
+      {auth.currentUser && (
+        <View>
+          <TouchableOpacity onPress={() => onPressFunction({ item })}>
+            <AntDesign name="pluscircleo" size={24} color="black" />
+            {/* <MaterialIcons name="add-alarm" size={30} color="black" /> */}
+          </TouchableOpacity>
+        </View>
+
+      )
         //  addButton({items})
-         
-         }
+
+      }
 
       {/* <Text>ID: {item.id}</Text> */}
-      <View style={{paddingLeft:20}}>
+      <View style={{ paddingLeft: 20 }}>
 
-      <Text>nativeWord: {item.nativeWord}</Text>
-      <Text>translationMeaning: {item.translationMeaning}</Text>
+        <Text>nativeWord: {item.nativeWord}</Text>
+        <Text>translationMeaning: {item.translationMeaning}</Text>
       </View>
 
       {/* {auth.currentUser && addButton} */}
@@ -130,33 +131,34 @@ export default function WordList({ route }) {
 
 
   const renderItemAdmin = ({ item }) => (
-    <View style={{ padding: 20, margin:3, borderColor: "#B88956", borderWidth: 2,
-    flexDirection:'row',   flex: 1,
-    alignItems: 'center',
-    // justifyContent: 'center',
-   }}>
-    {auth.currentUser && 
-    
-    (
-      // t addButton = (
-      <View>
-        <TouchableOpacity onPress={() => onPressFunction({ item })}>
-          <AntDesign name="pluscircleo" size={24} color="black" />
-          {/* <MaterialIcons name="add-alarm" size={30} color="black" /> */}
-        </TouchableOpacity>
+    <View style={{
+      padding: 20, margin: 3, borderColor: "#B88956", borderWidth: 2,
+      flexDirection: 'row', flex: 1,
+      alignItems: 'center',
+      // justifyContent: 'center',
+    }}>
+      {auth.currentUser &&
+
+        (
+          // t addButton = (
+          <View>
+            <TouchableOpacity onPress={() => onPressFunction({ item })}>
+              <AntDesign name="pluscircleo" size={24} color="black" />
+              {/* <MaterialIcons name="add-alarm" size={30} color="black" /> */}
+            </TouchableOpacity>
+          </View>
+
+        )
+
+        // addButton
+
+      }
+      <View style={{ paddingLeft: 20 }}>
+        <Text>ID: {item.id}</Text>
+        <Text>nativeWord: {item.nativeWord}</Text>
+        <Text>translationMeaning: {item.translationMeaning}</Text>
       </View>
-  
-    )
-    
-    // addButton
-    
-    }
-      <View style={{paddingLeft:20}}>
-      <Text>ID: {item.id}</Text>
-      <Text>nativeWord: {item.nativeWord}</Text>
-      <Text>translationMeaning: {item.translationMeaning}</Text>
-      </View>
-      
+
       {/* {auth.currentUser && <Button title="add" onPress={() => onPressFunction({ item })} />} */}
     </View>
   );
@@ -181,7 +183,7 @@ export default function WordList({ route }) {
 
   return (
     <View style={styles.container}>
-      <Text>This is the wordlist screen</Text>
+      {/* <Text>This is the wordlist screen</Text> */}
       {!auth.currentUser && <Text>You can add the word and play the pronounciation when you log in</Text>}
 
       {/* {isadmin && <Button title="delete the whole book" onPress={deleteHandler}></Button>} */}

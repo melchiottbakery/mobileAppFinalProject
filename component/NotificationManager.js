@@ -147,25 +147,27 @@ export default function NotificationManager({ remindHandler }) {
     setNewTime(updatedTime);
   };
 
-  const newLocalNotification= (
-<TouchableOpacity style={styles.button} onPress={newLocalNotificationHandler}>
-          <Text style={styles.buttonText}>set reminder</Text>
-        </TouchableOpacity>
+  const newLocalNotification = (
+    <TouchableOpacity style={styles.button} onPress={newLocalNotificationHandler}>
+      <Text style={styles.buttonText}>Set Reminder</Text>
+    </TouchableOpacity>
   )
   return (
-    <View style={{borderBottomWidth:3}} >
+    <View
+    // style={{borderBottomWidth:3, borderColor:"#B88956"}} 
+    >
 
-<View style={styles.counterContainer}>
+      <View style={styles.counterContainer}>
         <Text style={styles.counterText}>{hours} hours</Text>
 
         <TouchableOpacity style={styles.buttonContainer} onPress={handleHoursPlus}>
-        <FontAwesome6 name="add" size={24} color="black" />
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.buttonContainer} onPress={handleHourMinus}>
-                  <FontAwesome6 name="minus" size={24} color="black" />
-                  </TouchableOpacity>
+          <FontAwesome6 name="add" size={24} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonContainer} onPress={handleHourMinus}>
+          <FontAwesome6 name="minus" size={24} color="black" />
+        </TouchableOpacity>
 
-                  {/* <FontAwesome6 name="minus" size={24} color="black" /> */}
+        {/* <FontAwesome6 name="minus" size={24} color="black" /> */}
 
         {/* <View style={styles.buttonContainer}>
           <Button title="Plus" onPress={handleHoursPlus} />
@@ -179,16 +181,16 @@ export default function NotificationManager({ remindHandler }) {
         <Text style={styles.counterText}>{minutes} minutes</Text>
 
         <TouchableOpacity style={styles.buttonContainer} onPress={handleMinutesPlus}>
-        <FontAwesome6 name="add" size={24} color="black" />
-                  </TouchableOpacity>
+          <FontAwesome6 name="add" size={24} color="black" />
+        </TouchableOpacity>
 
         {/* <View style={styles.buttonContainer}>
           <Button title="Plus" onPress={handleMinutesPlus} />
         </View> */}
 
-<TouchableOpacity style={styles.buttonContainer} onPress={handleMinutesMinus}>
-                  <FontAwesome6 name="minus" size={24} color="black" />
-                  </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonContainer} onPress={handleMinutesMinus}>
+          <FontAwesome6 name="minus" size={24} color="black" />
+        </TouchableOpacity>
         {/* <View style={styles.buttonContainer}>
           <Button title="Minus" onPress={handleMinutesMinus} />
         </View> */}
@@ -208,8 +210,8 @@ export default function NotificationManager({ remindHandler }) {
       <Text style={styles.sliderValue}>{quotient} Hours and {remainder} Minutes</Text> */}
       {newTime && (
         <>
-        <Text style={styles.newTime}>The expected reminder time is : </Text>
-        <Text style={styles.newTime}>{newTime.toLocaleString()}</Text>
+          <Text style={styles.newTime}>The expected reminder time is : </Text>
+          <Text style={styles.newTime}>{newTime.toLocaleString()}</Text>
 
         </>
       )}
@@ -218,12 +220,12 @@ export default function NotificationManager({ remindHandler }) {
       {/* <Button title="set time interval here" onPress={localNotificationHandler} /> */}
       {newLocalNotification}
 
-{/* {newTime && newLocalNotification} */}
+      {/* {newTime && newLocalNotification} */}
       {/* {String(hours) && (
         <Text style={styles.newTime}>The expected reminder time is : {newTime.toLocaleString()}</Text>
       )}
        */}
-      
+
       {/* {(hours && minutes) ?newLocalNotification : null} */}
 
 
@@ -259,9 +261,9 @@ const styles = StyleSheet.create({
   counterContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    margin:5,
+    margin: 5,
     marginBottom: 0,
-    justifyContent:"space-evenly"
+    justifyContent: "space-evenly"
   },
   counterText: {
     fontSize: 30,

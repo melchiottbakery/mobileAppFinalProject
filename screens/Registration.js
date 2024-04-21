@@ -182,13 +182,13 @@ export default function Registration({ navigation }) {
       <Text>a button Registration</Text> */}
       <View style={styles.buttonContainer}>
 
-      <TouchableOpacity style={styles.button} onPress={handleCancel}>
-            <Text style={styles.buttonText}>Back to Login</Text>
-          </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleCancel}>
+          <Text style={styles.buttonText}>Back to Login</Text>
+        </TouchableOpacity>
 
-          <TouchableOpacity style={styles.button} onPress={handleSet} disabled={validateForm()}>
-            <Text style={styles.buttonText}>SignUp</Text>
-          </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleSet} disabled={validateForm()}>
+          <Text style={styles.buttonText}>SignUp</Text>
+        </TouchableOpacity>
         {/* <Button title="Back to Login" onPress={handleCancel} />
         <Button title="SignUp" onPress={handleSet} disabled={validateForm()} /> */}
       </View>

@@ -362,7 +362,7 @@ export default function Library({ route }) {
         {/* <Text>Native Language: {item.nativeLanguage}</Text> */}
         <Text>Word Numbers: {item.number}</Text>
         {/* <Text>Word Language: {item.translationLanguage}</Text> */}
-        <View style={{ flexDirection: 'row', justifyContent: "space-around", alignItems:'center' }}>
+        <View style={{ flexDirection: 'row', justifyContent: "space-around", alignItems: 'center' }}>
           <View>
             <CountryFlag isoCode={item.nativeLanguage} size={25} />
           </View>
@@ -380,8 +380,10 @@ export default function Library({ route }) {
 
   const renderItemAdmin = ({ item }) => (
     <Pressable onPress={() => onPressFunction({ item })}
-      style={{ margin: 5, padding: 5, 
-      borderColor: "#B88956", borderWidth: 3, width: '30%' }}>
+      style={{
+        margin: 5, padding: 5,
+        borderColor: "#B88956", borderWidth: 3, width: '30%'
+      }}>
       <View
       // style={{margin:5, padding: 5, borderColor: "red", borderWidth: 3,width:'50%' }}
       >
@@ -391,10 +393,11 @@ export default function Library({ route }) {
         <Text>Native Language: {item.nativeLanguage}</Text>
         <Text>Word Numbers: {item.number}</Text>
         <Text>Word Language: {item.translationLanguage}</Text>
-        <View style={{ flexDirection: 'row', justifyContent: "space-around", }}>
+        <View style={{ flexDirection: 'row', justifyContent: "space-around", alignItems: 'center' }}>
           <View>
-            <CountryFlag isoCode={item.nativeLanguage} size={25} /> 
+            <CountryFlag isoCode={item.nativeLanguage} size={25} />
           </View>
+          <Text>={'>'}</Text>
           <View>
             <CountryFlag isoCode={item.translationLanguage} size={25} />
           </View>
@@ -434,6 +437,8 @@ export default function Library({ route }) {
 
   return (
     <View style={styles.container}>
+            <Text>All vocabulary books will be displayed here</Text>
+
 
       {/* bug for the list  */}
       <>

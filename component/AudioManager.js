@@ -30,7 +30,7 @@ export default function AudioManager({ wordToSound }) {
   return (
     <View>
       <TouchableOpacity onPress={playSound}>
-      <Ionicons name="volume-high-outline" size={30} color="black" />
+        <Ionicons name="volume-high-outline" size={30} color="black" />
         {/* <AntDesign name="sound" size={30} color="black" /> */}
       </TouchableOpacity>
     </View>

@@ -5,7 +5,7 @@ const StyleHelper = StyleSheet.create({
   inputContainer: {
     // marginTop: 20,
     // marginHorizontal: 30,
-    margin:10,
+    margin: 10,
 
   },
   text: {
@@ -17,7 +17,7 @@ const StyleHelper = StyleSheet.create({
     borderColor: "#B88956",
     borderWidth: 3,
     borderRadius: 5,
-    padding:10
+    padding: 10
   },
   inputError: {
     color: "red",
