@@ -75,6 +75,7 @@ export default function NotificationManager({ remindHandler }) {
         },
         trigger: {
           seconds: parseInt(hours) * 3600 + parseInt(minutes) * 60,
+          // seconds:5,
         },
       });
       setHours(0);

@@ -111,8 +111,8 @@ Corresponding to each word book, a collection called wordlist is also stored to 
 
     collection:wordlist
 
-    document id: "criminal office"
-    nativeWord:"Prison Office"(string)
+    document id: "刑務所"
+    nativeWord:"刑務所"(string)
     translationMeaning:"jail"(string)
     document id: word in original language
     nativeWord: word in the original language (same as id)
@@ -224,6 +224,19 @@ A screen for users to create new users. When the user is successfully created, u
 If the user is not logged in, this screen will not appear.
 After logging in, users can add the library to their personal list. There are multiple options for filtering memorability and multiple functions for reciting words. If the user does not have a word, the user will be prompted to add a word. If there is a word in the user's word list, the remind function will appear in the upper right corner. When turned on, the user will be allowed to set reminders by themselves, and will be reminded through notifications. User notification permission will be requested. For a single word, users will be able to use the pronunciation API to pronounce the word and adjust their proficiency. Only memorized words will have a delete button.
 
+
+# Color Recognition
+
+BEIGE ベージュ
+
+    'borderColor': "#B88956",
+    "buttonColor": "#976732",
+    "buttonText": '#FFF1E1',
+    "tan": "#DEB68A",
+    'allbackgroundColor': "#FFE2C2",
+
+![screenshoot of library by the ordinary user](./beige.PNG)
+
 # How to run this application correctly
 
     npx create-expo-app <YOUR-DIRECTORY>
@@ -276,7 +289,7 @@ At the same time, you need to set up your .env
     appId= "<Your setting>"
     mapsApiKey= "<Your GOOGLE APIKEY>"
 
-## Screenshots of the application
+# Screenshots of the application
 
 ![screenshoot of library by the ordinary user](screenshotFolder/library-noadmin-iteration3.PNG)
 
@@ -285,3 +298,15 @@ At the same time, you need to set up your .env
 ![screenshoot of profile](screenshotFolder/profile-iteration3.PNG)
 
 ![screenshoot of welcome](screenshotFolder/welcome-iteration3.PNG)
+
+# Slides of the application
+
+please follow `./jeapplication-slide-sg.pdf`
+
+# Link of manual of application
+
+`https://northeastern.zoom.us/rec/share/1E6evc8iCSscBaIIUTiE6EH6qzSyiazwwiAITO4AZDRp5YtmFqHlR7GnPlkWKv8F.EuEnYsWOisLFOhbH?startTime=1713734692000`
+
+Passcode: y?ehH2H^
+
+if the link is expired, please contact to Yuming Sun (`sun.yumi@northeastern.edu`)
