@@ -10,17 +10,7 @@ import { setDocToDB, setNewUserDocToDB } from "../firebase-files/FirebaseHelper"
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function Registration({ navigation }) {
-  // const [nickname, setNickname] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [confirmedEmail, setConfirmedEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [confirmedPassword, setConfirmedPassword] = useState("");
-  // const [emailError, setEmailError] = useState("");
-  // const [confirmedEmailError, setConfirmedEmailError] = useState("");
-  // const [confirmedPasswordError, setConfirmedPasswordError] = useState("");
-  // const [isAdmin, setIsAdmin] = useState(false);
 
-  //for data test
   const [nickname, setNickname] = useState("nihao");
   const [email, setEmail] = useState("ww2w@qq.com");
   const [confirmedEmail, setConfirmedEmail] = useState("ww2w@qq.com");
@@ -38,32 +28,25 @@ export default function Registration({ navigation }) {
     setPassword("");
     setConfirmedPassword("");
     setIsAdmin(false);
-    // navigation.navigate("Login");
     navigation.navigate("Login");
-
-
   };
 
   function validateForm() {
-    // Check if all input box are empty
     return (
       !nickname || !email || !confirmedEmail || !password || !confirmedPassword
     );
   };
 
   function validateEmail() {
-    // Regular expression for email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
   function validateConfirmedEmail() {
-    //check if email and confirmed email are the same
     return email === confirmedEmail;
   };
 
   function validateConfirmedPassword() {
-    //check if password and confirmed password are the same
     return password === confirmedPassword;
   };
 
@@ -72,24 +55,12 @@ export default function Registration({ navigation }) {
     setConfirmedEmailError("");
     setConfirmedPasswordError("");
     if (
-
       validateEmail() &&
       validateConfirmedEmail() &&
       validateConfirmedPassword()
     ) {
-      //to be changed
-      // handleChange("nickname", nickname);
-      // handleChange("email", email);
-      // handleChange("password", password);
-      // handleChange("isAdmin", isAdmin);
-
-      // console.log(formData);
       createUserAuthHandler()
 
-      // console.log([nickname, email, password, isAdmin]);
-      // Return a new array of the user's information
-      // return
-      // [nickname, email, password, isAdmin];
     } else if (!validateEmail()) {
       setEmailError("Please enter a valid email");
     } else if (!validateConfirmedEmail()) {
@@ -127,14 +98,12 @@ export default function Registration({ navigation }) {
     <SafeAreaView style={styles.container}>
       <Text>This is the Registration screen</Text>
 
-      {/* a InputComponent input the nickname */}
       <InputComponent
         label="Nickname"
         value={nickname}
         onChangeText={setNickname}
       />
 
-      {/* <Text>a InputComponent input the email</Text> */}
       <InputComponent
         label="Email"
         value={email}
@@ -142,7 +111,6 @@ export default function Registration({ navigation }) {
         error={emailError}
       />
 
-      {/* <Text>a InputComponent confirm the email</Text> */}
       <InputComponent
         label="Confirm Email"
         value={confirmedEmail}
@@ -150,7 +118,6 @@ export default function Registration({ navigation }) {
         error={confirmedEmailError}
       />
 
-      {/*  <Text>a InputComponent input the passpord</Text> */}
       <InputComponent
         label="Password"
         value={password}
@@ -158,7 +125,6 @@ export default function Registration({ navigation }) {
         secureTextEntry={true}
       />
 
-      {/* <Text>a InputComponent confirm the password</Text> */}
       <InputComponent
         label="Confirm Password"
         value={confirmedPassword}
@@ -167,7 +133,6 @@ export default function Registration({ navigation }) {
         error={confirmedPasswordError}
       />
 
-      {/* <Text>a checkbox for the terms and conditions</Text> */}
       <View style={styles.section}>
         <Checkbox
           style={styles.checkbox}
@@ -178,8 +143,6 @@ export default function Registration({ navigation }) {
         <Text>admin?</Text>
       </View>
 
-      {/* <Text>a button cancel and go back</Text>
-      <Text>a button Registration</Text> */}
       <View style={styles.buttonContainer}>
 
         <TouchableOpacity style={styles.button} onPress={handleCancel}>
@@ -189,8 +152,6 @@ export default function Registration({ navigation }) {
         <TouchableOpacity style={styles.button} onPress={handleSet} disabled={validateForm()}>
           <Text style={styles.buttonText}>SignUp</Text>
         </TouchableOpacity>
-        {/* <Button title="Back to Login" onPress={handleCancel} />
-        <Button title="SignUp" onPress={handleSet} disabled={validateForm()} /> */}
       </View>
     </SafeAreaView>
   );

@@ -1,12 +1,10 @@
 import { StyleSheet, Text, View, FlatList, Button, Alert, TouchableOpacity } from 'react-native'
-import { SafeAreaView } from 'react-native'
-import { Pressable } from "react-native";
+
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
 
 import { auth } from '../firebase-files/FirebaseSetup';
-import { Ionicons } from '@expo/vector-icons';
 import { collection, onSnapshot } from "firebase/firestore";
 import { database } from "../firebase-files/FirebaseSetup"
 import { writeToDB, writeNewWordToUserDB, deleteBookFromLibraryDB, deleteCollection } from "../firebase-files/FirebaseHelper";
@@ -15,13 +13,10 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 export default function WordList({ route }) {
   const navigation = useNavigation();
 
-  // console.log("the item is ",route)
   const worldBookName = route.params.item.name
   const wordBookid = route.params.item.id
   const isadmin = route.params.isadmin
-  // const userId = auth.currentUser.uid
 
-  // console.log(route.params.item.name)
   const [library, setlibrary] = useState([]);
   const [deleteLink, setDeleteLink] = useState("")
 
@@ -29,19 +24,9 @@ export default function WordList({ route }) {
     navigation.setOptions({
       headerRight: () => {
         return isadmin && deleteButton;
-        // isadmin && <Button title="delete" onPress={deleteHandler} />;
       },
     });
   }, []);
-
-
-  const deleteButton = (
-    <>
-      <TouchableOpacity onPress={deleteHandler}>
-        <MaterialCommunityIcons name="delete-alert" size={30} color="red" />
-      </TouchableOpacity>
-    </>
-  )
 
   useEffect(() => {
     onSnapshot(collection(database, "library", wordBookid, "wordlist"), (querySnapshot) => {
@@ -56,6 +41,14 @@ export default function WordList({ route }) {
     });
   }, []);
 
+  const deleteButton = (
+    <>
+      <TouchableOpacity onPress={deleteHandler}>
+        <MaterialCommunityIcons name="delete-alert" size={30} color="red" />
+      </TouchableOpacity>
+    </>
+  )
+
   function onPressFunction({ item }) {
     const newWord = {
       nativeWord: item.nativeWord,
@@ -65,43 +58,18 @@ export default function WordList({ route }) {
       translationMeaningShow: true,
 
     };
-
-    // console.log("new word is",newWord)
-
-
-    // setNewWord([...word, newWord]);
-    // console.log(word)
-    // writeToDB(newWord);
     if (auth.currentUser) {
       writeNewWordToUserDB(newWord, auth.currentUser.uid)
     }
-
   }
 
-  const addButton = (
-    <View>
-      <TouchableOpacity onPress={() => onPressFunction({ item })}>
-        <AntDesign name="pluscircleo" size={24} color="black" />
-        {/* <MaterialIcons name="add-alarm" size={30} color="black" /> */}
-      </TouchableOpacity>
-    </View>
-
-  )
-
   const renderItemUser = ({ item }) => (
-    //  <View style={{ padding: 20, borderColor: "green", borderWidth: 1,
-    //     flexDirection:'row',   flex: 1,
-    //     alignItems: 'center',
-    //     // justifyContent: 'center',
-    //   }}>       
-
     <View style={{
       padding: 20, margin: 3, borderColor: "#B88956", borderWidth: 2,
       flexDirection: 'row', flex: 1,
       alignItems: 'center',
       // justifyContent: 'center',
     }}>
-
       {auth.currentUser && (
         <View>
           <TouchableOpacity onPress={() => onPressFunction({ item })}>
@@ -109,26 +77,13 @@ export default function WordList({ route }) {
             {/* <MaterialIcons name="add-alarm" size={30} color="black" /> */}
           </TouchableOpacity>
         </View>
-
-      )
-        //  addButton({items})
-
-      }
-
-      {/* <Text>ID: {item.id}</Text> */}
+      )}
       <View style={{ paddingLeft: 20 }}>
-
         <Text>nativeWord: {item.nativeWord}</Text>
         <Text>translationMeaning: {item.translationMeaning}</Text>
       </View>
-
-      {/* {auth.currentUser && addButton} */}
-      {/* {auth.currentUser && addButton} */}
-
-      {/* {auth.currentUser && <Button title="add" onPress={() => onPressFunction({ item })} />} */}
     </View>
   );
-
 
   const renderItemAdmin = ({ item }) => (
     <View style={{
@@ -138,20 +93,13 @@ export default function WordList({ route }) {
       // justifyContent: 'center',
     }}>
       {auth.currentUser &&
-
         (
-          // t addButton = (
           <View>
             <TouchableOpacity onPress={() => onPressFunction({ item })}>
               <AntDesign name="pluscircleo" size={24} color="black" />
-              {/* <MaterialIcons name="add-alarm" size={30} color="black" /> */}
             </TouchableOpacity>
           </View>
-
         )
-
-        // addButton
-
       }
       <View style={{ paddingLeft: 20 }}>
         <Text>ID: {item.id}</Text>
@@ -159,7 +107,6 @@ export default function WordList({ route }) {
         <Text>translationMeaning: {item.translationMeaning}</Text>
       </View>
 
-      {/* {auth.currentUser && <Button title="add" onPress={() => onPressFunction({ item })} />} */}
     </View>
   );
 
@@ -183,10 +130,8 @@ export default function WordList({ route }) {
 
   return (
     <View style={styles.container}>
-      {/* <Text>This is the wordlist screen</Text> */}
       {!auth.currentUser && <Text>You can add the word and play the pronounciation when you log in</Text>}
 
-      {/* {isadmin && <Button title="delete the whole book" onPress={deleteHandler}></Button>} */}
       {isadmin && <FlatList
         data={library}
         renderItem={renderItemAdmin}

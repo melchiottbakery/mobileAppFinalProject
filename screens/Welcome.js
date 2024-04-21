@@ -1,11 +1,8 @@
-import { Button, StyleSheet, Text, View } from 'react-native'
-import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View } from 'react-native'
+import React from "react";
 import Map from '../component/Map';
 
-
 export default function Welcome() {
-
-
 
   return (
     <View style={styles.container}>
@@ -24,11 +21,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: "#FFE2C2"
   },
-  // Mapcontainer: {
-  //   flex: 1,
-  //   // alignItems: 'center',
-  //   justifyContent: 'center',
-  //   backgroundColor:"#FFE2C2"
-  // },
+
 
 })

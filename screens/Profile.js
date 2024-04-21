@@ -14,7 +14,7 @@ import { editImageLinkInDB, getProfile, setNewUserDocToDB } from "../firebase-fi
 import { collection, doc, onSnapshot } from "firebase/firestore";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-
+import { AntDesign } from '@expo/vector-icons';
 
 export default function Profile({ navigation }) {
 
@@ -26,19 +26,13 @@ export default function Profile({ navigation }) {
 
   const [status, requestPermission] = ImagePicker.useCameraPermissions();
 
-  async function verifyCameraPermission() {
-    if (status.granted) {
-      return true;
-    }
-    try {
-      const permissonResponse = await requestPermission();
-      return permissonResponse.granted;
+  const [openButton, setOpenButton] = useState(false);
+  const showButton = originNickname !== nickname;
 
-    } catch (error) {
-      console.log(error);
-    }
-  }
   const [userLoggedIn, setUserLoggedIn] = useState(false);
+  const [imageDatabasetaUri, setImageDatabasetaUri] = useState("");
+  const [imageLocalUri, setImageLocalUri] = useState("");
+  const [openSaveButton, setOpenSaveButton] = useState(false)
 
   useEffect(() => {
     let unsubscribe; // Declare unsubscribe outside the try block
@@ -55,8 +49,6 @@ export default function Profile({ navigation }) {
             downloadImageFromDatabase(data);
           }
         );
-
-
       } catch (error) {
         console.log('type of error', error);
       }
@@ -74,7 +66,6 @@ export default function Profile({ navigation }) {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setUserLoggedIn(true);
-
       }
       else {
         setUserLoggedIn(false);
@@ -82,7 +73,18 @@ export default function Profile({ navigation }) {
     })
   }, [])
 
-  const [imageDatabasetaUri, setImageDatabasetaUri] = useState("");
+  async function verifyCameraPermission() {
+    if (status.granted) {
+      return true;
+    }
+    try {
+      const permissonResponse = await requestPermission();
+      return permissonResponse.granted;
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   async function downloadImageFromDatabase(data) {
     if (data.imageUri) {
@@ -90,22 +92,16 @@ export default function Profile({ navigation }) {
         downloadImageUri = data.imageUri
         const imageRef = ref(storage, downloadImageUri);
         const imageDownloadUri = await getDownloadURL(imageRef);
-        //bugs
         console.log("downloaded" + imageDownloadUri)
         setImageDatabasetaUri(imageDownloadUri)
 
-
-
-        // setDownloadImage(data.imageUri)
       } catch (error) {
         console.log('console.error', error)
-        // setImageDatabasetaUri('https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGljfGVufDB8fDB8fHww')
         setImageDatabasetaUri('https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg')
       }
     }
   }
 
-  //add Alert for the Cancel button
   function logoutHandler() {
     Alert.alert("LOGOUT", "Are you going to LOGOUT?", [
       {
@@ -116,14 +112,10 @@ export default function Profile({ navigation }) {
         text: "Yes", onPress: () => {
           try {
             signOut(auth)
-
             setNickname('')
             setOriginNickname('')
             setEmail('')
-            // setImageDatabasetaUri('https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGljfGVufDB8fDB8fHww')
             setImageDatabasetaUri('https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg')
-
-            // navigation.navigate("Registration")
           } catch (error) {
             console.log(error)
           }
@@ -132,33 +124,22 @@ export default function Profile({ navigation }) {
     ]);
   };
 
-  const [imageLocalUri, setImageLocalUri] = useState("");
-
   async function cameraFunction() {
     try {
-
       const checkPermission = await verifyCameraPermission();
-
       if (!checkPermission) {
         Alert.alert("Please give permission for the use of camera");
         return;
       }
-
       const useCamera = await ImagePicker.launchCameraAsync(
         { allowsEditing: true });
-      // console.log(useCamera)
       console.log(useCamera.assets[0].uri)
       setImageLocalUri(useCamera.assets[0].uri)
-
       setOpenSaveButton(true)
-      // uploadImageFromLocal(imageLocalUri)
     } catch (error) {
       console.log(error)
-
     }
   }
-
-  const [openSaveButton, setOpenSaveButton] = useState(false)
 
   function saveImageChange() {
     uploadImageFromLocal(imageLocalUri)
@@ -168,17 +149,12 @@ export default function Profile({ navigation }) {
   async function uploadImageFromLocal(imageLocalUri) {
     try {
       const response = await fetch(imageLocalUri);
-      // console.log("uploadImageFromLocal is",response)
       const imageBlob = await response.blob();
-      // console.log(blob)
       const imageName = imageLocalUri.substring(imageLocalUri.lastIndexOf('/') + 1);
       const imageRef = await ref(storage, `profileImages/${imageName}`)
       const uploadResult = await uploadBytes(imageRef, imageBlob);
       console.log("upload successed")
-      // setImageLocalUri('')
       setOpenSaveButton(false)
-
-      // return 
       console.log(uploadResult.metadata.fullPath)
       writeImageLinkToUser(uploadResult.metadata.fullPath)
     } catch (error) {
@@ -190,35 +166,20 @@ export default function Profile({ navigation }) {
     editImageLinkInDB(auth.currentUser.uid, { imageUri: storagePath },)
   }
 
-  // function changeNameHandler() {
-  //   console.log("pressed")
-  //   setNewUserDocToDB({ nickname: uploadnickname }, "users", auth.currentUser.uid)
-  //   // setOriginNickname(nickname);
-  //   setNickname(uploadnickname)
-  //   setOpenButton(false)
-  // }
   function changeNameHandler() {
     console.log("pressed")
     setNewUserDocToDB({ nickname: nickname }, "users", auth.currentUser.uid)
-    // setOriginNickname(nickname);
     setNickname(nickname)
     setOpenButton(false)
-
   }
 
   function cancelchangeNameHandler() {
     setNickname(originNickname);
   }
-  const [openButton, setOpenButton] = useState(false)
-
-  const showButton = originNickname !== nickname;
 
   const AppStack = (
     <>
-      {/*  <Text>This is the Profile screen</Text> */}
-      {/*  <Text>Add a pic as a placeholder</Text> */}
       <Pressable onPress={cameraFunction}>
-
         <View style={styles.imageContainer}>
           <View style={{
             position: "absolute",
@@ -229,14 +190,6 @@ export default function Profile({ navigation }) {
             <Entypo name="camera" size={30} color="black" />
           </View>
 
-          {/* <Image source={require("../assets/imageUpload.jpeg")} style={styles.image} />
-        {imageLocalUri && (
-        <Image source={{ uri: imageLocalUri }} style={{ width: 100, height: 100 }} />
-      )}
-      {
-        imageDatabasetaUri &&   <Image style = {styles.image} source= {{uri:imageDatabasetaUri}}/>
-      } */}
-
           {imageLocalUri ?
             <Image source={{ uri: imageLocalUri }} style={{ width: 100, height: 100 }} /> :
             <>
@@ -245,89 +198,47 @@ export default function Profile({ navigation }) {
                 : <Image source={require("../assets/imageUpload.jpeg")} style={styles.image} />}
             </>
           }
-
-          {/* {imageDatabasetaUri ? 
-  <Image style={styles.image} source={{ uri: imageDatabasetaUri }} />
-  : <Image source={require("../assets/imageUpload.jpeg")} style={styles.image} />} */}
-
-          {/* {!imageLocalUri && (
-      <Image source={require("../assets/imageUpload.jpeg")} style={styles.image} />
-    )}
-    {imageLocalUri && (
-      <Image source={{ uri: imageLocalUri }} style={{ width: 100, height: 100 }} />
-    )}
-    {imageDatabasetaUri && (
-      <Image style={styles.image} source={{ uri: imageDatabasetaUri }} />
-    )} */}
-
-
         </View>
 
-        <Text></Text>
       </Pressable>
       {openSaveButton &&
-
         (
-
           <TouchableOpacity onPress={saveImageChange}>
             <FontAwesome name="upload" size={30} color="black" />
           </TouchableOpacity>
-          // <Button title="save image changes" onPress={saveImageChange}></Button>
-
-
         )
       }
-      {/* <Pressable onPressIn={() => setOpenButton(!openButton)}> */}
+
       <InputComponent
         label="Nickname (Touch the textbox to change)"
         value={nickname}
         onChangeText={setNickname}
         editable={true}
       />
-      {/* </Pressable> */}
 
-      {/* {openButton && (
-
-        <InputComponent
-          value={uploadnickname}
-          onChangeText={setUploadNickname}
-          editable={true}
-        />)} */}
-
+<View style={{flexDirection:"row",justifyContent:"center"}}>
       {showButton && (
-
-        <Button title="Change The Nickname" onPress={changeNameHandler}></Button>
+        <TouchableOpacity style={styles.buttonContainer} onPress={changeNameHandler}>
+          <AntDesign name="checkcircleo" size={30} color="black" />
+        </TouchableOpacity>
       )}
 
       {showButton && (
-
-        <Button title="cancel" onPress={cancelchangeNameHandler}></Button>
+        <TouchableOpacity style={styles.buttonContainer} onPress={cancelchangeNameHandler}>
+          <AntDesign name="closecircleo" size={30} color="black" />
+        </TouchableOpacity>
       )}
-
-
-      {/* {openButton && (
-
-        <Button title="Change The Nickname" onPress={changeNameHandler}></Button>)} */}
+      </View>
 
       <InputComponent
-        //here is a InputComponent can show the email, but user cannot pressed or
         label="Email"
         value={email}
         editable={false}
       />
-
-      {/* // if you can add a alert for this one? */}
       <View style={styles.buttonContainer}>
-        {/* <Button
-          //a button cancel and go back to the Login screen
-          title="LOG OUT"
-          onPress={logoutHandler}
-        /> */}
         <TouchableOpacity onPress={logoutHandler}>
-
           <SimpleLineIcons name="logout" size={24} color="black" />
         </TouchableOpacity>
-
       </View>
     </>
   )
@@ -336,24 +247,11 @@ export default function Profile({ navigation }) {
     navigation.navigate('Login')
   }
 
-
-
-  // const loginButton =(
-  //   <>
-  //    <TouchableOpacity onPress={loginHandler}>
-  //    <MaterialIcons name="add-alarm" size={30} color="black" />
-  //   </TouchableOpacity>
-
-  //   </>
-
-  // )
-
   const AppAuth = (
     <View style={styles.appauthcontainer}>
       <TouchableOpacity onPress={loginHandler}>
         <SimpleLineIcons name="login" size={30} color="black" />
       </TouchableOpacity>
-      {/* <Button title="Login/Signup" onPress={loginHandler}></Button> */}
     </View>
   )
 
@@ -381,14 +279,14 @@ const styles = StyleSheet.create({
 
   imageContainer: {
     alignItems: "center",
-    marginTop: 20,
+    marginTop: 10,
   },
   image: {
     width: 100,
     height: 100,
   },
   buttonContainer: {
-    margin: 20,
+    margin: 10,
     alignItems: "center",
   },
 });
