@@ -14,7 +14,7 @@ import { auth } from '../firebase-files/FirebaseSetup';
 
 const Tab = createBottomTabNavigator();
 
-export default function TabNavigator(props) {
+export default function TabNavigator() {
 
   const [userLoggedIn, setUserLoggedIn] = useState(false);
 

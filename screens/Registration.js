@@ -81,7 +81,7 @@ export default function Registration({ navigation }) {
         email: email,
         isAdmin: isAdmin
       }, "users", userCred._tokenResponse.localId)
-      navigation.navigate("Login", { userEmail: email, userPassword: password });
+      navigation.navigate("Profile", { userEmail: email, userPassword: password });
 
     } catch (error) {
       console.log(error.code)
@@ -96,7 +96,6 @@ export default function Registration({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text>This is the Registration screen</Text>
 
       <InputComponent
         label="Nickname"

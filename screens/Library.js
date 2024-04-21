@@ -189,7 +189,7 @@ export default function Library() {
         // justifyContent: 'center',
       }}>
 
-        <View style={{ width: "70%" }}>
+        <View style={{ width: "85%" }}>
           <DropDownPicker
             open={open}
             setOpen={setOpen}
@@ -204,7 +204,7 @@ export default function Library() {
             }}
 
             textStyle={{
-              fontSize: 15,
+              fontSize: 16,
               // color: 'blue',
               // fontWeight: 'bold',
             }}
@@ -222,17 +222,15 @@ export default function Library() {
         </TouchableOpacity>
 
       </View>
-      {/* <Button title="use the camera" onPress={cameraFunction}></Button> */}
-      {imageLocalUri && (<Image source={{ uri: imageLocalUri }} style={{ width: 100, height: 100 }} />
+      {imageLocalUri && (<Image source={{ uri: imageLocalUri }} style={{ width: 100, height: 100, zIndex: -1 }} />
       )
       }
-      {imageLocalUri &&
+      {imageLocalUri && selectedBook &&
         (
           <View>
-            <TouchableOpacity onPress={saveImageChange}>
-              <FontAwesome5 name="file-upload" size={24} color="black" />
+            <TouchableOpacity style={{ zIndex: -1 }} onPress={saveImageChange}>
+              <FontAwesome5 style={{ zIndex: -1 }} name="file-upload" size={24} color="black" />
             </TouchableOpacity>
-            {/* <Button title="sa23ve the image " onPress={saveImageChange}/> */}
           </View>)}
     </View>
   )
@@ -326,6 +324,7 @@ export default function Library() {
         <Text>Native Language: {item.nativeLanguage}</Text>
         <Text>Word Numbers: {item.number}</Text>
         <Text>Word Language: {item.translationLanguage}</Text>
+
         <View style={{ flexDirection: 'row', justifyContent: "space-around", alignItems: 'center' }}>
           <View>
             <CountryFlag isoCode={item.nativeLanguage} size={25} />
@@ -349,7 +348,9 @@ export default function Library() {
 
   return (
     <View style={styles.container}>
-      <Text>All vocabulary books will be displayed here</Text>
+      <View style={{ padding: 5 }}>
+        <Text style={{ fontSize: 16 }}>All vocabulary books will be displayed here.</Text>
+      </View>
       <View>
         {isadmin && (
           <>

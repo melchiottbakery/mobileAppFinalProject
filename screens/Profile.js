@@ -201,13 +201,15 @@ export default function Profile({ navigation }) {
         </View>
 
       </Pressable>
-      {openSaveButton &&
-        (
-          <TouchableOpacity onPress={saveImageChange}>
-            <FontAwesome name="upload" size={30} color="black" />
-          </TouchableOpacity>
-        )
-      }
+      <View style={{ alignItems: "center", justifyContent: "center" }}>
+        {openSaveButton &&
+          (
+            <TouchableOpacity onPress={saveImageChange}>
+              <FontAwesome name="upload" size={30} color="black" />
+            </TouchableOpacity>
+          )
+        }
+      </View>
 
       <InputComponent
         label="Nickname (Touch the textbox to change)"
@@ -216,18 +218,18 @@ export default function Profile({ navigation }) {
         editable={true}
       />
 
-<View style={{flexDirection:"row",justifyContent:"center"}}>
-      {showButton && (
-        <TouchableOpacity style={styles.buttonContainer} onPress={changeNameHandler}>
-          <AntDesign name="checkcircleo" size={30} color="black" />
-        </TouchableOpacity>
-      )}
+      <View style={{ flexDirection: "row", justifyContent: "center" }}>
+        {showButton && (
+          <TouchableOpacity style={styles.buttonContainer} onPress={changeNameHandler}>
+            <AntDesign name="checkcircleo" size={30} color="black" />
+          </TouchableOpacity>
+        )}
 
-      {showButton && (
-        <TouchableOpacity style={styles.buttonContainer} onPress={cancelchangeNameHandler}>
-          <AntDesign name="closecircleo" size={30} color="black" />
-        </TouchableOpacity>
-      )}
+        {showButton && (
+          <TouchableOpacity style={styles.buttonContainer} onPress={cancelchangeNameHandler}>
+            <AntDesign name="closecircleo" size={30} color="black" />
+          </TouchableOpacity>
+        )}
       </View>
 
       <InputComponent
@@ -249,6 +251,9 @@ export default function Profile({ navigation }) {
 
   const AppAuth = (
     <View style={styles.appauthcontainer}>
+      <View style={{ padding: 5 }}>
+        <Text style={{ fontSize: 16 }}>Create your own word book and play the pronunciation of word by signed up a new acacount</Text>
+      </View>
       <TouchableOpacity onPress={loginHandler}>
         <SimpleLineIcons name="login" size={30} color="black" />
       </TouchableOpacity>

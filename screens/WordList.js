@@ -79,8 +79,8 @@ export default function WordList({ route }) {
         </View>
       )}
       <View style={{ paddingLeft: 20 }}>
-        <Text>nativeWord: {item.nativeWord}</Text>
-        <Text>translationMeaning: {item.translationMeaning}</Text>
+        <Text style={{ fontSize: 25 }}>Word: {item.nativeWord}</Text>
+        <Text style={{ fontSize: 20 }}>Meaning: {item.translationMeaning}</Text>
       </View>
     </View>
   );
@@ -130,7 +130,10 @@ export default function WordList({ route }) {
 
   return (
     <View style={styles.container}>
-      {!auth.currentUser && <Text>You can add the word and play the pronounciation when you log in</Text>}
+      <View style={{ padding: 5 }}>
+
+        {!auth.currentUser && <Text style={{ fontSize: 16 }}>You can add the word and play the pronunciation when you are logged in</Text>}
+      </View>
 
       {isadmin && <FlatList
         data={library}

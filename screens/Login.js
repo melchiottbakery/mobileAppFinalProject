@@ -12,13 +12,6 @@ export default function Login({ navigation, route }) {
   const [password, setPassword] = useState("dongbeidaban");
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    if (route.params && route.params.userEmail) {
-      setEmail(route.params.userEmail)
-      setPassword(route.params.userPassword)
-    }
-  }, []);
-
   function validateEmail() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -64,9 +57,7 @@ export default function Login({ navigation, route }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Text>Welcome</Text>
-      </View>
+
 
       <View style={styles.inputContainer}>
 

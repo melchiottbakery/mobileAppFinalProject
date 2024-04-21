@@ -4,21 +4,17 @@ import {
   View,
   FlatList,
   Pressable,
-  Button,
   Alert,
 } from "react-native";
-import { SafeAreaView } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import NotificationManager from "../component/NotificationManager";
 import { AntDesign } from '@expo/vector-icons';
 import { Fontisto } from '@expo/vector-icons';
-import { collection, onSnapshot, query } from "firebase/firestore";
+import { collection, onSnapshot } from "firebase/firestore";
 import { database } from "../firebase-files/FirebaseSetup";
 import {
-  deleteFromDB,
   deleteWordFromUserDB,
-  editInDB,
   editRememberInDB,
   writeAllAnkiToDB,
   writeAnkiToDB,
@@ -245,7 +241,10 @@ export default function MyList() {
   return (
     <View style={styles.container}>
       {library.length === 0 ? (
-        <Text>There is no new word for you, try to add some from library</Text>
+        <View style={{ padding: 5 }}>
+          <Text style={{ fontSize: 16 }}>There is no new word for you, try to add some from library</Text>
+
+        </View>
       ) : (
         <>
           {openRemind && <NotificationManager remindHandler={remindHandler} />}

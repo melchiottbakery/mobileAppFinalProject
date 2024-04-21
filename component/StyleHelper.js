@@ -10,6 +10,8 @@ const StyleHelper = StyleSheet.create({
   },
   text: {
     marginBottom: 10,
+    fontSize: 16
+
   },
   input: {
     alignSelf: "stretch",
@@ -17,7 +19,9 @@ const StyleHelper = StyleSheet.create({
     borderColor: "#B88956",
     borderWidth: 3,
     borderRadius: 5,
-    padding: 10
+    padding: 10,
+    fontSize: 16
+
   },
   inputError: {
     color: "red",

@@ -1,3 +1,16 @@
+
+Acknowledgements/致谢/謝辞
+
+Dedicated to Miss Y. LI.
+
+献给李小姐
+
+Dedicated to me, who has been studying Japanese for more than ten years, but postponed the exam plan for three years due to the COVID-2019, finally passed the Japanese Language Proficiency Test Level 2 in December 2023.
+
+10年以上日本語を勉強してきたが、新型コロナウイルスのため試験計画を3年延期し、2023年12月についに日本語能力試験2級に合格した僕にささげられます。
+
+Mar 7 - Apr 21
+
 # Introduction of the application 
 ## The name of the application project
 Words in the World
@@ -184,7 +197,7 @@ If the user logs in as an administrator, the user's permissions are as follows:
 
 ## Welcome
 
-The user will first be directed to the welcome interface, and will see the welcome message regardless of whether they are logged in. The user can click the button at the bottom of the screen to search for Japanese language schools near them. The search will be displayed to the user using the ActivityIndicator component. The results will be displayed in Google Maps in the form of markers. The result is that the location use permission will be requested when the user clicks for the first time.
+The user will first be directed to the welcome screen, and will see the welcome message regardless of whether they are logged in. The user can click the button at the bottom of the screen to search for Japanese language schools near them. The search will be displayed to the user using the ActivityIndicator component. The results will be displayed in Google Maps in the form of markers. The result is that the location use permission will be requested when the user clicks for the first time.
 
 ## Library
 
@@ -196,19 +209,19 @@ When the user clicks on the word book, he will be directed to display all the wo
 
 ## Profile
 
-If the user is not logged in, an interface that requires login/registration will be displayed. When the user logs in, the user's nickname, email address, and avatar will be displayed simultaneously. Users can click on the avatar and nickname to modify it. Adding an avatar will use the camera function, and using the camera for the first time will request camera use permission. All update operations will have secondary operations. Users can logout here.
+If the user is not logged in, a screen that requires login/registration will be displayed. When the user logs in, the user's nickname, email address, and avatar will be displayed simultaneously. Users can click on the avatar and nickname to modify it. Adding an avatar will use the camera function, and using the camera for the first time will request camera use permission. All update operations will have secondary operations. Users can logout here.
 
 ## Login 
 
-User login interface.
+User login screen.
 
 ## Registration
 
-An interface for users to create new users. When the user is successfully created, he will be directed to the login interface, and there will be a prompt for successful registration.
+A screen for users to create new users. When the user is successfully created, user will be directed to the profile screen.
 
 ## Mylist
 
-If the user is not logged in, this interface will not appear.
+If the user is not logged in, this screen will not appear.
 After logging in, users can add the library to their personal list. There are multiple options for filtering memorability and multiple functions for reciting words. If the user does not have a word, the user will be prompted to add a word. If there is a word in the user's word list, the remind function will appear in the upper right corner. When turned on, the user will be allowed to set reminders by themselves, and will be reminded through notifications. User notification permission will be requested. For a single word, users will be able to use the pronunciation API to pronounce the word and adjust their proficiency. Only memorized words will have a delete button.
 
 # How to run this application correctly
