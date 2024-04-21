@@ -7,6 +7,7 @@ import Checkbox from "expo-checkbox";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase-files/FirebaseSetup";
 import { setDocToDB, setNewUserDocToDB } from "../firebase-files/FirebaseHelper";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function Registration({ navigation }) {
   // const [nickname, setNickname] = useState("");
@@ -180,8 +181,16 @@ export default function Registration({ navigation }) {
       {/* <Text>a button cancel and go back</Text>
       <Text>a button Registration</Text> */}
       <View style={styles.buttonContainer}>
-        <Button title="Back to Login" onPress={handleCancel} />
-        <Button title="SignUp" onPress={handleSet} disabled={validateForm()} />
+
+      <TouchableOpacity style={styles.button} onPress={handleCancel}>
+            <Text style={styles.buttonText}>Back to Login</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={handleSet} disabled={validateForm()}>
+            <Text style={styles.buttonText}>SignUp</Text>
+          </TouchableOpacity>
+        {/* <Button title="Back to Login" onPress={handleCancel} />
+        <Button title="SignUp" onPress={handleSet} disabled={validateForm()} /> */}
       </View>
     </SafeAreaView>
   );
@@ -208,5 +217,17 @@ const styles = StyleSheet.create({
 
   checkbox: {
     margin: 10,
+  },
+
+  button: {
+    backgroundColor: '#976732', // Example color
+    padding: 10,
+    borderRadius: 5,
+    width: "50",
+  },
+  buttonText: {
+    color: '#fff1e1', // Example color
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
 });

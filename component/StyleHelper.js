@@ -17,6 +17,7 @@ const StyleHelper = StyleSheet.create({
     borderColor: "#B88956",
     borderWidth: 3,
     borderRadius: 5,
+    padding:10
   },
   inputError: {
     color: "red",

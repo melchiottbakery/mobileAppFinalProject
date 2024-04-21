@@ -149,7 +149,7 @@ export default function MyList() {
 
   const renderItem = ({ item }) => (
     <Pressable>
-      <View style={{ padding: 30, borderColor: "#B88956", borderWidth: 3, margin: 5 }}>
+      <View style={{ padding: 10, borderColor: "#B88956", borderWidth: 3, margin: 5 }}>
         {/* <Text>ID: {item.id}</Text>
         <Text>nativeword: {item.nativeWord}</Text> */}
         {/* <Button
@@ -220,6 +220,8 @@ export default function MyList() {
       
         </View>
 
+<View>
+  <View>
         {item.remember === false && (
 
           <TouchableOpacity onPress={() => onPressFunction({ item })}>
@@ -235,6 +237,10 @@ export default function MyList() {
 
           // ✅
         )}
+
+</View>
+<View style={{flexDirection:"row",justifyContent:"space-between" }}>
+  <View >
         {item.remember === true && ( // Check if item.remember is false
 
           <TouchableOpacity onPress={() => onForgetFunction({ item })}>
@@ -249,6 +255,7 @@ export default function MyList() {
           // />
         )}
 
+</View>
         {item.remember === true && (
 
           <TouchableOpacity onPress={() => onDeleteFunction({ item })}>
@@ -264,6 +271,8 @@ export default function MyList() {
           // />
         )}
         {/* <Button title="marker" onPress={()=>onPressFunction({item})} /> */}
+        </View>
+        </View>    
       </View>
     </Pressable>
   );
@@ -405,7 +414,7 @@ export default function MyList() {
             {/* <Button title="anki-mode" onPress={ankiModeHandler} /> */}
             {/* </Pressable> */}
 
-            <Text>REVISION FILTER:</Text>
+            <Text>REVISION MODE:</Text>
             <TouchableOpacity style={styles.ankiButton} onPress={showForgetHandler}>
               <Text>To Learn</Text>
             </TouchableOpacity>
@@ -466,11 +475,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFE2C2"
   },
   ankiButton: {
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: 'black',
     borderRadius: 5,
     padding: 5,
-    margin: 8,
+    margin: 7,
+    borderColor: "#B88956"
+
   },
 
 

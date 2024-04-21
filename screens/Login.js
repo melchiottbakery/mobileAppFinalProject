@@ -4,6 +4,7 @@ import InputComponent from "../component/InputComponent";
 
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase-files/FirebaseSetup";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function Login({ navigation, route }) {
   console.log('route is', route)
@@ -115,9 +116,18 @@ export default function Login({ navigation, route }) {
       </View>
 
       <View style={styles.buttonContainer}>
-        <Button title="Reset" onPress={handleReset} />
+      <TouchableOpacity style={styles.button} onPress={handleReset}>
+            <Text style={styles.buttonText}>Reset</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={validateForm()}>
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={handleRegister} >
+            <Text style={styles.buttonText}>Register</Text>
+          </TouchableOpacity>
+        {/* <Button title="Reset" onPress={handleReset} />
         <Button title="Login" onPress={handleLogin} disabled={validateForm()} />
-        <Button title="Register" onPress={handleRegister} />
+        <Button title="Register" onPress={handleRegister} /> */}
 
         {/* <Text>{displayText}</Text> */}
 
@@ -151,5 +161,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     marginTop: 40,
+  },
+
+  button: {
+    backgroundColor: '#976732', // Example color
+    padding: 10,
+    borderRadius: 5,
+    width: "50",
+  },
+  buttonText: {
+    color: '#fff1e1', // Example color
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
 });
