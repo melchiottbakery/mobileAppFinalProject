@@ -1,7 +1,8 @@
-import { Button, StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Audio } from 'expo-av';
 
+import { Ionicons } from '@expo/vector-icons';
 
 export default function AudioManager({ wordToSound }) {
 
@@ -27,7 +28,9 @@ export default function AudioManager({ wordToSound }) {
   }, [sound]);
   return (
     <View>
-      <Button title='play the sound' onPress={playSound}></Button>
+      <TouchableOpacity onPress={playSound}>
+        <Ionicons name="volume-high-outline" size={30} color="black" />
+      </TouchableOpacity>
     </View>
   )
 }
