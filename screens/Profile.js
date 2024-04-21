@@ -263,7 +263,7 @@ export default function Profile({ navigation }) {
 
         </View>
 
-        <Text>You can change your nickname and your avatar</Text>
+        <Text></Text>
       </Pressable>
       {openSaveButton &&
 
@@ -279,7 +279,7 @@ export default function Profile({ navigation }) {
       }
       {/* <Pressable onPressIn={() => setOpenButton(!openButton)}> */}
       <InputComponent
-        label="Nickname"
+        label="Nickname (Touch the textbox to change)"
         value={nickname}
         onChangeText={setNickname}
         editable={true}

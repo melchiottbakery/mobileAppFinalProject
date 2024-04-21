@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Audio } from 'expo-av';
 import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function AudioManager({ wordToSound }) {
 
@@ -29,7 +30,8 @@ export default function AudioManager({ wordToSound }) {
   return (
     <View>
       <TouchableOpacity onPress={playSound}>
-        <AntDesign name="sound" size={30} color="black" />
+      <Ionicons name="volume-high-outline" size={30} color="black" />
+        {/* <AntDesign name="sound" size={30} color="black" /> */}
       </TouchableOpacity>
     </View>
   )

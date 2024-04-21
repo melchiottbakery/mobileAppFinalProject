@@ -89,12 +89,30 @@ export default function WordList({ route }) {
   )
 
   const renderItemUser = ({ item }) => (
-<View style={{ padding: 20, borderColor: "green", borderWidth: 1,
+//  <View style={{ padding: 20, borderColor: "green", borderWidth: 1,
+//     flexDirection:'row',   flex: 1,
+//     alignItems: 'center',
+//     // justifyContent: 'center',
+//   }}>       
+
+<View style={{ padding: 20, margin:3, borderColor: "#B88956", borderWidth: 2,
     flexDirection:'row',   flex: 1,
     alignItems: 'center',
     // justifyContent: 'center',
-   }}>      
-         {auth.currentUser && addButton}
+   }}>
+   
+         {auth.currentUser &&(
+          <View>
+      <TouchableOpacity onPress={() => onPressFunction({ item })}>
+        <AntDesign name="pluscircleo" size={24} color="black" />
+        {/* <MaterialIcons name="add-alarm" size={30} color="black" /> */}
+      </TouchableOpacity>
+    </View>
+
+         ) 
+        //  addButton({items})
+         
+         }
 
       {/* <Text>ID: {item.id}</Text> */}
       <View style={{paddingLeft:20}}>
@@ -112,12 +130,27 @@ export default function WordList({ route }) {
 
 
   const renderItemAdmin = ({ item }) => (
-    <View style={{ padding: 20, borderColor: "green", borderWidth: 1,
+    <View style={{ padding: 20, margin:3, borderColor: "#B88956", borderWidth: 2,
     flexDirection:'row',   flex: 1,
     alignItems: 'center',
     // justifyContent: 'center',
    }}>
-    {auth.currentUser && addButton}
+    {auth.currentUser && 
+    
+    (
+      // t addButton = (
+      <View>
+        <TouchableOpacity onPress={() => onPressFunction({ item })}>
+          <AntDesign name="pluscircleo" size={24} color="black" />
+          {/* <MaterialIcons name="add-alarm" size={30} color="black" /> */}
+        </TouchableOpacity>
+      </View>
+  
+    )
+    
+    // addButton
+    
+    }
       <View style={{paddingLeft:20}}>
       <Text>ID: {item.id}</Text>
       <Text>nativeWord: {item.nativeWord}</Text>

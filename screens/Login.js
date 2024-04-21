@@ -62,7 +62,7 @@ export default function Login({ navigation, route }) {
     // the function on when Register button pressed
     //console.log(email);
     //console.log(password);
-    navigation.replace("Registration");
+    navigation.navigate("Registration");
   };
 
   useEffect(() => {

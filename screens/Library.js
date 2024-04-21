@@ -204,7 +204,7 @@ export default function Library({ route }) {
       }}>
         <View style={{ flex: 1 }}>
           <InputComponent
-            label="link"
+            label="The link of vocabulary book "
             value={jsonLink}
             onChangeText={setJsonLink}
           ></InputComponent>
@@ -245,13 +245,13 @@ export default function Library({ route }) {
               marginBottom: 20,
               borderRadius: 5,
               borderColor: "#B88956",
-              borderWidth: 2,
+              borderWidth: 3,
             }}
 
             textStyle={{
               fontSize: 15,
               // color: 'blue',
-              fontWeight: 'bold',
+              // fontWeight: 'bold',
             }}
             onChangeItem={item => setSelectedId(item.value)
             }
@@ -362,10 +362,12 @@ export default function Library({ route }) {
         {/* <Text>Native Language: {item.nativeLanguage}</Text> */}
         <Text>Word Numbers: {item.number}</Text>
         {/* <Text>Word Language: {item.translationLanguage}</Text> */}
-        <View style={{ flexDirection: 'row', justifyContent: "space-around", }}>
+        <View style={{ flexDirection: 'row', justifyContent: "space-around", alignItems:'center' }}>
           <View>
             <CountryFlag isoCode={item.nativeLanguage} size={25} />
           </View>
+
+          <Text>={'>'}</Text>
           <View>
             <CountryFlag isoCode={item.translationLanguage} size={25} />
           </View>
@@ -378,7 +380,8 @@ export default function Library({ route }) {
 
   const renderItemAdmin = ({ item }) => (
     <Pressable onPress={() => onPressFunction({ item })}
-      style={{ margin: 5, padding: 5, borderColor: "#B88956", borderWidth: 3, width: '30%' }}>
+      style={{ margin: 5, padding: 5, 
+      borderColor: "#B88956", borderWidth: 3, width: '30%' }}>
       <View
       // style={{margin:5, padding: 5, borderColor: "red", borderWidth: 3,width:'50%' }}
       >
@@ -390,7 +393,7 @@ export default function Library({ route }) {
         <Text>Word Language: {item.translationLanguage}</Text>
         <View style={{ flexDirection: 'row', justifyContent: "space-around", }}>
           <View>
-            <CountryFlag isoCode={item.nativeLanguage} size={25} />
+            <CountryFlag isoCode={item.nativeLanguage} size={25} /> 
           </View>
           <View>
             <CountryFlag isoCode={item.translationLanguage} size={25} />

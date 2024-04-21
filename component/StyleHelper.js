@@ -3,8 +3,9 @@ import { StyleSheet } from "react-native";
 const StyleHelper = StyleSheet.create({
   //basic style for InputComponent
   inputContainer: {
-    marginTop: 20,
-    marginHorizontal: 30,
+    // marginTop: 20,
+    // marginHorizontal: 30,
+    margin:10,
 
   },
   text: {
@@ -13,8 +14,8 @@ const StyleHelper = StyleSheet.create({
   input: {
     alignSelf: "stretch",
     height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
+    borderColor: "#B88956",
+    borderWidth: 3,
     borderRadius: 5,
   },
   inputError: {

@@ -11,8 +11,8 @@ import { SafeAreaView } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import NotificationManager from "../component/NotificationManager";
-
-
+import { AntDesign } from '@expo/vector-icons';
+import { Fontisto } from '@expo/vector-icons';
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { database } from "../firebase-files/FirebaseSetup";
 import {
@@ -149,69 +149,119 @@ export default function MyList() {
 
   const renderItem = ({ item }) => (
     <Pressable>
-      <View style={{ padding: 30, borderColor: "blue", borderWidth: 3 }}>
-        <Text>ID: {item.id}</Text>
-        <Text>nativeword: {item.nativeWord}</Text>
-        <Button
+      <View style={{ padding: 30, borderColor: "#B88956", borderWidth: 3, margin: 5 }}>
+        {/* <Text>ID: {item.id}</Text>
+        <Text>nativeword: {item.nativeWord}</Text> */}
+        {/* <Button
           title="change nativeWordShow"
           onPress={() => showNativeMeaning({ item })}
-        ></Button>
+        ></Button> */}
 
 
-        <Button
+        {/* <Button
           title="change translationMeaningShow"
           onPress={() => showTranslationMeaning({ item })}
-        ></Button>
+        ></Button> */}
+<View style={{flexDirection:"row" }}>
 
-        {!item.nativeWordShow && <Text>show the nativeWord</Text>}
-        {item.nativeWordShow && <Text>meaning: {item.nativeWord}</Text>}
+<View style={{marginRight:30}}>
+        <AudioManager wordToSound={item.id}></AudioManager>
+        </View>
 
+<View >
+<View>
+        {!item.nativeWordShow && (
+          <TouchableOpacity onPress={() => showNativeMeaning({ item })}>
+            <Text style={{fontSize:30}}>Show the Word</Text>
+          </TouchableOpacity>
+          // <Text>show the nativeWord</Text>
+        )}
+        {item.nativeWordShow && (
 
+          <TouchableOpacity onPress={() => showNativeMeaning({ item })}>
+            <Text style={{fontSize:30}}>{item.nativeWord}</Text>
+          </TouchableOpacity>
+          // <Text>meaning: {item.nativeWord}</Text>
+        )}
+
+</View>
         {/* <Button title="change showNative" onPress={() => showNativeHandler({ item })}></Button>
-
 {!item.showNative && <Text>show the nativeWord</Text>}
 {item.showNative && <Text>meaning: {item.nativeWord}</Text>}
 <Text>nativeWordShow: {String(item.showNative)}</Text> */}
-
-
         {/* <Button title="change showTranslation" onPress={() => showTranslationHandler({ item })}></Button>
         {!item.showTranslation && <Text>show the translationMeaning</Text>}
 {item.showTranslation && <Text>meaning: {item.translationMeaning}</Text>}
 <Text>nativeWordShow: {String(item.showTranslation)}</Text> */}
+<View>
 
-        {!item.translationMeaningShow && <Text>show the translationMeaning</Text>}
-        {item.translationMeaningShow && <Text>meaning: {item.translationMeaning}</Text>}
+        {!item.translationMeaningShow && (
+          <TouchableOpacity onPress={() => showTranslationMeaning({ item })}>
+            <Text style={{fontSize:20}}>Show the Meaning</Text>
+          </TouchableOpacity>
+          // <Text>show the translationMeaning</Text>
+        )}
+        {item.translationMeaningShow && (
+          <TouchableOpacity onPress={() => showTranslationMeaning({ item })}>
+            <Text style={{fontSize:20}}>{item.translationMeaning}</Text>
+          </TouchableOpacity>
+          // <Text>meaning: {item.translationMeaning}</Text>
+        )}
+</View>
+</View>
 
         {/* <Text>meaning: {item.translationMeaning}</Text> */}
+        {/* <Text>nativeWordShow: {String(item.nativeWordShow)}</Text>
+        <Text>translationMeaningShow: {String(item.translationMeaningShow)}</Text> */}
 
-        <Text>nativeWordShow: {String(item.nativeWordShow)}</Text>
+ 
+        {/* <Text>remember: {String(item.remember)}</Text> */}
 
-        <Text>translationMeaningShow: {String(item.translationMeaningShow)}</Text>
+      
+        </View>
 
-        <Text>remember: {String(item.remember)}</Text>
-        <AudioManager wordToSound={item.id}></AudioManager>
+        {item.remember === false && (
 
-        {item.remember === false && ( // Check if item.remember is false
-          <Button
-            title=" MARK AS REMEBERED"
-            onPress={() => onPressFunction({ item })}
-          />
+          <TouchableOpacity onPress={() => onPressFunction({ item })}>
+            <Fontisto name="checkbox-passive" size={24} color="black" />
+            {/* <AntDesign name="pluscircleo" size={24} color="black" /> */}
+            {/* <MaterialIcons name="add-alarm" size={30} color="black" /> */}
+          </TouchableOpacity>
+          // Check if item.remember is false
+          // <Button
+          //   title=" MARK AS REMEBERED"
+          //   onPress={() => onPressFunction({ item }   )}
+          // />
 
           // ✅
         )}
         {item.remember === true && ( // Check if item.remember is false
-          <Button
-            title="i need review again"
-            onPress={() => onForgetFunction({ item })}
-          />
+
+          <TouchableOpacity onPress={() => onForgetFunction({ item })}>
+            <Fontisto name="checkbox-active" size={24} color="black" />
+            {/* <AntDesign name="pluscircleo" size={24} color="black" /> */}
+            {/* <MaterialIcons name="add-alarm" size={30} color="black" /> */}
+          </TouchableOpacity>
+
+          // <Button
+          //   title="i need review again"
+          //   onPress={() => onForgetFunction({ item })}
+          // />
         )}
 
-        {item.remember === true && ( // Check if item.remember is false
-          <Button
-            color="red"
-            title="Delete"
-            onPress={() => onDeleteFunction({ item })}
-          />
+        {item.remember === true && (
+
+          <TouchableOpacity onPress={() => onDeleteFunction({ item })}>
+            <AntDesign name="delete" size={24} color="red" />
+            {/* <AntDesign name="pluscircleo" size={24} color="black" /> */}
+            {/* <MaterialIcons name="add-alarm" size={30} color="black" /> */}
+          </TouchableOpacity>
+          // Check if item.remember is false
+          // <Button
+          //   color="red"
+          //   title="Delete"
+          //   onPress={() => onDeleteFunction({ item })}
+          // />
         )}
         {/* <Button title="marker" onPress={()=>onPressFunction({item})} /> */}
       </View>
@@ -299,12 +349,81 @@ export default function MyList() {
         // Render something else when the library is not empty
         <>
           {openRemind && <NotificationManager remindHandler={remindHandler} />}
-          <Button title="anki-mode" onPress={ankiModeHandler} />
-          <Button title="Anti-anki-mode" onPress={antiankiModeHandler} />
-          <Button title="All-Hidden-mode" onPress={allankiModeHandler} />
-          <Button title="Clear-anki-mode" onPress={clearankiModeHandler} />
 
-          {/* <Button title='choose remember' onPress={showRememberHandler} />
+          <View style={{
+
+            flexDirection: "row",
+            padding: 3,
+            justifyContent: 'center',
+            alignItems: 'center',
+
+          }}>
+            {/* <Pressable onPress={ankiModeHandler}>
+<Text>"anki-mode"</Text> */}
+            {/* <Button title="anki-mode" onPress={ankiModeHandler} /> */}
+            {/* </Pressable> */}
+
+            <Text>HIDDEN MODE:</Text>
+
+            <TouchableOpacity style={styles.ankiButton} onPress={antiankiModeHandler}>
+              <Text>Word</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.ankiButton} onPress={ankiModeHandler}>
+              <Text>Meaning</Text>
+            </TouchableOpacity>
+
+
+
+            <TouchableOpacity style={styles.ankiButton} onPress={allankiModeHandler}>
+              <Text>All</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.ankiButton} onPress={clearankiModeHandler}>
+              <Text>Clear</Text>
+            </TouchableOpacity>
+
+
+            {/* <Button title="anki-mode" onPress={ankiModeHandler} />
+           <Button title="Anti-anki-mode" onPress={antiankiModeHandler} />
+
+          <Button title="All-Hidden-mode" onPress={allankiModeHandler} />
+          <Button title="Clear-anki-mode" onPress={clearankiModeHandler} /> */}
+
+          </View>
+
+          <View style={{
+
+            flexDirection: "row",
+            padding: 3,
+            justifyContent: 'center',
+            alignItems: 'center',
+
+          }}>
+            {/* <Pressable onPress={ankiModeHandler}>
+<Text>"anki-mode"</Text> */}
+            {/* <Button title="anki-mode" onPress={ankiModeHandler} /> */}
+            {/* </Pressable> */}
+
+            <Text>REVISION FILTER:</Text>
+            <TouchableOpacity style={styles.ankiButton} onPress={showForgetHandler}>
+              <Text>To Learn</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.ankiButton} onPress={showRememberHandler}>
+              <Text>Remembered</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.ankiButton} onPress={showClearHandler}>
+              <Text>Clear</Text>
+            </TouchableOpacity>
+
+
+          </View>
+
+
+          {/* 
+          <Button title='choose remember' onPress={showRememberHandler} />
   <Button title='choose forget' onPress={showForgetHandler}/>
   <Button title='choose clear' onPress={showClearHandler}/> */}
 
@@ -345,6 +464,13 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: "#FFE2C2"
+  },
+  ankiButton: {
+    borderWidth: 1,
+    borderColor: 'black',
+    borderRadius: 5,
+    padding: 5,
+    margin: 8,
   },
 
 
