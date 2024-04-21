@@ -6,70 +6,90 @@ import Library from "./Library";
 import MyList from "./MyList";
 import Welcome from "./Welcome";
 import { onAuthStateChanged } from "firebase/auth";
-
-
-import { getProfile } from "../firebase-files/FirebaseHelper";
+import { FontAwesome5 } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
+import { Octicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { auth } from '../firebase-files/FirebaseSetup';
-
-// import { useNavigation } from '@react-navigation/native';
-
-// const navigation = useNavigation();
+import colors from "../ColorHelper";
 
 const Tab = createBottomTabNavigator();
 
-
-export default function TabNavigator(props) {
-
-
-
-  // "https://jsonplaceholder.typicode.com/users"
-
-  // const [isadmin,setIsadmin]=useState(false)
-
-  // function openHandler(){
-  //   console.log(isadmin)
-  //   setIsadmin(!isadmin)
-  //   // navigation.setParams({ open: !open });
-  // }
-  // const hello = 'nihao'
-
+export default function TabNavigator() {
 
   const [userLoggedIn, setUserLoggedIn] = useState(false);
 
-
-  useEffect(()=>{
-    onAuthStateChanged(auth,(user) => {
-      if (user){
-  setUserLoggedIn(true);
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserLoggedIn(true);
       }
-      else{
+      else {
         setUserLoggedIn(false);
-  
+
       }
     })
   })
 
-
   return (
-    <Tab.Navigator initialRouteName="Welcome">
-      <Tab.Screen name="Profile" component={Profile} />
-      <Tab.Screen name="Welcome" component={Welcome} />
+    <Tab.Navigator initialRouteName="Welcome"
+      screenOptions={{
+        tabBarActiveTintColor: colors.borderColor,
+        tabBarStyle: { backgroundColor: colors.buttonText },
+        headerStyle: {
+          backgroundColor: colors.tan,
+        },
+        headerTitleStyle: {
+          fontSize: 20,
+        },
+      }}>
 
-      
+      <Tab.Screen name="Welcome" component={Welcome}
+        options={{
+          tabBarLabelStyle: {
+            fontSize: 12,
+          },
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome5 name="home" size={30} color={color} />
+          ),
+        }}
+      />
+
       <Tab.Screen
         name="Library"
         component={Library}
-      // params={{ customParam: isadmin }} 
-
-      // options={{
-      //   headerRight: () => (
-
-      //       <Button title="nihao" onPress={openHandler}></Button>
-      //   ),
-
-      // }}
+        options={{
+          tabBarLabelStyle: {
+            fontSize: 12,
+          },
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="library" size={30} color={color} />),
+        }}
       />
-      {userLoggedIn && <Tab.Screen name="MyList" component={MyList} />}
+
+      <Tab.Screen name="Profile" component={Profile}
+        options={{
+          tabBarLabelStyle: {
+            fontSize: 12,
+          },
+          tabBarIcon: ({ color, size }) => (
+            <Octicons name="person-fill" size={30} color={color} />),
+        }}
+      />
+
+      {userLoggedIn && <
+        Tab.Screen name="MyList"
+        component={MyList}
+        options={{
+          tabBarLabelStyle: {
+            fontSize: 12,
+          },
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="view-list" size={30} color={color} />
+          ),
+        }}
+      />}
+
     </Tab.Navigator>
   );
 }

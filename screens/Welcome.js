@@ -1,24 +1,21 @@
-import { Button, StyleSheet, Text, View } from 'react-native'
-import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View } from 'react-native'
+import React from "react";
 import Map from '../component/Map';
+import colors from '../ColorHelper';
+import screenStyleHelper from '../styleHelperFolder/screenStyleHelper';
 
 export default function Welcome() {
 
   return (
-    <View style={styles.container}>
-      <Text>Welcome to our Japanese-English vocabulary application.</Text>
-      <Text>You can search for the nearest Japanese language schools below</Text>
-      <Text>You can also browse existing vocabulary books on the library tab</Text>
-      <Text>You can create a new account to manage your learning progress on the profile tab.</Text>
-      <Map/>
+    <View style={screenStyleHelper.containerAlignItemsCenter}>
+      <View style={{ padding: 5 }}>
+        <Text style={screenStyleHelper.textFontSize}>Thanks for using our Japanese-English vocabulary library.</Text>
+        <Text style={screenStyleHelper.textFontSize}>Please feel free to browse our vocabulary books.</Text>
+        <Text style={screenStyleHelper.textFontSize}>Track your learning progress by creating an account.</Text>
+      </View>
+      <Map />
     </View>
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  }
-})
+const styles = StyleSheet.create({})
