@@ -8,27 +8,65 @@ import TabNavigator from "./screens/TabNavigator";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import * as Notifications from "expo-notifications";
+import { Ionicons } from '@expo/vector-icons';
+import { TouchableOpacity } from "react-native-gesture-handler";
+import colors from "./ColorHelper";
+
+Notifications.setNotificationHandler({
+  handleNotification: async function () {
+    return {
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+    };
+  }
+});
 
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator 
-        screenOptions={{headerShown: true}}>
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Registration" component={Registration} />
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          headerStyle: {
+            backgroundColor: colors.tan,
+          },
+        }}>
         <Stack.Screen name="User" component={TabNavigator} />
-        <Stack.Screen name="WordList" component={WordList}
-
-          // options={({ navigation }) => ({
-          //   ...StyleHelper.navigatorScreen,
-          // })}
+        <Stack.Screen name="Login" component={Login}
+          options={({ navigation }) => ({
+            headerShown: true,
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <Ionicons name="arrow-back-outline" size={30} color="black" />
+              </TouchableOpacity>
+            ),
+          })}
         />
-        
+        <Stack.Screen name="Registration" component={Registration}
+
+          options={({ navigation }) => ({
+            headerShown: true,
+            headerLeft: () => { return null }
+          })}
+        />
+        <Stack.Screen name="WordList" component={WordList}
+          options={({ navigation }) => ({
+            headerShown: true,
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <Ionicons name="arrow-back-outline" size={30} color="black" />
+              </TouchableOpacity>
+            ),
+          })}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+
+});

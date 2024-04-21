@@ -1,10 +1,14 @@
-import { Alert, StyleSheet, View, Button } from "react-native";
+import { Alert, StyleSheet, View, ActivityIndicator, Text } from "react-native";
 import React, { useState } from "react";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { mapsApiKey } from "@env";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import colors from "../ColorHelper";
+import screenStyleHelper from "../styleHelperFolder/screenStyleHelper";
 
 export default function Map() {
+  const [isLoading, setIsLoading] = useState(false);
   const [location, setLocation] = useState(null);
   const [status, requestPermission] = Location.useForegroundPermissions();
   const [schools, setSchools] = useState([]);
@@ -29,6 +33,7 @@ export default function Map() {
   }
 
   async function findESLHandler() {
+    setIsLoading(true);
     try {
       const checkPermission = await verifyPermission();
       if (!checkPermission) {
@@ -44,10 +49,11 @@ export default function Map() {
         longitude: locationResult.coords.longitude,
       };
       setLocation(userLocation);
-      //setMapRegion(userLocation);
       fetchNearbySchools(userLocation);
     } catch (err) {
       console.log(err);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -76,9 +82,6 @@ export default function Map() {
     }
   }
 
-
-
-
   return (
     <View style={styles.container}>
       <MapView
@@ -103,18 +106,36 @@ export default function Map() {
         ))
         }
       </MapView>
-      <Button title="Find Nearby Japanese Language Schools" onPress={findESLHandler} />
+      {isLoading ? <ActivityIndicator size="large" /> : (
+        <View style={styles.findESLButton}>
+
+          <TouchableOpacity style={screenStyleHelper.button} onPress={findESLHandler}>
+            <Text style={screenStyleHelper.buttonText}>Find Nearby Japanese Language Schools</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+
+  findESLButton: {
+    width: '50%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   container: {
     width: "100%",
     height: "60%",
+    // flex: 1,
+    alignItems: 'center',
+    // justifyContent: 'center',
   },
   map: {
     width: "100%",
     height: "100%",
   },
+
 });

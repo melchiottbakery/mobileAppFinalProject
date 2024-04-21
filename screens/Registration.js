@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Button, Alert } from "react-native";
+import { StyleSheet, Text, View, Alert } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import InputComponent from "../component/InputComponent";
@@ -6,20 +6,13 @@ import Checkbox from "expo-checkbox";
 
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase-files/FirebaseSetup";
-import { setDocToDB } from "../firebase-files/FirebaseHelper";
+import { setNewUserDocToDB } from "../firebase-files/FirebaseHelper";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import colors from "../ColorHelper";
+import screenStyleHelper from "../styleHelperFolder/screenStyleHelper";
 
 export default function Registration({ navigation }) {
-  // const [nickname, setNickname] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [confirmedEmail, setConfirmedEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [confirmedPassword, setConfirmedPassword] = useState("");
-  // const [emailError, setEmailError] = useState("");
-  // const [confirmedEmailError, setConfirmedEmailError] = useState("");
-  // const [confirmedPasswordError, setConfirmedPasswordError] = useState("");
-  // const [isAdmin, setIsAdmin] = useState(false);
 
-  //for data test
   const [nickname, setNickname] = useState("nihao");
   const [email, setEmail] = useState("ww2w@qq.com");
   const [confirmedEmail, setConfirmedEmail] = useState("ww2w@qq.com");
@@ -29,18 +22,6 @@ export default function Registration({ navigation }) {
   const [confirmedEmailError, setConfirmedEmailError] = useState("");
   const [confirmedPasswordError, setConfirmedPasswordError] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
-
-  // I have dashed this line, it will be a wrong prompt for this one
-
-  // navigation.navigate("profile", {nickname: nickname, email: email, password: password});
-
-  //to be changed
-  // const [formData, setFormData] = useState({});
-
-  //to be changed
-  // const handleChange = (key, value) => {
-  //   setFormData({ ...formData, [key]: value });
-  // };
 
   function handleCancel() {
     setNickname("");
@@ -52,26 +33,22 @@ export default function Registration({ navigation }) {
     navigation.navigate("Login");
   };
 
-  function validateForm(){
-    // Check if all input box are empty
+  function validateForm() {
     return (
       !nickname || !email || !confirmedEmail || !password || !confirmedPassword
     );
   };
 
-  function validateEmail(){
-    // Regular expression for email validation
+  function validateEmail() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  function validateConfirmedEmail(){
-    //check if email and confirmed email are the same
+  function validateConfirmedEmail() {
     return email === confirmedEmail;
   };
 
-  function validateConfirmedPassword(){
-    //check if password and confirmed password are the same
+  function validateConfirmedPassword() {
     return password === confirmedPassword;
   };
 
@@ -80,24 +57,12 @@ export default function Registration({ navigation }) {
     setConfirmedEmailError("");
     setConfirmedPasswordError("");
     if (
-      
       validateEmail() &&
       validateConfirmedEmail() &&
       validateConfirmedPassword()
     ) {
-      //to be changed
-      // handleChange("nickname", nickname);
-      // handleChange("email", email);
-      // handleChange("password", password);
-      // handleChange("isAdmin", isAdmin);
-
-      // console.log(formData);
       createUserAuthHandler()
 
-      // console.log([nickname, email, password, isAdmin]);
-      // Return a new array of the user's information
-      // return
-      // [nickname, email, password, isAdmin];
     } else if (!validateEmail()) {
       setEmailError("Please enter a valid email");
     } else if (!validateConfirmedEmail()) {
@@ -107,36 +72,39 @@ export default function Registration({ navigation }) {
     }
   };
 
-async function createUserAuthHandler(){
-  try {
-    const userCred = await createUserWithEmailAndPassword(auth,email,password);
-    // console.log(userCred)
-    // console.log(userCred._tokenResponse.localId)
-    setNewUserDocToDB({nickname:nickname, email:email,isAdmin:isAdmin},"users",userCred._tokenResponse.localId)
+  async function createUserAuthHandler() {
+    try {
+      const userCred = await createUserWithEmailAndPassword(auth, email, password);
+      // console.log(userCred)
+      console.log(userCred._tokenResponse.localId)
+      // console.log(nickname)
+      setNewUserDocToDB({
+        nickname: nickname,
+        email: email,
+        isAdmin: isAdmin
+      }, "users", userCred._tokenResponse.localId)
+      navigation.navigate("Profile", { userEmail: email, userPassword: password });
 
-  } catch (error) {
-    console.log(error.code)
-    if(error.code === "auth/weak-password"){
-      Alert.alert("Please use strong password.")     
+    } catch (error) {
+      console.log(error.code)
+      if (error.code === "auth/weak-password") {
+        Alert.alert("Please use strong password.")
+      }
+      if (error.code === "auth/email-already-in-use") {
+        Alert.alert("Please use another email address to register.")
+      }
+    }
   }
-    if(error.code === "auth/email-already-in-use"){
-    Alert.alert("Please use another email address to register.")
-}
-  }
-}
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text>This is the Registration screen</Text>
 
-      {/* a InputComponent input the nickname */}
       <InputComponent
         label="Nickname"
         value={nickname}
         onChangeText={setNickname}
       />
 
-      {/* <Text>a InputComponent input the email</Text> */}
       <InputComponent
         label="Email"
         value={email}
@@ -144,7 +112,6 @@ async function createUserAuthHandler(){
         error={emailError}
       />
 
-      {/* <Text>a InputComponent confirm the email</Text> */}
       <InputComponent
         label="Confirm Email"
         value={confirmedEmail}
@@ -152,7 +119,6 @@ async function createUserAuthHandler(){
         error={confirmedEmailError}
       />
 
-      {/*  <Text>a InputComponent input the passpord</Text> */}
       <InputComponent
         label="Password"
         value={password}
@@ -160,7 +126,6 @@ async function createUserAuthHandler(){
         secureTextEntry={true}
       />
 
-      {/* <Text>a InputComponent confirm the password</Text> */}
       <InputComponent
         label="Confirm Password"
         value={confirmedPassword}
@@ -169,30 +134,35 @@ async function createUserAuthHandler(){
         error={confirmedPasswordError}
       />
 
-      {/* <Text>a checkbox for the terms and conditions</Text> */}
       <View style={styles.section}>
         <Checkbox
           style={styles.checkbox}
           value={isAdmin}
           onValueChange={setIsAdmin}
-          color={isAdmin ? "#4630EB" : undefined}
+          color={isAdmin ? colors.tan : undefined}
         />
         <Text>admin?</Text>
       </View>
 
-      {/* <Text>a button cancel and go back</Text>
-      <Text>a button Registration</Text> */}
       <View style={styles.buttonContainer}>
-        <Button title="Cancel" onPress={handleCancel} />
-        <Button title="Set" onPress={handleSet} disabled={validateForm()} />
+
+        <TouchableOpacity style={screenStyleHelper.button} onPress={handleCancel}>
+          <Text style={screenStyleHelper.buttonText}>Back to Login</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={screenStyleHelper.button} onPress={handleSet} disabled={validateForm()}>
+          <Text style={screenStyleHelper.buttonText}>SignUp</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+
   container: {
     flex: 1,
+    backgroundColor: colors.allbackgroundColor
   },
 
   buttonContainer: {

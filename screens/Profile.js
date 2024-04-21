@@ -1,41 +1,81 @@
-import { StyleSheet, Text, View, Image, Button, Alert, Pressable } from "react-native";
+import { StyleSheet, Text, View, Image, Alert, Pressable } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import InputComponent from "../component/InputComponent";
-import { auth,storage } from '../firebase-files/FirebaseSetup';
+import { auth, database, storage } from '../firebase-files/FirebaseSetup';
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { ref, uploadBytes } from "firebase/storage";
 import { getDownloadURL } from "firebase/storage";
-
-
-
+import { Entypo } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
+import { SimpleLineIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import { editImageLinkInDB, setNewUserDocToDB } from "../firebase-files/FirebaseHelper";
+import { doc, onSnapshot } from "firebase/firestore";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
+import { AntDesign } from '@expo/vector-icons';
+import screenStyleHelper from "../styleHelperFolder/screenStyleHelper";
 
-import { editImageLinkInDB, getProfile } from "../firebase-files/FirebaseHelper";
+export default function Profile({ navigation }) {
 
-
-
-export default function Profile({ route, navigation }) {
-  // You can give me some const and useState for the name, the email and the password
-  // const {nickname, email, password } = route.params;
-  console.log(auth.currentUser.email)
+  const [originNickname, setOriginNickname] = useState('');
 
   const [nickname, setNickname] = useState('');
+
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState("12345");
-  const [secureTextEntry, setSecureTextEntry] = useState(true);
-
-
 
   const [status, requestPermission] = ImagePicker.useCameraPermissions();
 
-  // console.log(status)
+  const [openButton, setOpenButton] = useState(false);
+  const showButton = originNickname !== nickname;
 
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
+  const [imageDatabasetaUri, setImageDatabasetaUri] = useState("");
+  const [imageLocalUri, setImageLocalUri] = useState("");
+  const [openSaveButton, setOpenSaveButton] = useState(false)
 
+  useEffect(() => {
+    let unsubscribe; // Declare unsubscribe outside the try block
+    if (auth.currentUser) {
+      try {
 
-  async function verifyCameraPermission(){
-    if(status.granted){
+        unsubscribe = onSnapshot(
+          doc(database, "users", auth.currentUser.uid),
+          (doc) => {
+            const data = doc.data();
+            setOriginNickname(data.nickname);
+            setNickname(data.nickname);
+            setEmail(data.email);
+            downloadImageFromDatabase(data);
+          }
+        );
+      } catch (error) {
+        console.log('type of error', error);
+      }
+    }
+
+    return () => {
+      if (unsubscribe) { // Check if unsubscribe is defined before calling it
+        console.log("unsubscribe");
+        unsubscribe();
+      }
+    };
+  }, [userLoggedIn]);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserLoggedIn(true);
+      }
+      else {
+        setUserLoggedIn(false);
+      }
+    })
+  }, [])
+
+  async function verifyCameraPermission() {
+    if (status.granted) {
       return true;
     }
     try {
@@ -43,224 +83,211 @@ export default function Profile({ route, navigation }) {
       return permissonResponse.granted;
 
     } catch (error) {
-      console.log(error);   
+      console.log(error);
     }
   }
 
-  useEffect(() => {
-    async function getDataFromDB() {
-      const data = await getProfile("users", auth.currentUser.uid);
-      // console.log(data)
-      setNickname(data.nickname)
-      setEmail(data.email)
-      downloadImageFromDatabase(data)
-    }
-    getDataFromDB();
-  }, []);
+  async function downloadImageFromDatabase(data) {
+    if (data.imageUri) {
+      try {
+        downloadImageUri = data.imageUri
+        const imageRef = ref(storage, downloadImageUri);
+        const imageDownloadUri = await getDownloadURL(imageRef);
+        console.log("downloaded" + imageDownloadUri)
+        setImageDatabasetaUri(imageDownloadUri)
 
-  const [imageDatabasetaUri, setImageDatabasetaUri] = useState("");
-
-  async function downloadImageFromDatabase(data){
-    try {
-      downloadImageUri = data.imageUri
-      const imageRef = ref(storage, downloadImageUri);
-      const imageDownloadUri= await getDownloadURL(imageRef);
-      console.log("downloaded" +imageDownloadUri)
-      setImageDatabasetaUri(imageDownloadUri)
-      
-
-
-      // setDownloadImage(data.imageUri)
-    } catch (error) {
-      
+      } catch (error) {
+        console.log('console.error', error)
+        setImageDatabasetaUri('https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg')
+      }
     }
   }
 
-
-
-  //add Alert for the Cancel button
   function logoutHandler() {
-    Alert.alert("Cancel", "Are you going back to Login?", [
+    Alert.alert("LOGOUT", "Are you going to LOGOUT?", [
       {
         text: "No",
         onPress: () => console.log("No Pressed"),
       },
-      { text: "Yes", onPress: () => 
-      
       {
-        try {
-          signOut(auth)
-          navigation.navigate("Login")
-        } catch (error) {
-          console.log(error)
+        text: "Yes", onPress: () => {
+          try {
+            signOut(auth)
+            setNickname('')
+            setOriginNickname('')
+            setEmail('')
+            setImageDatabasetaUri('https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg')
+          } catch (error) {
+            console.log(error)
+          }
         }
-      }
-       },
+      },
     ]);
   };
 
-  const [imageLocalUri, setImageLocalUri] = useState("");
-  
-  async function cameraFunction(){
+  async function cameraFunction() {
     try {
-
       const checkPermission = await verifyCameraPermission();
-
-      if (!checkPermission){
+      if (!checkPermission) {
         Alert.alert("Please give permission for the use of camera");
         return;
-    }
-
-      const useCamera =  await ImagePicker.launchCameraAsync(
-        {allowsEditing: true});
-      // console.log(useCamera)
-      // console.log(useCamera.assets[0].uri)
+      }
+      const useCamera = await ImagePicker.launchCameraAsync(
+        { allowsEditing: true });
+      console.log(useCamera.assets[0].uri)
       setImageLocalUri(useCamera.assets[0].uri)
       setOpenSaveButton(true)
-      // uploadImageFromLocal(imageLocalUri)
     } catch (error) {
       console.log(error)
-      
     }
   }
 
-  const[openSaveButton, setOpenSaveButton]= useState(false)
-
-
-
-  function saveImageChange(){
+  function saveImageChange() {
     uploadImageFromLocal(imageLocalUri)
+    setImageLocalUri('')
   }
 
-  async function uploadImageFromLocal(imageLocalUri){
+  async function uploadImageFromLocal(imageLocalUri) {
     try {
       const response = await fetch(imageLocalUri);
-      // console.log("uploadImageFromLocal is",response)
       const imageBlob = await response.blob();
-      // console.log(blob)
       const imageName = imageLocalUri.substring(imageLocalUri.lastIndexOf('/') + 1);
       const imageRef = await ref(storage, `profileImages/${imageName}`)
       const uploadResult = await uploadBytes(imageRef, imageBlob);
       console.log("upload successed")
-      
-
-      // setImageLocalUri('')
       setOpenSaveButton(false)
-
-      // return 
       console.log(uploadResult.metadata.fullPath)
       writeImageLinkToUser(uploadResult.metadata.fullPath)
     } catch (error) {
       console.log(error)
     }
-
   }
 
+  function writeImageLinkToUser(storagePath) {
+    editImageLinkInDB(auth.currentUser.uid, { imageUri: storagePath },)
+  }
 
-function writeImageLinkToUser(storagePath){
-  editImageLinkInDB(auth.currentUser.uid,{imageUri:storagePath},)
+  function changeNameHandler() {
+    console.log("pressed")
+    setNewUserDocToDB({ nickname: nickname }, "users", auth.currentUser.uid)
+    setNickname(nickname)
+    setOpenButton(false)
+  }
 
- 
-}
+  function cancelchangeNameHandler() {
+    setNickname(originNickname);
+  }
 
-
-  return (
-    <SafeAreaView>
-      {/*  <Text>This is the Profile screen</Text> */}
-
-      {/*  <Text>Add a pic as a placeholder</Text> */}
+  const AppStack = (
+    <>
       <Pressable onPress={cameraFunction}>
-      <View style={styles.imageContainer}>
-        {/* <Image source={require("../assets/imageUpload.jpeg")} style={styles.image} />
-        {imageLocalUri && (
-        <Image source={{ uri: imageLocalUri }} style={{ width: 100, height: 100 }} />
-      )}
-      {
-        imageDatabasetaUri &&   <Image style = {styles.image} source= {{uri:imageDatabasetaUri}}/>
-      } */}
-      {imageLocalUri ?
-      <Image source={{ uri: imageLocalUri }} style={{ width: 100, height: 100 }} />:
-      <>
-      {imageDatabasetaUri ? 
-  <Image style={styles.image} source={{ uri: imageDatabasetaUri }} />
-  : <Image source={require("../assets/imageUpload.jpeg")} style={styles.image} />}
-      </>
-      }
+        <View style={styles.imageContainer}>
+          <View style={{
+            position: "absolute",
+            right: 100,
+            bottom: 3,
+          }
+          }>
+            <Entypo name="camera" size={30} color="black" />
+          </View>
 
-{/* {imageDatabasetaUri ? 
-  <Image style={styles.image} source={{ uri: imageDatabasetaUri }} />
-  : <Image source={require("../assets/imageUpload.jpeg")} style={styles.image} />} */}
+          {imageLocalUri ?
+            <Image source={{ uri: imageLocalUri }} style={{ width: 100, height: 100 }} /> :
+            <>
+              {imageDatabasetaUri ?
+                <Image style={styles.image} source={{ uri: imageDatabasetaUri }} />
+                : <Image source={require("../assets/imageUpload.jpeg")} style={styles.image} />}
+            </>
+          }
+        </View>
 
-{/* {!imageLocalUri && (
-      <Image source={require("../assets/imageUpload.jpeg")} style={styles.image} />
-    )}
-    {imageLocalUri && (
-      <Image source={{ uri: imageLocalUri }} style={{ width: 100, height: 100 }} />
-    )}
-    {imageDatabasetaUri && (
-      <Image style={styles.image} source={{ uri: imageDatabasetaUri }} />
-    )} */}
-
-      
-      </View>
-     
-
-      
       </Pressable>
-      {openSaveButton &&
-
-(      <Button title="save image changes" onPress={saveImageChange}></Button>
-)      
-}
+      <View style={styles.saveButton}>
+        {openSaveButton &&
+          (
+            <TouchableOpacity onPress={saveImageChange}>
+              <FontAwesome name="upload" size={30} color="black" />
+            </TouchableOpacity>
+          )
+        }
+      </View>
 
       <InputComponent
-        label="Nickname"
+        label="Nickname (Touch the textbox to change)"
         value={nickname}
         onChangeText={setNickname}
+        editable={true}
       />
 
+      <View style={styles.changeNameButton}>
+        {showButton && (
+          <TouchableOpacity style={styles.buttonContainer} onPress={changeNameHandler}>
+            <AntDesign name="checkcircleo" size={30} color="black" />
+          </TouchableOpacity>
+        )}
+
+        {showButton && (
+          <TouchableOpacity style={styles.buttonContainer} onPress={cancelchangeNameHandler}>
+            <AntDesign name="closecircleo" size={30} color="black" />
+          </TouchableOpacity>
+        )}
+      </View>
+
       <InputComponent
-        //here is a InputComponent can show the email, but user cannot pressed or
         label="Email"
         value={email}
         editable={false}
       />
-
-      <InputComponent
-        //here is a InputComponent can show the password, but user can pressed. it
-        //show from stars to characters until the user presses.
-        label="Password"
-        value={password}
-        secureTextEntry={secureTextEntry}
-        editable={false}
-        onPressIn={() => {
-          setSecureTextEntry(!secureTextEntry);
-        }}
-      />
-
-      {/* // if you can add a alert for this one? */}
       <View style={styles.buttonContainer}>
-      <Button
-        //a button cancel and go back to the Login screen
-        title="LOG OUT"
-        onPress={logoutHandler}
-      />
+        <TouchableOpacity onPress={logoutHandler}>
+          <SimpleLineIcons name="logout" size={30} color="black" />
+        </TouchableOpacity>
       </View>
+    </>
+  )
+
+  function loginHandler() {
+    navigation.navigate('Login')
+  }
+
+  const AppAuth = (
+    <View style={screenStyleHelper.containerAlignItemsCenter}>
+      <View style={screenStyleHelper.padding5}>
+        <Text style={screenStyleHelper.fontSize}>Create your own word book and play the pronunciation of word by signed up a new acacount</Text>
+      </View>
+      <TouchableOpacity onPress={loginHandler}>
+        <SimpleLineIcons name="login" size={30} color="black" />
+      </TouchableOpacity>
+    </View>
+  )
+
+  return (
+    <SafeAreaView style={screenStyleHelper.container}>
+      {userLoggedIn ? AppStack : AppAuth}
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+
   imageContainer: {
     alignItems: "center",
-    marginTop: 20,
+    marginTop: 10,
   },
   image: {
     width: 100,
     height: 100,
   },
   buttonContainer: {
-    margin: 20,
+    margin: 10,
     alignItems: "center",
+  },
+  saveButton: {
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  changeNameButton: {
+    flexDirection: "row",
+    justifyContent: "center"
   },
 });
