@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, Button, Alert, Pressable } from "react-native";
+import { StyleSheet, Text, View, Image, Alert, Pressable } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import InputComponent from "../component/InputComponent";
@@ -10,11 +10,12 @@ import { Entypo } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import { editImageLinkInDB, getProfile, setNewUserDocToDB } from "../firebase-files/FirebaseHelper";
-import { collection, doc, onSnapshot } from "firebase/firestore";
+import { editImageLinkInDB, setNewUserDocToDB } from "../firebase-files/FirebaseHelper";
+import { doc, onSnapshot } from "firebase/firestore";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 import { AntDesign } from '@expo/vector-icons';
+import screenStyleHelper from "../styleHelperFolder/screenStyleHelper";
 
 export default function Profile({ navigation }) {
 
@@ -201,7 +202,7 @@ export default function Profile({ navigation }) {
         </View>
 
       </Pressable>
-      <View style={{ alignItems: "center", justifyContent: "center" }}>
+      <View style={styles.saveButton}>
         {openSaveButton &&
           (
             <TouchableOpacity onPress={saveImageChange}>
@@ -218,7 +219,7 @@ export default function Profile({ navigation }) {
         editable={true}
       />
 
-      <View style={{ flexDirection: "row", justifyContent: "center" }}>
+      <View style={styles.changeNameButton}>
         {showButton && (
           <TouchableOpacity style={styles.buttonContainer} onPress={changeNameHandler}>
             <AntDesign name="checkcircleo" size={30} color="black" />
@@ -239,7 +240,7 @@ export default function Profile({ navigation }) {
       />
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={logoutHandler}>
-          <SimpleLineIcons name="logout" size={24} color="black" />
+          <SimpleLineIcons name="logout" size={30} color="black" />
         </TouchableOpacity>
       </View>
     </>
@@ -250,9 +251,9 @@ export default function Profile({ navigation }) {
   }
 
   const AppAuth = (
-    <View style={styles.appauthcontainer}>
-      <View style={{ padding: 5 }}>
-        <Text style={{ fontSize: 16 }}>Create your own word book and play the pronunciation of word by signed up a new acacount</Text>
+    <View style={screenStyleHelper.containerAlignItemsCenter}>
+      <View style={screenStyleHelper.padding5}>
+        <Text style={screenStyleHelper.fontSize}>Create your own word book and play the pronunciation of word by signed up a new acacount</Text>
       </View>
       <TouchableOpacity onPress={loginHandler}>
         <SimpleLineIcons name="login" size={30} color="black" />
@@ -261,26 +262,13 @@ export default function Profile({ navigation }) {
   )
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={screenStyleHelper.container}>
       {userLoggedIn ? AppStack : AppAuth}
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  appauthcontainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: "#FFE2C2"
-  },
-
-  container: {
-    flex: 1,
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    backgroundColor: "#FFE2C2"
-  },
 
   imageContainer: {
     alignItems: "center",
@@ -293,5 +281,13 @@ const styles = StyleSheet.create({
   buttonContainer: {
     margin: 10,
     alignItems: "center",
+  },
+  saveButton: {
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  changeNameButton: {
+    flexDirection: "row",
+    justifyContent: "center"
   },
 });

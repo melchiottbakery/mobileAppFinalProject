@@ -11,6 +11,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import * as Notifications from "expo-notifications";
 import { Ionicons } from '@expo/vector-icons';
 import { TouchableOpacity } from "react-native-gesture-handler";
+import colors from "./ColorHelper";
 
 Notifications.setNotificationHandler({
   handleNotification: async function () {
@@ -30,7 +31,7 @@ export default function App() {
         screenOptions={{
           headerShown: false,
           headerStyle: {
-            backgroundColor: "#DEB68A",
+            backgroundColor: colors.tan,
           },
         }}>
         <Stack.Screen name="User" component={TabNavigator} />

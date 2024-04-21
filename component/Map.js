@@ -1,9 +1,11 @@
-import { Alert, StyleSheet, View, Button, ActivityIndicator, Text } from "react-native";
+import { Alert, StyleSheet, View, ActivityIndicator, Text } from "react-native";
 import React, { useState } from "react";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { mapsApiKey } from "@env";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import colors from "../ColorHelper";
+import screenStyleHelper from "../styleHelperFolder/screenStyleHelper";
 
 export default function Map() {
   const [isLoading, setIsLoading] = useState(false);
@@ -47,7 +49,6 @@ export default function Map() {
         longitude: locationResult.coords.longitude,
       };
       setLocation(userLocation);
-      //setMapRegion(userLocation);
       fetchNearbySchools(userLocation);
     } catch (err) {
       console.log(err);
@@ -106,14 +107,10 @@ export default function Map() {
         }
       </MapView>
       {isLoading ? <ActivityIndicator size="large" /> : (
-        <View style={{
-          width: '50%',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
+        <View style={styles.findESLButton}>
 
-          <TouchableOpacity style={styles.button} onPress={findESLHandler}>
-            <Text style={styles.buttonText}>Find Nearby Japanese Language Schools</Text>
+          <TouchableOpacity style={screenStyleHelper.button} onPress={findESLHandler}>
+            <Text style={screenStyleHelper.buttonText}>Find Nearby Japanese Language Schools</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -123,6 +120,12 @@ export default function Map() {
 }
 
 const styles = StyleSheet.create({
+
+  findESLButton: {
+    width: '50%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   container: {
     width: "100%",
     height: "60%",
@@ -134,15 +137,5 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-  button: {
-    backgroundColor: '#976732', // Example color
-    padding: 10,
-    borderRadius: 5,
-    width: "50",
-  },
-  buttonText: {
-    color: '#fff1e1', // Example color
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
+
 });

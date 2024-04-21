@@ -11,6 +11,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { auth } from '../firebase-files/FirebaseSetup';
+import colors from "../ColorHelper";
 
 const Tab = createBottomTabNavigator();
 
@@ -33,34 +34,23 @@ export default function TabNavigator() {
   return (
     <Tab.Navigator initialRouteName="Welcome"
       screenOptions={{
-        tabBarActiveTintColor: "#B88956",
-        tabBarStyle: { backgroundColor: '#FFF1E1' },
+        tabBarActiveTintColor: colors.borderColor,
+        tabBarStyle: { backgroundColor: colors.buttonText },
         headerStyle: {
-          backgroundColor: '#DEB68A',
+          backgroundColor: colors.tan,
         },
-        // headerTintColor: '#957A5D',
         headerTitleStyle: {
-          // fontWeight: 'bold',
           fontSize: 20,
         },
-        // #976732
-      }}
-    >
+      }}>
 
       <Tab.Screen name="Welcome" component={Welcome}
         options={{
-          // headerStyle: { height: 100 },
-          tabBarLabelStyle: {
-            fontSize: 12,
-          },
-          // headerTitleStyle: {
-          //   fontSize: 20,
-          // },
           tabBarLabelStyle: {
             fontSize: 12,
           },
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome5 name="home" size={24} color={color} />
+            <FontAwesome5 name="home" size={30} color={color} />
           ),
         }}
       />
@@ -69,57 +59,37 @@ export default function TabNavigator() {
         name="Library"
         component={Library}
         options={{
-          // headerStyle: { height: 30 },
-          tabBarLabelStyle: {
-            fontSize: 12,
-          },
-          // headerTitleStyle: {
-          //   fontSize: 20,
-          // },
           tabBarLabelStyle: {
             fontSize: 12,
           },
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="library" size={24} color={color} />),
+            <Ionicons name="library" size={30} color={color} />),
         }}
-
       />
+
       <Tab.Screen name="Profile" component={Profile}
         options={{
-          // headerStyle: { height: 100 },
-          tabBarLabelStyle: {
-            fontSize: 12,
-          },
-          // headerTitleStyle: {
-          //   fontSize: 20,
-          // },
           tabBarLabelStyle: {
             fontSize: 12,
           },
           tabBarIcon: ({ color, size }) => (
-            <Octicons name="person-fill" size={24} color={color} />),
+            <Octicons name="person-fill" size={30} color={color} />),
         }}
-
       />
+
       {userLoggedIn && <
         Tab.Screen name="MyList"
         component={MyList}
         options={{
-          // headerStyle: { height: 100 },
-          tabBarLabelStyle: {
-            fontSize: 12,
-          },
-          // headerTitleStyle: {
-          //   fontSize: 20,
-          // },
           tabBarLabelStyle: {
             fontSize: 12,
           },
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="view-list" size={24} color={color} />
+            <MaterialCommunityIcons name="view-list" size={30} color={color} />
           ),
         }}
       />}
+
     </Tab.Navigator>
   );
 }

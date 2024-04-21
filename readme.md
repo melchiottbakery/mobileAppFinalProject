@@ -278,4 +278,10 @@ At the same time, you need to set up your .env
 
 ## Screenshots of the application
 
-TBC
+![screenshoot of library by the ordinary user](screenshotFolder/library-noadmin-iteration3.PNG)
+
+![screenshoot of mylist](screenshotFolder/mylist-iteration3.PNG)
+
+![screenshoot of profile](screenshotFolder/profile-iteration3.PNG)
+
+![screenshoot of welcome](screenshotFolder/welcome-iteration3.PNG)

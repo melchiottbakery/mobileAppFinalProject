@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Button, Alert } from "react-native";
+import { StyleSheet, Text, View, Alert } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import InputComponent from "../component/InputComponent";
@@ -6,8 +6,10 @@ import Checkbox from "expo-checkbox";
 
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase-files/FirebaseSetup";
-import { setDocToDB, setNewUserDocToDB } from "../firebase-files/FirebaseHelper";
+import { setNewUserDocToDB } from "../firebase-files/FirebaseHelper";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import colors from "../ColorHelper";
+import screenStyleHelper from "../styleHelperFolder/screenStyleHelper";
 
 export default function Registration({ navigation }) {
 
@@ -137,19 +139,19 @@ export default function Registration({ navigation }) {
           style={styles.checkbox}
           value={isAdmin}
           onValueChange={setIsAdmin}
-          color={isAdmin ? "#4630EB" : undefined}
+          color={isAdmin ? colors.tan : undefined}
         />
         <Text>admin?</Text>
       </View>
 
       <View style={styles.buttonContainer}>
 
-        <TouchableOpacity style={styles.button} onPress={handleCancel}>
-          <Text style={styles.buttonText}>Back to Login</Text>
+        <TouchableOpacity style={screenStyleHelper.button} onPress={handleCancel}>
+          <Text style={screenStyleHelper.buttonText}>Back to Login</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={handleSet} disabled={validateForm()}>
-          <Text style={styles.buttonText}>SignUp</Text>
+        <TouchableOpacity style={screenStyleHelper.button} onPress={handleSet} disabled={validateForm()}>
+          <Text style={screenStyleHelper.buttonText}>SignUp</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -157,10 +159,10 @@ export default function Registration({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+
   container: {
     flex: 1,
-    backgroundColor: "#FFE2C2"
-
+    backgroundColor: colors.allbackgroundColor
   },
 
   buttonContainer: {
@@ -177,17 +179,5 @@ const styles = StyleSheet.create({
 
   checkbox: {
     margin: 10,
-  },
-
-  button: {
-    backgroundColor: '#976732', // Example color
-    padding: 10,
-    borderRadius: 5,
-    width: "50",
-  },
-  buttonText: {
-    color: '#fff1e1', // Example color
-    textAlign: 'center',
-    fontWeight: 'bold',
   },
 });

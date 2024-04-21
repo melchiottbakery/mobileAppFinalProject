@@ -26,6 +26,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { auth } from "../firebase-files/FirebaseSetup";
 import AudioManager from "../component/AudioManager";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import screenStyleHelper from "../styleHelperFolder/screenStyleHelper";
+import colors from "../ColorHelper";
 
 export default function MyList() {
   const userId = auth.currentUser.uid;
@@ -126,7 +128,7 @@ export default function MyList() {
 
   const renderItem = ({ item }) => (
     <Pressable>
-      <View style={{ padding: 10, borderColor: "#B88956", borderWidth: 3, margin: 5 }}>
+      <View style={styles.words}>
 
         <View style={{ flexDirection: "row" }}>
           <View style={{ marginRight: 30 }}>
@@ -137,12 +139,12 @@ export default function MyList() {
             <View>
               {!item.nativeWordShow && (
                 <TouchableOpacity onPress={() => showNativeMeaning({ item })}>
-                  <Text style={{ fontSize: 30 }}>Show the Word</Text>
+                  <Text style={styles.fontSize30}>Show the Word</Text>
                 </TouchableOpacity>
               )}
               {item.nativeWordShow && (
                 <TouchableOpacity onPress={() => showNativeMeaning({ item })}>
-                  <Text style={{ fontSize: 30 }}>{item.nativeWord}</Text>
+                  <Text style={styles.fontSize30}>{item.nativeWord}</Text>
                 </TouchableOpacity>
               )}
 
@@ -151,12 +153,12 @@ export default function MyList() {
 
               {!item.translationMeaningShow && (
                 <TouchableOpacity onPress={() => showTranslationMeaning({ item })}>
-                  <Text style={{ fontSize: 20 }}>Show the Meaning</Text>
+                  <Text style={screenStyleHelper.fontSize20}>Show the Meaning</Text>
                 </TouchableOpacity>
               )}
               {item.translationMeaningShow && (
                 <TouchableOpacity onPress={() => showTranslationMeaning({ item })}>
-                  <Text style={{ fontSize: 20 }}>{item.translationMeaning}</Text>
+                  <Text style={screenStyleHelper.fontSize20}>{item.translationMeaning}</Text>
                 </TouchableOpacity>
               )}
             </View>
@@ -167,7 +169,7 @@ export default function MyList() {
           <View>
             {item.remember === false && (
               <TouchableOpacity onPress={() => onPressFunction({ item })}>
-                <Fontisto name="checkbox-passive" size={24} color="black" />
+                <Fontisto name="checkbox-passive" size={30} color="black" />
               </TouchableOpacity>
             )}
 
@@ -176,14 +178,14 @@ export default function MyList() {
             <View >
               {item.remember === true && (
                 <TouchableOpacity onPress={() => onForgetFunction({ item })}>
-                  <Fontisto name="checkbox-active" size={24} color="black" />
+                  <Fontisto name="checkbox-active" size={30} color="black" />
                 </TouchableOpacity>
               )}
 
             </View>
             {item.remember === true && (
               <TouchableOpacity onPress={() => onDeleteFunction({ item })}>
-                <AntDesign name="delete" size={24} color="red" />
+                <AntDesign name="delete" size={30} color="red" />
               </TouchableOpacity>
             )}
           </View>
@@ -239,22 +241,16 @@ export default function MyList() {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={screenStyleHelper.container}>
       {library.length === 0 ? (
-        <View style={{ padding: 5 }}>
-          <Text style={{ fontSize: 16 }}>There is no new word for you, try to add some from library</Text>
-
+        <View style={screenStyleHelper.padding5}>
+          <Text style={screenStyleHelper.textFontSize}>There is no new word for you, try to add some from library</Text>
         </View>
       ) : (
         <>
           {openRemind && <NotificationManager remindHandler={remindHandler} />}
 
-          <View style={{
-            flexDirection: "row",
-            padding: 3,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
+          <View style={styles.functionMode}>
 
             <Text>HIDDEN MODE:</Text>
 
@@ -276,12 +272,7 @@ export default function MyList() {
 
           </View>
 
-          <View style={{
-            flexDirection: "row",
-            padding: 3,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
+          <View style={styles.functionMode}>
 
             <Text>REVISION MODE:</Text>
             <TouchableOpacity style={styles.ankiButton} onPress={showForgetHandler}>
@@ -327,20 +318,30 @@ export default function MyList() {
 
 const styles = StyleSheet.create({
 
-  container: {
-    flex: 1,
-    // alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: "#FFE2C2"
-  },
   ankiButton: {
     borderWidth: 2,
     borderColor: 'black',
     borderRadius: 5,
     padding: 5,
     margin: 7,
-    borderColor: "#B88956"
+    borderColor: colors.borderColor,
+  },
+  functionMode: {
+    flexDirection: "row",
+    padding: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 
+  words: {
+    padding: 10,
+    borderColor: colors.borderColor,
+    borderWidth: 3,
+    margin: 5
+  },
+
+  fontSize30: {
+    fontSize: 30,
   },
 
 

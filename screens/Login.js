@@ -5,6 +5,7 @@ import InputComponent from "../component/InputComponent";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase-files/FirebaseSetup";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import screenStyleHelper from "../styleHelperFolder/screenStyleHelper";
 
 export default function Login({ navigation, route }) {
   console.log('route is', route)
@@ -57,10 +58,7 @@ export default function Login({ navigation, route }) {
 
   return (
     <SafeAreaView style={styles.container}>
-
-
       <View style={styles.inputContainer}>
-
         <InputComponent
           label="Email"
           value={email}
@@ -74,18 +72,17 @@ export default function Login({ navigation, route }) {
           onChangeText={setPassword}
           secureTextEntry={true}
         ></InputComponent>
-
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={handleReset}>
-          <Text style={styles.buttonText}>Reset</Text>
+        <TouchableOpacity style={screenStyleHelper.button} onPress={handleReset}>
+          <Text style={screenStyleHelper.buttonText}>Reset</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={validateForm()}>
-          <Text style={styles.buttonText}>Login</Text>
+        <TouchableOpacity style={screenStyleHelper.button} onPress={handleLogin} disabled={validateForm()}>
+          <Text style={screenStyleHelper.buttonText}>Login</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handleRegister} >
-          <Text style={styles.buttonText}>Register</Text>
+        <TouchableOpacity style={screenStyleHelper.button} onPress={handleRegister} >
+          <Text style={screenStyleHelper.buttonText}>Register</Text>
         </TouchableOpacity>
 
       </View>
@@ -94,12 +91,11 @@ export default function Login({ navigation, route }) {
 }
 
 const styles = StyleSheet.create({
+
   container: {
     flex: 1,
     justifyContent: "center",
     backgroundColor: "#FFE2C2",
-
-
   },
 
   headerContainer: {
@@ -108,27 +104,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 
-  /* inputContainer: {
-      width: "80%",
-      alignSelf: "center",
-      paddingTop: 20,
-    }, */
-
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
     marginTop: 40,
   },
 
-  button: {
-    backgroundColor: '#976732', // Example color
-    padding: 10,
-    borderRadius: 5,
-    width: "50",
-  },
-  buttonText: {
-    color: '#fff1e1', // Example color
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
 });

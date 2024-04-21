@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList, Button, Alert, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, FlatList, Alert, TouchableOpacity } from 'react-native'
 
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
@@ -7,18 +7,17 @@ import { AntDesign } from '@expo/vector-icons';
 import { auth } from '../firebase-files/FirebaseSetup';
 import { collection, onSnapshot } from "firebase/firestore";
 import { database } from "../firebase-files/FirebaseSetup"
-import { writeToDB, writeNewWordToUserDB, deleteBookFromLibraryDB, deleteCollection } from "../firebase-files/FirebaseHelper";
+import { writeNewWordToUserDB, deleteBookFromLibraryDB, deleteCollection } from "../firebase-files/FirebaseHelper";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import colors from '../ColorHelper';
+import screenStyleHelper from '../styleHelperFolder/screenStyleHelper';
 
 export default function WordList({ route }) {
   const navigation = useNavigation();
 
-  const worldBookName = route.params.item.name
   const wordBookid = route.params.item.id
   const isadmin = route.params.isadmin
-
   const [library, setlibrary] = useState([]);
-  const [deleteLink, setDeleteLink] = useState("")
 
   useEffect(() => {
     navigation.setOptions({
@@ -37,7 +36,6 @@ export default function WordList({ route }) {
         });
       };
       setlibrary(newArray);
-      setDeleteLink(wordBookid);
     });
   }, []);
 
@@ -64,44 +62,34 @@ export default function WordList({ route }) {
   }
 
   const renderItemUser = ({ item }) => (
-    <View style={{
-      padding: 20, margin: 3, borderColor: "#B88956", borderWidth: 2,
-      flexDirection: 'row', flex: 1,
-      alignItems: 'center',
-      // justifyContent: 'center',
-    }}>
+    <View style={styles.userWordList}>
       {auth.currentUser && (
         <View>
           <TouchableOpacity onPress={() => onPressFunction({ item })}>
-            <AntDesign name="pluscircleo" size={24} color="black" />
+            <AntDesign name="pluscircleo" size={30} color="black" />
             {/* <MaterialIcons name="add-alarm" size={30} color="black" /> */}
           </TouchableOpacity>
         </View>
       )}
-      <View style={{ paddingLeft: 20 }}>
-        <Text style={{ fontSize: 25 }}>Word: {item.nativeWord}</Text>
-        <Text style={{ fontSize: 20 }}>Meaning: {item.translationMeaning}</Text>
+      <View style={styles.paddingLeft20}>
+        <Text style={styles.fontSize25}>Word: {item.nativeWord}</Text>
+        <Text style={screenStyleHelper.fontSize20}>Meaning: {item.translationMeaning}</Text>
       </View>
     </View>
   );
 
   const renderItemAdmin = ({ item }) => (
-    <View style={{
-      padding: 20, margin: 3, borderColor: "#B88956", borderWidth: 2,
-      flexDirection: 'row', flex: 1,
-      alignItems: 'center',
-      // justifyContent: 'center',
-    }}>
+    <View style={styles.userWordList}>
       {auth.currentUser &&
         (
           <View>
             <TouchableOpacity onPress={() => onPressFunction({ item })}>
-              <AntDesign name="pluscircleo" size={24} color="black" />
+              <AntDesign name="pluscircleo" size={30} color="black" />
             </TouchableOpacity>
           </View>
         )
       }
-      <View style={{ paddingLeft: 20 }}>
+      <View style={styles.paddingLeft20}>
         <Text>ID: {item.id}</Text>
         <Text>nativeWord: {item.nativeWord}</Text>
         <Text>translationMeaning: {item.translationMeaning}</Text>
@@ -129,10 +117,10 @@ export default function WordList({ route }) {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={{ padding: 5 }}>
+    <View style={screenStyleHelper.container}>
+      <View style={screenStyleHelper.padding5}>
 
-        {!auth.currentUser && <Text style={{ fontSize: 16 }}>You can add the word and play the pronunciation when you are logged in</Text>}
+        {!auth.currentUser && <Text style={screenStyleHelper.textFontSize}>You can add the word and play the pronunciation when you are logged in</Text>}
       </View>
 
       {isadmin && <FlatList
@@ -150,12 +138,23 @@ export default function WordList({ route }) {
 }
 
 const styles = StyleSheet.create({
-
-  container: {
+  userWordList: {
+    padding: 20,
+    margin: 3,
+    borderColor: colors.borderColor,
+    borderWidth: 2,
+    flexDirection: 'row',
     flex: 1,
-    // alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: "#FFE2C2"
+    alignItems: 'center',
+    // justifyContent: 'center',
+  },
+
+  paddingLeft20: {
+    paddingLeft: 20
+  },
+
+  fontSize25: {
+    fontSize: 25
   },
 
 })

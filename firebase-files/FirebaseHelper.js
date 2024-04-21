@@ -2,18 +2,6 @@ import { collection, addDoc, setDoc, getDoc, updateDoc, getDocs } from "firebase
 import { database } from "./FirebaseSetup";
 import { doc, deleteDoc, onSnapshot } from "firebase/firestore";
 
-//write to the database with data
-// export async function writeToDB(data) {
-//     try {
-//       if(data.meaning){
-//     const docRef = await addDoc(collection(database, "usertest"), data);
-//       console.log("Document ID is: ", docRef.id);
-//       console.log("the new data is",data)}
-//     } catch (err) {
-//       console.log(err);
-//     }
-//   }
-
 export async function writeToDB(data) {
   try {
     if (data.translationMeaning) {
@@ -42,7 +30,6 @@ export async function writeNewWordToUserDB(data, userId) {
   }
 }
 
-//delete the data with the id from the database 
 export async function deleteFromDB(id) {
   try {
     await deleteDoc(doc(database, "usertest", id));
@@ -60,7 +47,6 @@ export async function editInDB(id, data) {
     console.log(err);
   }
 }
-
 
 export async function editRememberInDB(wordId, userId, data) {
   try {
@@ -89,9 +75,7 @@ export async function editImageLinkInCover(bookId, data) {
   }
 }
 
-
 export async function setNewUserDocToDB(data, col, uid) {
-  // the doc ID is user's uid
   try {
     await setDoc(doc(database, col, uid), data, { merge: true });
     console.log("set successful")
@@ -109,28 +93,19 @@ export async function deleteWordFromUserDB(wordId, userId) {
   }
 }
 
-
 export async function deleteCollection(wordBookid) {
-  //   const collectionRef = await collection(database, "library",wordBookid,'wordlist');
-  // console.log(collectionRef)
-  // const querySnapshot = await getDocs(collectionRef);
-  // console.log(querySnapshot)
-
   onSnapshot(collection(database, "library", wordBookid, "wordlist"), (querySnapshot) => {
     if (querySnapshot) {
       querySnapshot.forEach((doc) => {
         console.log(doc.data())
         console.log(doc.data().nativeWord)
         deleteWordsFromBookDB(wordBookid, doc.data().nativeWord)
-
       });
     };
   });
 
   async function deleteWordsFromBookDB(wordBookid, nativeWord) {
     try {
-      // await deleteDoc(doc(database, "library",wordBookid,'wordlist'));
-
       await deleteDoc(doc(database, "library", wordBookid, "wordlist", nativeWord));
       console.log("Delete confirmed, the id is ", wordBookid);
     } catch (err) {
@@ -148,7 +123,6 @@ export async function deleteBookFromLibraryDB(wordBookid) {
   }
 }
 
-
 export async function getProfile(col, docId) {
   try {
     const docSnap = await getDoc(doc(database, col, docId));
@@ -160,24 +134,19 @@ export async function getProfile(col, docId) {
   }
 }
 
-
-
-
 export async function writeNewWordBookToDB(data) {
   try {
     const docRef = await addDoc(collection(database, 'library'), data);
-    // return docRef.id
     console.log("writenewlibaray successful")
-
   } catch (err) {
     console.log(err);
   }
 }
 
+//Thanks for NEDA CHANGIZI
 export async function writeWholeWordBookToDB(coverData, wordData) {
   try {
     const docRef = await addDoc(collection(database, 'library'), coverData);
-
     Object.keys(wordData).forEach(async key => {
       const { nativeWord, translationMeaning } = wordData[key];
       // console.log(newBookWordlist[key])
@@ -185,17 +154,15 @@ export async function writeWholeWordBookToDB(coverData, wordData) {
         { nativeWord: nativeWord, translationMeaning: translationMeaning }, { merge: true });
       // console.log(`Key: ${key}, Native Word: ${nativeWord}, Translation Meaning: ${translationMeaning}`);
     });
-
     // await setDoc(doc(database, "users",userId,), data, { merge: true });
-
     // docRef.id
     console.log("writenewlibaray successful, the doc id is", docRef.id)
-
   } catch (err) {
     console.log(err);
   }
 }
 
+//Thanks for NEDA CHANGIZI
 export async function writeAnkiToDB(uid) {
   try {
     const querySnapshot = await getDocs(collection(database, "users", uid, "wordlist"));
@@ -213,94 +180,41 @@ export async function writeAnkiToDB(uid) {
 
 }
 
-
 export async function writeAntiAnkiToDB(uid) {
   try {
     const querySnapshot = await getDocs(collection(database, "users", uid, "wordlist"));
     querySnapshot.forEach((doc) => {
       updateDoc(doc.ref, { nativeWordShow: false })
-      // doc.data() is never undefined for query doc snapshots
-      // console.log(doc.id, " => ", doc.data());
     });
-    // await setDoc(doc(database, "users",uid,'wordlist',docid), 
-    //     {nativeWordShow:false}, { merge: true });
   }
   catch (err) {
     console.log(err)
   }
-
 }
-
 
 export async function writeAllAnkiToDB(uid) {
   try {
     const querySnapshot = await getDocs(collection(database, "users", uid, "wordlist"));
     querySnapshot.forEach((doc) => {
       updateDoc(doc.ref, { nativeWordShow: false, translationMeaningShow: false })
-      // doc.data() is never undefined for query doc snapshots
-      // console.log(doc.id, " => ", doc.data());
     });
-    // await setDoc(doc(database, "users",uid,'wordlist',docid), 
-    //     {nativeWordShow:false}, { merge: true });
   }
   catch (err) {
     console.log(err)
   }
-
 }
-
 
 export async function writeClearAnkiToDB(uid) {
   try {
     const querySnapshot = await getDocs(collection(database, "users", uid, "wordlist"));
     querySnapshot.forEach((doc) => {
       updateDoc(doc.ref, { nativeWordShow: true, translationMeaningShow: true })
-      // doc.data() is never undefined for query doc snapshots
-      // console.log(doc.id, " => ", doc.data());
     });
-    // await setDoc(doc(database, "users",uid,'wordlist',docid), 
-    //     {nativeWordShow:false}, { merge: true });
   }
   catch (err) {
     console.log(err)
   }
-
 }
-
-// export async function writeAnkiToDB(uid) {
-//   try {    
-
-
-
-//   const unsubscribe= onSnapshot(collection(database, "users", uid, "wordlist"), (querySnapshot) => {
-//     if (querySnapshot) {
-//       querySnapshot.forEach((doc) => {
-//         console.log(doc.data())
-//         writeAnkiToDBhelper(doc.data().nativeWord,uid);
-
-
-//       });
-//     };
-//   });
-//     // const docRef= await addDoc(collection(database, 'library' ), coverData);
-
-//     // Object.keys(wordData).forEach(async key => {
-//     //   const { nativeWord, translationMeaning } = wordData[key];
-//     //   // console.log(newBookWordlist[key])
-//     //   await setDoc(doc(database, "library",docRef.id,'wordlist',key), 
-//     //   {nativeWord:nativeWord, translationMeaning:translationMeaning}, { merge: true });
-//     //   // console.log(`Key: ${key}, Native Word: ${nativeWord}, Translation Meaning: ${translationMeaning}`);
-//     // });
-
-//     // await setDoc(doc(database, "users",userId,), data, { merge: true });
-
-//     // docRef.id
-//     // console.log("writenewlibaray successful, the doc id is",docRef.id)
-//     unsubscribe()
-//   } catch (err) {
-//     console.log(err);
-//   }
-// }
 
 export async function writeNewWordToWordBookDB(id, data) {
   try {

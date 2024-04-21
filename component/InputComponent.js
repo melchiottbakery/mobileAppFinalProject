@@ -1,6 +1,6 @@
 import React from "react";
-import { Text, TextInput, View } from "react-native";
-import StyleHelper from "./StyleHelper";
+import { Text, TextInput, View, StyleSheet } from "react-native";
+import colors from "../ColorHelper";
 
 const InputComponent = ({
   label,
@@ -14,10 +14,10 @@ const InputComponent = ({
 
 }) => {
   return (
-    <View style={StyleHelper.inputContainer}>
-      <Text style={StyleHelper.text}>{label}</Text>
+    <View style={style.inputContainer}>
+      <Text style={style.text}>{label}</Text>
       <TextInput
-        style={StyleHelper.input}
+        style={style.input}
         value={value}
         onChangeText={onChangeText}
         onPressIn={onPressIn}
@@ -26,9 +26,36 @@ const InputComponent = ({
         editable={editable}
       />
 
-      {error && <Text style={StyleHelper.inputError}>{error}</Text>}
+      {error && <Text style={style.inputError}>{error}</Text>}
     </View>
   );
 };
 
 export default InputComponent;
+
+const style = StyleSheet.create({
+  inputContainer: {
+    margin: 10,
+  },
+
+  text: {
+    marginBottom: 10,
+    fontSize: 16
+  },
+
+  input: {
+    alignSelf: "stretch",
+    height: 40,
+    borderColor: colors.borderColor,
+    borderWidth: 3,
+    borderRadius: 5,
+    padding: 10,
+    fontSize: 16,
+  },
+
+  inputError: {
+    color: "red",
+  },
+});
+
+

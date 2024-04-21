@@ -16,6 +16,8 @@ import { getDownloadURL } from "firebase/storage";
 import { Entypo } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import screenStyleHelper from '../styleHelperFolder/screenStyleHelper';
+import colors from '../ColorHelper';
 
 export default function Library() {
 
@@ -43,18 +45,14 @@ export default function Library() {
         let newArray = [];
         if (querySnapshot) {
           querySnapshot.forEach((doc) => {
-            // console.log(doc.data().imageUri)
-            // const nihao =  downloadImageFromDatabase(doc.data().imageUri)
-            // console.log("nihao+",nihao)
             newArray.push({
               ...doc.data(),
-              // downloaduri:imageLocalUri,
+              // :imageLocalUri,
               id: doc.id
             });
           });
         };
         newlibrary(newArray);
-        // setlibrary(newArray);
       });
     }
     listenonSnapshot();
@@ -112,7 +110,7 @@ export default function Library() {
 
   function onPressFunction({ item }) {
     console.log("whichone youare pressing", item)
-    // console.log({ item,isadmin})
+    // console.log({ item , isadmin })
     navigation.navigate("WordList", { item, isadmin })
   }
 
@@ -164,9 +162,7 @@ export default function Library() {
 
   const AdminTerminal = (
     <View style={{ alignItems: 'center' }}>
-      <View style={{
-        flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
-      }}>
+      <View style={styles.jsonContainer}>
         <View style={{ flex: 1 }}>
           <InputComponent
             label="The link of vocabulary book "
@@ -199,7 +195,7 @@ export default function Library() {
               backgroundColor: '',
               marginBottom: 20,
               borderRadius: 5,
-              borderColor: "#B88956",
+              borderColor: colors.borderColor,
               borderWidth: 3,
             }}
 
@@ -229,7 +225,7 @@ export default function Library() {
         (
           <View>
             <TouchableOpacity style={{ zIndex: -1 }} onPress={saveImageChange}>
-              <FontAwesome5 style={{ zIndex: -1 }} name="file-upload" size={24} color="black" />
+              <FontAwesome5 style={{ zIndex: -1 }} name="file-upload" size={30} color="black" />
             </TouchableOpacity>
           </View>)}
     </View>
@@ -290,13 +286,12 @@ export default function Library() {
   }
 
   const renderItemUser = ({ item }) => (
-    <Pressable onPress={() => onPressFunction({ item })}
-      style={{ margin: 5, padding: 5, borderColor: "#B88956", borderWidth: 3, width: '30%' }}>
+    <Pressable onPress={() => onPressFunction({ item })} style={styles.pressable}>
       <View>
         {item.imageDownloadUri && <Image source={{ uri: item.imageDownloadUri }} style={{ width: "100%", height: 100 }} />}
         <Text>Title: {item.title}</Text>
         <Text>Word Numbers: {item.number}</Text>
-        <View style={{ flexDirection: 'row', justifyContent: "space-around", alignItems: 'center' }}>
+        <View style={styles.flagContainer}>
           <View>
             <CountryFlag isoCode={item.nativeLanguage} size={25} />
           </View>
@@ -312,11 +307,7 @@ export default function Library() {
 
 
   const renderItemAdmin = ({ item }) => (
-    <Pressable onPress={() => onPressFunction({ item })}
-      style={{
-        margin: 5, padding: 5,
-        borderColor: "#B88956", borderWidth: 3, width: '30%'
-      }}>
+    <Pressable onPress={() => onPressFunction({ item })} style={styles.pressable}>
       <View>
         {item.imageDownloadUri && <Image source={{ uri: item.imageDownloadUri }} style={{ width: "100%", height: 100 }} />}
         <Text>ID: {item.id}</Text>
@@ -325,7 +316,7 @@ export default function Library() {
         <Text>Word Numbers: {item.number}</Text>
         <Text>Word Language: {item.translationLanguage}</Text>
 
-        <View style={{ flexDirection: 'row', justifyContent: "space-around", alignItems: 'center' }}>
+        <View style={styles.flagContainer}>
           <View>
             <CountryFlag isoCode={item.nativeLanguage} size={25} />
           </View>
@@ -347,9 +338,9 @@ export default function Library() {
   )
 
   return (
-    <View style={styles.container}>
-      <View style={{ padding: 5 }}>
-        <Text style={{ fontSize: 16 }}>All vocabulary books will be displayed here.</Text>
+    <View style={screenStyleHelper.container}>
+      <View style={screenStyleHelper.padding5}>
+        <Text style={screenStyleHelper.textFontSize}>All vocabulary books will be displayed here.</Text>
       </View>
       <View>
         {isadmin && (
@@ -376,11 +367,23 @@ export default function Library() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: "#FFE2C2"
+
+  pressable: {
+    margin: 5,
+    padding: 5,
+    borderColor: colors.borderColor,
+    borderWidth: 3,
+    width: '30%',
+  },
+
+  flagContainer: {
+    flexDirection: 'row',
+    justifyContent: "space-around",
+    alignItems: 'center',
+  },
+
+  jsonContainer: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
   },
 
 })

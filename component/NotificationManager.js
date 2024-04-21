@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View, Button, Alert } from "react-native";
+import { StyleSheet, Text, View, Alert } from "react-native";
 import React, { useState } from "react";
 import * as Notifications from "expo-notifications";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { FontAwesome6 } from '@expo/vector-icons';
+import colors from "../ColorHelper";
 
 export default function NotificationManager({ remindHandler }) {
 
@@ -97,11 +98,11 @@ export default function NotificationManager({ remindHandler }) {
         <Text style={styles.counterText}>{hours} hours</Text>
 
         <TouchableOpacity style={styles.buttonContainer} onPress={handleHoursPlus}>
-          <FontAwesome6 name="add" size={24} color="black" />
+          <FontAwesome6 name="add" size={30} color="black" />
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.buttonContainer} onPress={handleHourMinus}>
-          <FontAwesome6 name="minus" size={24} color="black" />
+          <FontAwesome6 name="minus" size={30} color="black" />
         </TouchableOpacity>
       </View>
 
@@ -109,11 +110,11 @@ export default function NotificationManager({ remindHandler }) {
         <Text style={styles.counterText}>{minutes} minutes</Text>
 
         <TouchableOpacity style={styles.buttonContainer} onPress={handleMinutesPlus}>
-          <FontAwesome6 name="add" size={24} color="black" />
+          <FontAwesome6 name="add" size={30} color="black" />
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.buttonContainer} onPress={handleMinutesMinus}>
-          <FontAwesome6 name="minus" size={24} color="black" />
+          <FontAwesome6 name="minus" size={30} color="black" />
         </TouchableOpacity>
       </View>
 
@@ -169,13 +170,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   button: {
-    backgroundColor: '#976732', // Example color
+    backgroundColor: colors.buttonColor, // Example color
     padding: 10,
     borderRadius: 5,
     width: "50",
   },
   buttonText: {
-    color: '#fff1e1', // Example color
+    color: colors.buttonText, // Example color
     textAlign: 'center',
     fontWeight: 'bold',
   },
