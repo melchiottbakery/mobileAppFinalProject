@@ -1,4 +1,4 @@
-import { Alert, Button, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { Alert, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import InputComponent from "../component/InputComponent";
 
@@ -12,29 +12,31 @@ export default function Login({ navigation, route }) {
   const [password, setPassword] = useState("dongbeidaban");
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    if (route.params && route.params.userEmail) {
+      setEmail(route.params.userEmail)
+      setPassword(route.params.userPassword)
+    }
+  }, []);
+
   function validateEmail() {
-    // Regular expression for email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
   function validateForm() {
-    // Check if email or password is empty
     return !email || !password;
   };
 
   function handleReset() {
-    // the function on when Reset button pressed
     setEmail("");
     setPassword("");
     setError("");
   };
 
   function handleLogin() {
-    // the function on when Login button pressed
     if (validateEmail()) {
       setError("");
-      //console.log(email);
       console.log(password);
       userAuthHandler();
     } else {
@@ -42,40 +44,23 @@ export default function Login({ navigation, route }) {
     }
   };
 
-
   async function userAuthHandler() {
     try {
       const userCred = await signInWithEmailAndPassword(auth, email, password);
       console.log(userCred)
       navigation.navigate("User");
 
-
     } catch (error) {
       console.log(error);
       if (error.code == 'auth/invalid-credential') {
         Alert.alert('Email or Password is not correct ')
       }
-
     }
   }
 
   function handleRegister() {
-    // the function on when Register button pressed
-    //console.log(email);
-    //console.log(password);
     navigation.navigate("Registration");
   };
-
-  useEffect(() => {
-    if (route.params && route.params.userEmail) {
-
-      setEmail(route.params.userEmail)
-      setPassword(route.params.userPassword)
-
-    }
-  }, []);
-
-
 
   return (
     <SafeAreaView style={styles.container}>
@@ -84,13 +69,6 @@ export default function Login({ navigation, route }) {
       </View>
 
       <View style={styles.inputContainer}>
-        {/*  <Text>Email</Text>
-          <TextInput
-            value={email}
-            onChangeText={setEmail}
-            style={{ height: 40, borderColor: "gray", borderWidth: 1 }}
-          />
-          <Text style={{ color: "red" }}>{error}</Text> */}
 
         <InputComponent
           label="Email"
@@ -106,13 +84,6 @@ export default function Login({ navigation, route }) {
           secureTextEntry={true}
         ></InputComponent>
 
-        {/* <Text>Password</Text>
-          <TextInput
-            value={password}
-            secureTextEntry={true}
-            onChangeText={setPassword}
-            style={{ height: 40, borderColor: "gray", borderWidth: 1 }}
-          /> */}
       </View>
 
       <View style={styles.buttonContainer}>
@@ -125,11 +96,6 @@ export default function Login({ navigation, route }) {
         <TouchableOpacity style={styles.button} onPress={handleRegister} >
           <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
-        {/* <Button title="Reset" onPress={handleReset} />
-        <Button title="Login" onPress={handleLogin} disabled={validateForm()} />
-        <Button title="Register" onPress={handleRegister} /> */}
-
-        {/* <Text>{displayText}</Text> */}
 
       </View>
     </SafeAreaView>

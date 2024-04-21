@@ -9,7 +9,6 @@ export default function Map() {
   const [isLoading, setIsLoading] = useState(false);
   const [location, setLocation] = useState(null);
   const [status, requestPermission] = Location.useForegroundPermissions();
-  console.log(status)
   const [schools, setSchools] = useState([]);
   const [mapRegion, setMapRegion] = useState({
     // map initial region of Vancouver
@@ -43,7 +42,6 @@ export default function Map() {
         return;
       }
       const locationResult = await Location.getCurrentPositionAsync();
-      console.log('nihao', locationResult)
       const userLocation = {
         latitude: locationResult.coords.latitude,
         longitude: locationResult.coords.longitude,
@@ -83,9 +81,6 @@ export default function Map() {
     }
   }
 
-
-
-
   return (
     <View style={styles.container}>
       <MapView
@@ -114,7 +109,6 @@ export default function Map() {
         <View style={{
           width: '50%',
           alignItems: 'center',
-
           justifyContent: 'center',
         }}>
 
@@ -122,11 +116,8 @@ export default function Map() {
             <Text style={styles.buttonText}>Find Nearby Japanese Language Schools</Text>
           </TouchableOpacity>
         </View>
-      )
-        // <Button title="Find Nearby Japanese Language Schools" onPress={findESLHandler} />
-      }
-      {/* <Button title="Find Nearby Japanese Language Schools" onPress={findESLHandler} />
-      {isLoading && <ActivityIndicator size="large" />} */}
+      )}
+
     </View>
   );
 }
@@ -138,7 +129,6 @@ const styles = StyleSheet.create({
     // flex: 1,
     alignItems: 'center',
     // justifyContent: 'center',
-
   },
   map: {
     width: "100%",

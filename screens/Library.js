@@ -1,5 +1,4 @@
-import { StyleSheet, Text, View, FlatList, Pressable, Button, Image, Alert } from 'react-native'
-import { SafeAreaView } from 'react-native'
+import { StyleSheet, Text, View, FlatList, Pressable, Image, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import CountryFlag from "react-native-country-flag";
@@ -10,21 +9,18 @@ import { FontAwesome6 } from '@expo/vector-icons';
 import { collection, onSnapshot, } from "firebase/firestore"
 import { database, auth, storage, } from "../firebase-files/FirebaseSetup"
 import InputComponent from '../component/InputComponent';
-import { writeNewWordBookToDB, writeWholeWordBookToDB, getProfile, editImageLinkInCover } from '../firebase-files/FirebaseHelper';
+import { writeWholeWordBookToDB, getProfile, editImageLinkInCover } from '../firebase-files/FirebaseHelper';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ref, uploadBytes } from "firebase/storage";
 import { getDownloadURL } from "firebase/storage";
 import { Entypo } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import { editImageLinkInDB, setNewUserDocToDB } from "../firebase-files/FirebaseHelper";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default function Library({ route }) {
+export default function Library() {
 
   const navigation = useNavigation();
 
-
-  const [imageDatabasetaUri, setImageDatabasetaUri] = useState('');
   const [imageLocalUri, setImageLocalUri] = useState("");
 
   const [selectedBook, setSelectedBook] = useState('');
@@ -32,6 +28,14 @@ export default function Library({ route }) {
   const [adminTerminalOpen, setAdminTerminalOpen] = useState(false)
 
   const [library, setlibrary] = useState([]);
+  const [isadmin, setIsadmin] = useState(false)
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
+
+  const [jsonLink, setJsonLink] = useState("https://raw.githubusercontent.com/melchiottbakery/testtesttest/main/db.json")
+
+  const [open, setOpen] = useState(false);
+
+  const [status, requestPermission] = ImagePicker.useCameraPermissions();
 
   useEffect(() => {
     async function listenonSnapshot() {
@@ -55,6 +59,31 @@ export default function Library({ route }) {
     }
     listenonSnapshot();
   }, []);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserLoggedIn(true);
+        async function getDataFromDB() {
+          const data = await getProfile("users", auth.currentUser.uid);
+          setIsadmin(data.isAdmin)
+        }
+        getDataFromDB();
+      }
+      else {
+        setUserLoggedIn(false);
+        setIsadmin(false);
+      }
+    })
+  })
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        return isadmin && adminButton
+      },
+    });
+  },);
 
   function newlibrary(newArray) {
     setlibrary(newArray);
@@ -80,72 +109,14 @@ export default function Library({ route }) {
       console.error("Error downloading images: ", error);
     }
   }
-  const [isadmin, setIsadmin] = useState(false)
-
-  const [userLoggedIn, setUserLoggedIn] = useState(false);
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUserLoggedIn(true);
-        async function getDataFromDB() {
-
-          const data = await getProfile("users", auth.currentUser.uid);
-          // console.log(data)
-          setIsadmin(data.isAdmin)
-
-        }
-        getDataFromDB();
-      }
-      else {
-        setUserLoggedIn(false);
-        setIsadmin(false);
-
-      }
-    })
-  })
-
-
-  // useEffect(() => {
-  //   async function getDataFromDB() {
-
-  //     const data = await getProfile("users", auth.currentUser.uid);
-  //     // console.log(data)
-  //     setIsadmin(data.isAdmin)
-
-  //   }
-  //   getDataFromDB();
-  // }, []);
 
   function onPressFunction({ item }) {
     console.log("whichone youare pressing", item)
     // console.log({ item,isadmin})
     navigation.navigate("WordList", { item, isadmin })
-
-
   }
 
-  const renderItem = ({ item }) => (
-    <Pressable onPress={() => onPressFunction({ item })}
-      style={{ margin: 5, padding: 5, borderColor: "red", borderWidth: 3, width: '30%' }}>
-      <View
-      // style={{margin:5, padding: 5, borderColor: "red", borderWidth: 3,width:'50%' }}
-      >
-        {item.imageDownloadUri && <Image source={{ uri: item.imageDownloadUri }} style={{ width: 100, height: 100 }} />}
-        <Text>ID: {item.id}</Text>
-        <Text>Title: {item.title}</Text>
-        <Text>Native Language: {item.nativeLanguage}</Text>
-        <Text>Number: {item.number}</Text>
-        <Text>Word Language: {item.translationLanguage}</Text>
-        <CountryFlag isoCode={item.nativeLanguage} size={25} />
-        <CountryFlag isoCode={item.translationLanguage} size={25} />
-      </View>
-    </Pressable>
-  );
-
-  const [jsonLink, setJsonLink] = useState("https://raw.githubusercontent.com/melchiottbakery/testtesttest/main/db.json")
   function loadJsonLinkHandler() {
-
     Alert.alert("Loading", "Would you like to load this book", [
       {
         text: "No",
@@ -158,11 +129,7 @@ export default function Library({ route }) {
         }
       },
     ]);
-
   }
-  // "https://raw.githubusercontent.com/melchiottbakery/testtesttest/main/db.json"
-  // 'https://my-json-server.typicode.com/melchiottbakery/testtesttest/db.json' 
-
 
   async function fetchJsonLink(inputText) {
     try {
@@ -195,8 +162,6 @@ export default function Library({ route }) {
     }
   }
 
-
-  const [open, setOpen] = useState(false);
   const AdminTerminal = (
     <View style={{ alignItems: 'center' }}>
       <View style={{
@@ -218,27 +183,17 @@ export default function Library({ route }) {
 
       </View>
 
-
-
       <View style={{
         flexDirection: 'row',
         alignItems: 'center',
         // justifyContent: 'center',
       }}>
-        {/* <Button title='load the book' onPress={loadJsonLinkHandler}></Button> */}
 
         <View style={{ width: "70%" }}>
           <DropDownPicker
             open={open}
             setOpen={setOpen}
             items={library.map(item => ({ label: item.id, value: item.id }))}
-            // containerStyle={{ height: 60, width: 200 }}
-            // containerStyle={{
-            //   zIndex: open ? 1000 : 0
-            // }}
-            // maxHeight={500}
-
-            // style={{ backgroundColor: '#fafafa' , }}
 
             style={{
               backgroundColor: '',
@@ -274,18 +229,13 @@ export default function Library({ route }) {
       {imageLocalUri &&
         (
           <View>
-
             <TouchableOpacity onPress={saveImageChange}>
               <FontAwesome5 name="file-upload" size={24} color="black" />
             </TouchableOpacity>
             {/* <Button title="sa23ve the image " onPress={saveImageChange}/> */}
           </View>)}
-
-
     </View>
-
   )
-  const [status, requestPermission] = ImagePicker.useCameraPermissions();
 
   async function verifyCameraPermission() {
     if (status.granted) {
@@ -314,12 +264,6 @@ export default function Library({ route }) {
       const imageRef = await ref(storage, `bookCover/${imageName}`)
       const uploadResult = await uploadBytes(imageRef, imageBlob);
       console.log("upload successed")
-
-
-      // setImageLocalUri('')
-      // setOpenSaveButton(false)
-
-      // return 
       console.log(uploadResult.metadata.fullPath)
       writeImageLinkToBook(uploadResult.metadata.fullPath)
     } catch (error) {
@@ -331,7 +275,6 @@ export default function Library({ route }) {
     editImageLinkInCover(selectedBook, { imageUri: storagePath },)
   }
 
-
   async function cameraFunction() {
     try {
       const checkPermission = await verifyCameraPermission();
@@ -341,9 +284,7 @@ export default function Library({ route }) {
       }
       const useCamera = await ImagePicker.launchCameraAsync(
         { allowsEditing: true });
-      // console.log(useCamera.assets[0].uri)
       setImageLocalUri(useCamera.assets[0].uri)
-      // uploadImageFromLocal(imageLocalUri)
     } catch (error) {
       console.log(error)
 
@@ -353,20 +294,14 @@ export default function Library({ route }) {
   const renderItemUser = ({ item }) => (
     <Pressable onPress={() => onPressFunction({ item })}
       style={{ margin: 5, padding: 5, borderColor: "#B88956", borderWidth: 3, width: '30%' }}>
-      <View
-      // style={{margin:5, padding: 5, borderColor: "red", borderWidth: 3,width:'50%' }}
-      >
+      <View>
         {item.imageDownloadUri && <Image source={{ uri: item.imageDownloadUri }} style={{ width: "100%", height: 100 }} />}
-        {/* <Text>ID: {item.id}</Text> */}
         <Text>Title: {item.title}</Text>
-        {/* <Text>Native Language: {item.nativeLanguage}</Text> */}
         <Text>Word Numbers: {item.number}</Text>
-        {/* <Text>Word Language: {item.translationLanguage}</Text> */}
         <View style={{ flexDirection: 'row', justifyContent: "space-around", alignItems: 'center' }}>
           <View>
             <CountryFlag isoCode={item.nativeLanguage} size={25} />
           </View>
-
           <Text>={'>'}</Text>
           <View>
             <CountryFlag isoCode={item.translationLanguage} size={25} />
@@ -384,9 +319,7 @@ export default function Library({ route }) {
         margin: 5, padding: 5,
         borderColor: "#B88956", borderWidth: 3, width: '30%'
       }}>
-      <View
-      // style={{margin:5, padding: 5, borderColor: "red", borderWidth: 3,width:'50%' }}
-      >
+      <View>
         {item.imageDownloadUri && <Image source={{ uri: item.imageDownloadUri }} style={{ width: "100%", height: 100 }} />}
         <Text>ID: {item.id}</Text>
         <Text>Title: {item.title}</Text>
@@ -406,11 +339,6 @@ export default function Library({ route }) {
     </Pressable>
   );
 
-  //   const [openRemind, setOpenRemind]= useState(false)
-  //   function remindHandler(){
-  // setOpenRemind(!openRemind)
-  //   }
-
   const adminButton = (
     <>
       <TouchableOpacity onPress={() => setAdminTerminalOpen(!adminTerminalOpen)}>
@@ -419,36 +347,16 @@ export default function Library({ route }) {
     </>
   )
 
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => {
-        return isadmin && adminButton
-      },
-    });
-  },);
-
-  // useEffect(() => {
-  //   navigation.setOptions({
-  //     headerRight: () => {
-  //       return isadmin && <Button title="delete" onPress={deleteHandler} />;
-  //     },
-  //   });
-  // }, []);
-
   return (
     <View style={styles.container}>
-            <Text>All vocabulary books will be displayed here</Text>
-
-
-      {/* bug for the list  */}
-      <>
+      <Text>All vocabulary books will be displayed here</Text>
+      <View>
         {isadmin && (
           <>
-            {/* <Button title="open/close admin terminal" onPress={() => setAdminTerminalOpen(!adminTerminalOpen)}></Button> */}
             {adminTerminalOpen && AdminTerminal}
           </>
         )}
-      </>
+      </View>
 
       {isadmin ? <FlatList numColumns='3'
         style={{ zIndex: -1 }}
@@ -462,18 +370,11 @@ export default function Library({ route }) {
         renderItem={renderItemUser}
         keyExtractor={(item, index) => index.toString()}
       />}
-      {/* <FlatList numColumns='3'
-        horizontal={false}
-        data={library}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => index.toString()}
-      /> */}
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-
   container: {
     flex: 1,
     // alignItems: 'center',
