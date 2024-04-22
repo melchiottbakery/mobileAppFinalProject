@@ -1,5 +1,13 @@
 {
   "expo": {
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app needs access to your photos to upload a word image."
+        }
+      ]
+    ],
     "name": "groupProject",
     "slug": "groupProject",
     "version": "1.0.0",

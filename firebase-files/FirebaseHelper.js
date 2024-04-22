@@ -75,6 +75,16 @@ export async function editImageLinkInCover(bookId, data) {
   }
 }
 
+export async function editImageLinkInWord(WordId, data) {
+  try {
+    await setDoc(doc(database, "wordlist", WordId), data, { merge: true });
+    console.log("link the picture",);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+
 export async function setNewUserDocToDB(data, col, uid) {
   try {
     await setDoc(doc(database, col, uid), data, { merge: true });

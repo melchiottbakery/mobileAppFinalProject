@@ -28,6 +28,7 @@ import AudioManager from "../component/AudioManager";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import screenStyleHelper from "../styleHelperFolder/screenStyleHelper";
 import colors from "../ColorHelper";
+import ImageManager from "../component/ImageManager";
 
 export default function MyList() {
   const userId = auth.currentUser.uid;
@@ -163,6 +164,14 @@ export default function MyList() {
               )}
             </View>
           </View>
+
+          <View>
+            <ImageManager selectedWord = {item.id} />
+            </View>
+
+
+
+
         </View>
 
         <View>
