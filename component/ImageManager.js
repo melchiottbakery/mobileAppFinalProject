@@ -1,13 +1,58 @@
-import { StyleSheet, Text, View, Button, Alert, Image } from 'react-native'
+import { StyleSheet, View, Button, Alert, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import * as ImagePicker from 'expo-image-picker';
 import { editImageLinkInWord } from '../firebase-files/FirebaseHelper';
-import { getDownloadURL } from 'firebase/storage';
-import { set } from 'firebase/database';
+import { ref, getDownloadURL, uploadBytes } from 'firebase/storage';
+import { onSnapshot, collection } from 'firebase/firestore';
+import { database, storage } from '../firebase-files/FirebaseSetup';
 
-export default function ImageManager({ selectedWord }) {
+export default function ImageManager( {selectedWord} ) {
     const [status, requestPermission] = ImagePicker.useCameraPermissions();
     const [imageUri, setImageUri] = useState("");
+    const [wordList, setWordList] = useState([]);
+
+    useEffect(() => {
+        async function listenOnSnapshot() {
+          onSnapshot(collection(database, "wordlist"), (querySnapshot) => {
+            let newArray = [];
+            if (querySnapshot) {
+              querySnapshot.forEach((doc) => {
+                newArray.push({
+                  ...doc.data(),
+                  id: doc.id
+                });
+              });
+            };
+            newWordList(newArray);
+          });
+        }
+        listenOnSnapshot();
+      }, []);
+
+      function newWordList(newArray) {
+        setWordList(newArray);
+        downloadImageFromDatabase(newArray)
+      }
+
+      async function downloadImageFromDatabase(data) {
+        try {
+          const newData = [];
+          for (const item of data) {
+            if (item.imageUri) {
+              const imageRef = ref(storage, item.imageUri);
+              const imageDownloadUri = await getDownloadURL(imageRef);
+              console.log("Downloaded: " + imageDownloadUri);
+              const newItem = { ...item, imageDownloadUri };
+              newData.push(newItem);
+            } else {
+              newData.push(item);
+            }
+          }
+          setWordList(newData);
+        } catch (error) {
+          console.error("Error downloading images: ", error);
+        }
+      }
 
     async function verifyCameraPermissions() {
         if (status.granted) {
@@ -52,13 +97,13 @@ export default function ImageManager({ selectedWord }) {
             const uploadResult = await uploadBytes(imageRef, imageBlob);
             console.log("Upload Success");
             console.log(uploadResult.metadata.fullPath);
-            //writeImageLinkToWord(uploadResult.metadata.fullPath);
+            writeImageLinkToWord(uploadResult.metadata.fullPath);
             //return uploadResult.metadata.fullPath;
-            getDownloadURL(imageRef).then((downloadURL) => { 
-                console.log("File available at", downloadURL);
-                setImageUri(downloadURL);
-                writeImageLinkToWord(downloadURL);
-            });
+            // getDownloadURL(imageRef).then((downloadURL) => { 
+            //     console.log("File available at", downloadURL);
+            //     setImageUri(downloadURL);
+            //     writeImageLinkToWord(downloadURL);
+            // });
         } catch (error) {
             console.log(error);
         }
@@ -68,9 +113,11 @@ export default function ImageManager({ selectedWord }) {
         editImageLinkInWord(selectedWord, { imageUri: downloadURL });
  }
 
-    // function saveImageChange() {
-    //     uploadImage(imageUri);
-    // }
+    function saveImageChange() {
+        uploadImage(imageUri);
+    }
+
+
 
     
 
@@ -85,8 +132,8 @@ export default function ImageManager({ selectedWord }) {
 
   return (
     <View>
-      <Button title="Add Image" onPress={takeImageHandler} />
-      {/* <Button title="Save Image" onPress={saveImageChange} /> */}
+      <Button title="Add/edit Image" onPress={takeImageHandler} />
+      <Button title="Save Image" onPress={saveImageChange} /> 
       {imageUri && <Image source={{ uri: imageUri }} style={{ width: 100, height: 100 }} />}
     </View>
   )
