@@ -166,7 +166,7 @@ export default function MyList() {
           </View>
 
           <View>
-            <ImageManager selectedWord = {item.id} />
+            <ImageManager selectedWord={ item.id } />
             </View>
 
 

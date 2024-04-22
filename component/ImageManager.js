@@ -6,53 +6,66 @@ import { ref, getDownloadURL, uploadBytes } from 'firebase/storage';
 import { onSnapshot, collection } from 'firebase/firestore';
 import { database, storage } from '../firebase-files/FirebaseSetup';
 
-export default function ImageManager( {selectedWord} ) {
+export default function ImageManager( {selectedWord}) {
     const [status, requestPermission] = ImagePicker.useCameraPermissions();
     const [imageUri, setImageUri] = useState("");
-    const [wordList, setWordList] = useState([]);
+    const [imageDownloadUri, setImageDownloadUri] = useState("");
+    //const [wordList, setWordList] = useState([]);
+
 
     useEffect(() => {
-        async function listenOnSnapshot() {
-          onSnapshot(collection(database, "wordlist"), (querySnapshot) => {
-            let newArray = [];
-            if (querySnapshot) {
-              querySnapshot.forEach((doc) => {
-                newArray.push({
-                  ...doc.data(),
-                  id: doc.id
-                });
-              });
-            };
-            newWordList(newArray);
-          });
-        }
-        listenOnSnapshot();
+        async function getImageURL() {
+            const imageName = imageUri.substring(imageUri.lastIndexOf('/') + 1);
+            const imageRef = ref(storage, `wordImages/${imageName}`);
+            const imageDownloadURL = await getDownloadURL(imageRef);
+            setImageDownloadUri(imageDownloadURL);
+          }
+        
+        getImageURL();
       }, []);
 
-      function newWordList(newArray) {
-        setWordList(newArray);
-        downloadImageFromDatabase(newArray)
-      }
+    // useEffect(() => {
+    //     async function listenOnSnapshot() {
+    //       onSnapshot(collection(database, "wordlist"), (querySnapshot) => {
+    //         let newArray = [];
+    //         if (querySnapshot) {
+    //           querySnapshot.forEach((doc) => {
+    //             newArray.push({
+    //               ...doc.data(),
+    //               id: doc.id
+    //             });
+    //           });
+    //         };
+    //         newWordList(newArray);
+    //       });
+    //     }
+    //     listenOnSnapshot();
+    //   }, []);
 
-      async function downloadImageFromDatabase(data) {
-        try {
-          const newData = [];
-          for (const item of data) {
-            if (item.imageUri) {
-              const imageRef = ref(storage, item.imageUri);
-              const imageDownloadUri = await getDownloadURL(imageRef);
-              console.log("Downloaded: " + imageDownloadUri);
-              const newItem = { ...item, imageDownloadUri };
-              newData.push(newItem);
-            } else {
-              newData.push(item);
-            }
-          }
-          setWordList(newData);
-        } catch (error) {
-          console.error("Error downloading images: ", error);
-        }
-      }
+    //   function newWordList(newArray) {
+    //     setWordList(newArray);
+    //     downloadImageFromDatabase(newArray)
+    //   }
+
+    //   async function downloadImageFromDatabase(data) {
+    //     try {
+    //       const newData = [];
+    //       for (const item of data) {
+    //         if (item.imageUri) {
+    //           const imageRef = ref(storage, item.imageUri);
+    //           const imageDownloadUri = await getDownloadURL(imageRef);
+    //           console.log("Downloaded: " + imageDownloadUri);
+    //           const newItem = { ...item, imageDownloadUri };
+    //           newData.push(newItem);
+    //         } else {
+    //           newData.push(item);
+    //         }
+    //       }
+    //       setWordList(newData);
+    //     } catch (error) {
+    //       console.error("Error downloading images: ", error);
+    //     }
+    //   }
 
     async function verifyCameraPermissions() {
         if (status.granted) {
@@ -134,7 +147,7 @@ export default function ImageManager( {selectedWord} ) {
     <View>
       <Button title="Add/edit Image" onPress={takeImageHandler} />
       <Button title="Save Image" onPress={saveImageChange} /> 
-      {imageUri && <Image source={{ uri: imageUri }} style={{ width: 100, height: 100 }} />}
+      {imageDownloadUri && <Image source={{ uri: imageDownloadUri }} style={{ width: 100, height: 100 }} />}
     </View>
   )
 }
