@@ -2,18 +2,18 @@ import { StyleSheet, View, Button, Alert, Image } from "react-native";
 import React, { useEffect, useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { database, storage, auth } from "../firebase-files/FirebaseSetup";
 
-export default function ImageManager(docId) {
+export default function ImageManager({ docId }) {
+  console.log(docId);
   const [status, requestPermission] = ImagePicker.useCameraPermissions();
   const [imageUri, setImageUri] = useState("");
   const [imageURL, setImageURL] = useState("");
-  
 
   async function verifyCameraPermissions() {
     if (status.granted) {
-      console.log(status)
+      console.log(status);
       return true;
     }
     try {
@@ -37,8 +37,6 @@ export default function ImageManager(docId) {
       });
       console.log(results);
       setImageUri(results.assets[0].uri);
-      //receiveImageURI(docId);
-      //uploadImage(results.assets[0].uri);
     } catch (error) {
       console.log(error);
     }
@@ -56,6 +54,7 @@ export default function ImageManager(docId) {
           docId
         );
         await setDoc(wordRef, { imageUri: uploadImageUri }, { merge: true });
+        setImageUri(uploadImageUri);
         console.log("Image link added to word");
       }
     } catch (error) {
@@ -73,7 +72,7 @@ export default function ImageManager(docId) {
       console.log(uploadResult);
       console.log("Upload Success");
       console.log(uploadResult.metadata.fullPath);
-    
+
       return uploadResult.metadata.fullPath;
     } catch (error) {
       console.log(error);
@@ -82,17 +81,27 @@ export default function ImageManager(docId) {
 
   useEffect(() => {
     async function getImageURL() {
-      if (imageUri) {
-        const uploadImageUri = await getImageData(imageUri);
-        if (uploadImageUri) {
-          const imageRef = ref(storage, uploadImageUri);
-          try {
-            const imageDownloadURL = await getDownloadURL(imageRef);
-            setImageURL(imageDownloadURL);
-          } catch (error) {
-            console.log(error);
-          }
+      const docRef = doc(
+        database,
+        "users",
+        auth.currentUser.uid,
+        "wordlist",
+        docId
+      );
+      try {
+        const docSnap = await getDoc(docRef);
+        const data = docSnap.data();
+        console.log(data);
+        if (data.imageUri) {
+          const imageRef = ref(storage, data.imageUri);
+          const imageURL = await getDownloadURL(imageRef);
+          console.log(imageURL);
+          setImageURL(imageURL);
+        } else {
+          console.log("No image found");
         }
+      } catch (error) {
+        console.log(error);
       }
     }
     getImageURL();

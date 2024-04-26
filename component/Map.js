@@ -64,6 +64,7 @@ export default function Map() {
       )
         .then((response) => response.json())
         .then((data) => {
+          console.log(data);
           // Limit to first 5 results and extract GPS coordinates
           const limitedResults = data.results.slice(0, 5).map((result) => ({
             name: result.name,
