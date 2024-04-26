@@ -9,8 +9,8 @@ import screenStyleHelper from "../styleHelperFolder/screenStyleHelper";
 
 export default function Login({ navigation, route }) {
   console.log('route is', route)
-  const [email, setEmail] = useState("ww2w@qq.com");
-  const [password, setPassword] = useState("dongbeidaban");
+  const [email, setEmail] = useState("tz@neu.com");
+  const [password, setPassword] = useState("tianzhiliao");
   const [error, setError] = useState("");
 
   function validateEmail() {

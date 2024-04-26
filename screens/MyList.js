@@ -9,8 +9,8 @@ import {
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import NotificationManager from "../component/NotificationManager";
-import { AntDesign } from '@expo/vector-icons';
-import { Fontisto } from '@expo/vector-icons';
+import { AntDesign } from "@expo/vector-icons";
+import { Fontisto } from "@expo/vector-icons";
 import { collection, onSnapshot } from "firebase/firestore";
 import { database } from "../firebase-files/FirebaseSetup";
 import {
@@ -21,7 +21,7 @@ import {
   writeAntiAnkiToDB,
   writeClearAnkiToDB,
 } from "../firebase-files/FirebaseHelper";
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from "@expo/vector-icons";
 
 import { auth } from "../firebase-files/FirebaseSetup";
 import AudioManager from "../component/AudioManager";
@@ -68,7 +68,7 @@ export default function MyList() {
         return library.length !== 0 && reminderButton;
       },
     });
-  },);
+  });
 
   function onPressFunction({ item }) {
     const rememberWord = {
@@ -86,7 +86,7 @@ export default function MyList() {
       [
         {
           text: "Cancel",
-          onPress: () => { },
+          onPress: () => {},
         },
         {
           text: "Delete",
@@ -130,13 +130,12 @@ export default function MyList() {
   const renderItem = ({ item }) => (
     <Pressable>
       <View style={styles.words}>
-
         <View style={{ flexDirection: "row" }}>
           <View style={{ marginRight: 30 }}>
             <AudioManager wordToSound={item.id}></AudioManager>
           </View>
 
-          <View >
+          <View>
             <View>
               {!item.nativeWordShow && (
                 <TouchableOpacity onPress={() => showNativeMeaning({ item })}>
@@ -148,30 +147,39 @@ export default function MyList() {
                   <Text style={styles.fontSize30}>{item.nativeWord}</Text>
                 </TouchableOpacity>
               )}
-
             </View>
             <View>
-
               {!item.translationMeaningShow && (
-                <TouchableOpacity onPress={() => showTranslationMeaning({ item })}>
-                  <Text style={screenStyleHelper.fontSize20}>Show the Meaning</Text>
+                <TouchableOpacity
+                  onPress={() => showTranslationMeaning({ item })}
+                >
+                  <Text style={screenStyleHelper.fontSize20}>
+                    Show the Meaning
+                  </Text>
                 </TouchableOpacity>
               )}
               {item.translationMeaningShow && (
-                <TouchableOpacity onPress={() => showTranslationMeaning({ item })}>
-                  <Text style={screenStyleHelper.fontSize20}>{item.translationMeaning}</Text>
+                <TouchableOpacity
+                  onPress={() => showTranslationMeaning({ item })}
+                >
+                  <Text style={screenStyleHelper.fontSize20}>
+                    {item.translationMeaning}
+                  </Text>
                 </TouchableOpacity>
               )}
             </View>
           </View>
 
+          
+          
+          
           <View>
-            <ImageManager selectedWord={item.id}/>
-            </View>
-
-
-
-
+            <ImageManager docId={ item.nativeWord } />
+          </View>
+        
+        
+        
+        
         </View>
 
         <View>
@@ -181,16 +189,16 @@ export default function MyList() {
                 <Fontisto name="checkbox-passive" size={30} color="black" />
               </TouchableOpacity>
             )}
-
           </View>
-          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-            <View >
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
+            <View>
               {item.remember === true && (
                 <TouchableOpacity onPress={() => onForgetFunction({ item })}>
                   <Fontisto name="checkbox-active" size={30} color="black" />
                 </TouchableOpacity>
               )}
-
             </View>
             {item.remember === true && (
               <TouchableOpacity onPress={() => onDeleteFunction({ item })}>
@@ -218,7 +226,7 @@ export default function MyList() {
   }
 
   function remindHandler() {
-    setOpenRemind(!openRemind)
+    setOpenRemind(!openRemind);
   }
 
   const reminderButton = (
@@ -227,7 +235,7 @@ export default function MyList() {
         <MaterialIcons name="add-alarm" size={30} color="black" />
       </TouchableOpacity>
     </>
-  )
+  );
 
   function ankiModeHandler() {
     console.log("anki");
@@ -253,49 +261,68 @@ export default function MyList() {
     <View style={screenStyleHelper.container}>
       {library.length === 0 ? (
         <View style={screenStyleHelper.padding5}>
-          <Text style={screenStyleHelper.textFontSize}>There is no new word for you, try to add some from library</Text>
+          <Text style={screenStyleHelper.textFontSize}>
+            There is no new word for you, try to add some from library
+          </Text>
         </View>
       ) : (
         <>
           {openRemind && <NotificationManager remindHandler={remindHandler} />}
 
           <View style={styles.functionMode}>
-
             <Text>HIDDEN MODE:</Text>
 
-            <TouchableOpacity style={styles.ankiButton} onPress={antiankiModeHandler}>
+            <TouchableOpacity
+              style={styles.ankiButton}
+              onPress={antiankiModeHandler}
+            >
               <Text>Word</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.ankiButton} onPress={ankiModeHandler}>
+            <TouchableOpacity
+              style={styles.ankiButton}
+              onPress={ankiModeHandler}
+            >
               <Text>Meaning</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.ankiButton} onPress={allankiModeHandler}>
+            <TouchableOpacity
+              style={styles.ankiButton}
+              onPress={allankiModeHandler}
+            >
               <Text>All</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.ankiButton} onPress={clearankiModeHandler}>
+            <TouchableOpacity
+              style={styles.ankiButton}
+              onPress={clearankiModeHandler}
+            >
               <Text>Clear</Text>
             </TouchableOpacity>
-
           </View>
 
           <View style={styles.functionMode}>
-
             <Text>REVISION MODE:</Text>
-            <TouchableOpacity style={styles.ankiButton} onPress={showForgetHandler}>
+            <TouchableOpacity
+              style={styles.ankiButton}
+              onPress={showForgetHandler}
+            >
               <Text>To Learn</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.ankiButton} onPress={showRememberHandler}>
+            <TouchableOpacity
+              style={styles.ankiButton}
+              onPress={showRememberHandler}
+            >
               <Text>Remembered</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.ankiButton} onPress={showClearHandler}>
+            <TouchableOpacity
+              style={styles.ankiButton}
+              onPress={showClearHandler}
+            >
               <Text>Clear</Text>
             </TouchableOpacity>
-
           </View>
 
           {showRemember && (
@@ -326,10 +353,9 @@ export default function MyList() {
 }
 
 const styles = StyleSheet.create({
-
   ankiButton: {
     borderWidth: 2,
-    borderColor: 'black',
+    borderColor: "black",
     borderRadius: 5,
     padding: 5,
     margin: 7,
@@ -338,20 +364,18 @@ const styles = StyleSheet.create({
   functionMode: {
     flexDirection: "row",
     padding: 3,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   words: {
     padding: 10,
     borderColor: colors.borderColor,
     borderWidth: 3,
-    margin: 5
+    margin: 5,
   },
 
   fontSize30: {
     fontSize: 30,
   },
-
-
 });
