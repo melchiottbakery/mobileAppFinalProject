@@ -9,13 +9,16 @@ export default function ImageManager(docId) {
   const [status, requestPermission] = ImagePicker.useCameraPermissions();
   const [imageUri, setImageUri] = useState("");
   const [imageURL, setImageURL] = useState("");
+  
 
   async function verifyCameraPermissions() {
     if (status.granted) {
+      console.log(status)
       return true;
     }
     try {
       const response = await requestPermission();
+      console.log(response);
       return response.granted;
     } catch (error) {
       console.log(error);
@@ -41,7 +44,7 @@ export default function ImageManager(docId) {
     }
   }
 
-  async function linkImageUriToWord(docId) {
+  async function linkImageUriToWord() {
     try {
       if (imageUri) {
         const uploadImageUri = await getImageData(imageUri);
